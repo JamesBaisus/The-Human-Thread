@@ -1,6 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 
+/** Playfair's italic "&" is an ornate swash; render ampersands upright for a simpler mark. */
+export function SimpleAmp({ text }: { text: string }) {
+  const parts = text.split("&");
+  return (
+    <>
+      {parts.map((part, i) => (
+        <span key={i}>
+          {i > 0 && <span className="not-italic">&</span>}
+          {part}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export type ArticleCardData = {
   slug: string;
   category: string;
@@ -46,7 +61,7 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
         {card.title}
       </h3>
       <p className="font-playfair italic text-[14px] text-accent mb-2">
-        {card.name} — {card.role}
+        {card.name} — <SimpleAmp text={card.role} />
       </p>
       <p className="text-[14px] leading-[1.55] text-muted [text-wrap:pretty]">{card.deck}</p>
     </Link>

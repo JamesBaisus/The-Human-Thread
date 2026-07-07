@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 
 export type DrawerLink = { label: string; href: string };
+export type DrawerGroup = { header: string | null; links: DrawerLink[] };
 
-export default function Header({ drawerLinks }: { drawerLinks: DrawerLink[] }) {
+export default function Header({ drawerGroups }: { drawerGroups: DrawerGroup[] }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -72,16 +73,27 @@ export default function Header({ drawerLinks }: { drawerLinks: DrawerLink[] }) {
                 ×
               </button>
             </div>
-            {drawerLinks.map((d) => (
-              <Link
-                key={d.label}
-                href={d.href}
-                onClick={() => setOpen(false)}
-                className="drawerlink cursor-pointer font-playfair font-medium text-[26px] leading-none text-ink py-[clamp(11px,1.4vw,15px)] border-b border-ph"
-              >
-                {d.label}
-              </Link>
-            ))}
+            <div className="flex-1 overflow-y-auto min-h-0">
+              {drawerGroups.map((g, gi) => (
+                <div key={gi}>
+                  {g.header && (
+                    <div className="font-hanken text-[9px] font-bold tracking-[.3em] uppercase text-muted-2 pt-[clamp(20px,2.6vw,30px)] pb-[6px]">
+                      {g.header}
+                    </div>
+                  )}
+                  {g.links.map((d) => (
+                    <Link
+                      key={d.label}
+                      href={d.href}
+                      onClick={() => setOpen(false)}
+                      className="drawerlink cursor-pointer block font-playfair font-medium text-[24px] leading-none text-ink py-[clamp(10px,1.3vw,14px)] border-b border-ph"
+                    >
+                      {d.label}
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </div>
           </aside>
         </div>
       )}

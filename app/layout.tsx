@@ -34,12 +34,17 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const drawerLinks = [
-    { label: "Home", href: "/#top" },
-    ...(await getCategorySections()).map((s) => ({ label: s.name, href: `/#${catAnchor(s.name)}` })),
-    { label: "Posters", href: "/#posters" },
-    { label: "About", href: "/#about" },
-  ];
+  const withArticles = new Set((await getCategorySections()).map((s) => s.name));
+  const hrefFor = (label: string) => {
+    if (label === "Home") return "/#top";
+    if (label === "Gallery") return "/#posters";
+    if (label === "About") return "/#about";
+    return withArticles.has(label) ? `/#${catAnchor(label)}` : `/catalogue?filter=${encodeURIComponent(label)}`;
+  };
+  const drawerGroups = site.nav.map((g) => ({
+    header: g.header,
+    links: g.items.map((label) => ({ label, href: hrefFor(label) })),
+  }));
 
   return (
     <html lang="en" className={`${playfair.variable} ${newsreader.variable} ${hanken.variable}`}>
@@ -47,7 +52,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <div className="min-h-0 flex flex-col relative overflow-x-clip">
           <Effects />
           <div className="scrollbar" />
-          <Header drawerLinks={drawerLinks} />
+          <Header drawerGroups={drawerGroups} />
           <main className="flex-1 w-full relative">{children}</main>
           <Footer />
         </div>

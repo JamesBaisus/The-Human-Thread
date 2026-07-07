@@ -23,6 +23,19 @@ export const site = {
     "Features",
   ],
 
+  /**
+   * Nav drawer groups, in display order. A group may carry a small label
+   * header. "Home", "Gallery" and "About" are fixed anchors; any other item
+   * must be a category name — it links to its section on the landing page,
+   * or to the filtered catalogue if it has no articles yet.
+   */
+  nav: [
+    { header: null, items: ["Home"] },
+    { header: "Articles", items: ["Human Stories", "Fashion", "Art", "Lifestyle"] },
+    { header: "The Cover Gallery", items: ["Gallery"] },
+    { header: null, items: ["About"] },
+  ],
+
   /** Editorial carousel band. */
   carousel: {
     eyebrow: "The Editorial · Issue 03",

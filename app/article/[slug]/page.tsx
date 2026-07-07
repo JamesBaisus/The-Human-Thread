@@ -24,6 +24,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const sidebar = (await getArticles()).filter((a) => a.slug !== article.slug).slice(0, 4);
   const related = await getRelated(article.slug);
 
+  // running figure numbers across the whole article ("No. 01", "No. 02", …)
+  let figCount = 0;
+  const sections = article.sections.map((sec) => {
+    const figStart = figCount;
+    figCount += sec.images.length;
+    return { ...sec, figStart };
+  });
+  const figNo = (n: number) => String(n + 1).padStart(2, "0");
+
   return (
     <div className="pg relative">
       <section className="max-w-[1280px] mx-auto pt-[clamp(20px,3vw,36px)] px-[clamp(18px,4vw,54px)]">
@@ -74,7 +83,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </p>
 
             <div className="mt-[clamp(26px,4vw,44px)]">
-              {article.sections.map((sec, i) => (
+              {sections.map((sec, i) => (
                 <section key={i} data-reveal="rise" className="py-[clamp(14px,2.4vw,26px)]">
                   {sec.heading && (
                     <h3
@@ -89,14 +98,72 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       {para}
                     </p>
                   ))}
-                  {sec.image && (
-                    <figure className="my-[clamp(20px,3vw,34px)]">
+                  {sec.images.length === 1 && (
+                    <figure data-reveal="scale" className="my-[clamp(28px,5vw,56px)] min-[900px]:-mx-[7%]">
                       <div className="overflow-hidden rounded-[2px] bg-ph">
-                        {/* body images vary in size; render at natural ratio */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={sec.image} alt={sec.imageAlt || article.name} className="block w-full h-auto" />
+                        <Image
+                          src={sec.images[0].src}
+                          alt={sec.images[0].caption || article.name}
+                          width={sec.images[0].width}
+                          height={sec.images[0].height}
+                          placeholder="blur"
+                          blurDataURL={sec.images[0].blur}
+                          sizes="(max-width: 780px) 100vw, 980px"
+                          className="block w-full h-auto"
+                        />
                       </div>
+                      <figcaption className="flex items-center gap-4 mt-[14px]">
+                        <span
+                          className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap"
+                          style={{ color: article.accent }}
+                        >
+                          No. {figNo(sec.figStart)}
+                        </span>
+                        <span className="flex-1 h-px bg-hairline" />
+                        <span className="font-playfair italic text-[13.5px] leading-[1.5] text-muted text-right max-w-[46ch]">
+                          {sec.images[0].caption}
+                        </span>
+                      </figcaption>
                     </figure>
+                  )}
+                  {sec.images.length > 1 && (
+                    <div className="my-[clamp(28px,5vw,56px)] grid grid-cols-[7fr_5fr] max-[620px]:grid-cols-1 gap-[clamp(16px,2.6vw,32px)] items-start">
+                      {sec.images.map((im, k) => (
+                        <figure
+                          key={im.src}
+                          data-reveal="scale"
+                          data-reveal-delay={k % 2 === 1 ? "140" : undefined}
+                          className={k % 2 === 1 ? "min-[621px]:mt-[clamp(36px,9vw,110px)]" : ""}
+                        >
+                          <div className="overflow-hidden rounded-[2px] bg-ph">
+                            <Image
+                              src={im.src}
+                              alt={im.caption || article.name}
+                              width={im.width}
+                              height={im.height}
+                              placeholder="blur"
+                              blurDataURL={im.blur}
+                              sizes="(max-width: 620px) 100vw, (max-width: 780px) 58vw, 500px"
+                              className="block w-full h-auto"
+                            />
+                          </div>
+                          <figcaption className="mt-3">
+                            <div className="flex items-center gap-3 mb-[6px]">
+                              <span
+                                className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap"
+                                style={{ color: article.accent }}
+                              >
+                                No. {figNo(sec.figStart + k)}
+                              </span>
+                              <span className="flex-1 h-px bg-hairline" />
+                            </div>
+                            <span className="font-playfair italic text-[13px] leading-[1.5] text-muted">
+                              {im.caption}
+                            </span>
+                          </figcaption>
+                        </figure>
+                      ))}
+                    </div>
                   )}
                   {sec.pullQuote && (
                     <blockquote

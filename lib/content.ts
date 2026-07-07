@@ -9,13 +9,23 @@ const ROOT = process.cwd();
 const ARTICLES_DIR = path.join(ROOT, "content", "articles");
 const POSTERS_FILE = path.join(ROOT, "content", "posters", "posters.json");
 
+export type SectionImage = {
+  src: string;
+  /** Alt text in the MDX doubles as the printed caption. */
+  caption: string;
+  width: number;
+  height: number;
+  blur: string;
+};
+
 export type ArticleSection = {
   heading: string;
   paragraphs: string[];
-  image?: string;
-  imageAlt?: string;
+  images: SectionImage[];
   pullQuote?: string;
 };
+
+type RawSection = Omit<ArticleSection, "images"> & { images: { src: string; caption: string }[] };
 
 export type Article = {
   slug: string;
@@ -85,20 +95,20 @@ function blurFor(publicPath: string): Promise<string> {
   return cached;
 }
 
-/** Body = a series of `## heading` sections with paragraphs, optional `> pull quote` and `![alt](src)` image. */
-function parseSections(body: string): ArticleSection[] {
-  const sections: ArticleSection[] = [];
-  let current: ArticleSection | null = null;
+/** Body = a series of `## heading` sections with paragraphs, optional `> pull quote` and `![caption](src)` images. */
+function parseSections(body: string): RawSection[] {
+  const sections: RawSection[] = [];
+  let current: RawSection | null = null;
   for (const raw of body.split(/\r?\n/)) {
     const line = raw.trim();
     if (!line) continue;
     if (line.startsWith("## ")) {
-      current = { heading: line.slice(3).trim(), paragraphs: [] };
+      current = { heading: line.slice(3).trim(), paragraphs: [], images: [] };
       sections.push(current);
       continue;
     }
     if (!current) {
-      current = { heading: "", paragraphs: [] };
+      current = { heading: "", paragraphs: [], images: [] };
       sections.push(current);
     }
     if (line.startsWith(">")) {
@@ -108,13 +118,26 @@ function parseSections(body: string): ArticleSection[] {
     }
     const img = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
     if (img) {
-      current.imageAlt = img[1];
-      current.image = img[2];
+      current.images.push({ caption: img[1], src: img[2] });
       continue;
     }
     current.paragraphs.push(line);
   }
   return sections;
+}
+
+async function enrichSections(sections: RawSection[]): Promise<ArticleSection[]> {
+  return Promise.all(
+    sections.map(async (s) => ({
+      ...s,
+      images: await Promise.all(
+        s.images.map(async (im) => {
+          const dims = imageDims(im.src);
+          return { ...im, width: dims.width, height: dims.height, blur: await blurFor(im.src) };
+        })
+      ),
+    }))
+  );
 }
 
 function imageDims(publicPath: string): { width: number; height: number } {
@@ -155,7 +178,7 @@ async function loadArticles(): Promise<Article[]> {
         coverBlur: await blurFor(String(data.cover)),
         featured: Boolean(data.featured),
         date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
-        sections: parseSections(content),
+        sections: await enrichSections(parseSections(content)),
       } satisfies Article;
     })
   );

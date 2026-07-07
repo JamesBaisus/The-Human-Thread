@@ -1,0 +1,68 @@
+// Global site copy & configuration.
+// Copy here is verbatim from the design prototype — edit carefully.
+
+export const site = {
+  /** Default themeable accent. Options: #9a6b3f (bronze), #8f4b58 (plum), #5c6b57 (olive), #1c1a17 (near-black). */
+  accent: "#9a6b3f",
+
+  instagram: "https://www.instagram.com/thehumanthread_ae",
+
+  /** Exactly one article drives the hero. */
+  featuredSlug: "caroline-labouchere",
+
+  /** The dark "Read the feature" band near the footer. */
+  coverBand: { slug: "bts", kicker: "The Cover Story" },
+
+  /** Fixed category display order; only categories with articles render. */
+  categories: [
+    "Fashion",
+    "Culture",
+    "Art",
+    "Human Stories",
+    "Lifestyle",
+    "Features",
+  ],
+
+  /** Editorial carousel band. */
+  carousel: {
+    eyebrow: "The Editorial · Issue 03",
+    title: "Kateryna Migush",
+    sub: "A quiet kind of becoming — turn through the full spread.",
+    slides: [
+      { src: "/carousel/1.jpg", label: "The Opening" },
+      { src: "/carousel/2.jpg", label: "A Quiet Kind of Becoming" },
+      { src: "/carousel/3.jpg", label: "The Power of Modesty" },
+      { src: "/carousel/4.jpg", label: "Behind the Image" },
+      { src: "/carousel/5.jpg", label: "Beauty From Within" },
+    ],
+  },
+
+  /** "Featured in this issue" marquee names. */
+  marqueeNames: [
+    "Nathalya Rai",
+    "Ruben",
+    "BTS",
+    "Vikki Feltham",
+    "Noj Barker",
+    "Hala Kazim",
+    "Nadine Njeim",
+    "Caroline Labouchere",
+  ],
+
+  aboutBody: [
+    "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
+    "Created in the UAE with a global editorial vision, the magazine explores the people, places, brands, artists, and ideas that carry meaning beyond the surface. Through thoughtful features and refined visual storytelling, we look at fashion, art, culture, and community as reflections of something deeper: who we are, what we value, and how we are remembered.",
+    "At The Human Thread_AE, every story begins with a person. We are drawn to journeys of resilience, creativity, ambition, heritage, reinvention, and purpose — the moments that shape a life, a vision, or a legacy.",
+    "Our editorial voice is intimate yet elevated, emotional yet timeless. We do not chase noise. We follow substance.",
+    "From Dubai to the world, The Human Thread_AE exists to document the threads that connect us — the stories behind the faces, the meaning behind the work, and the humanity behind every expression.",
+  ],
+
+  values: [
+    { no: "01", title: "Human first", text: "Every story starts with a person, never a product." },
+    { no: "02", title: "Slow media", text: "Fewer, longer, better. We would rather be right than first." },
+    { no: "03", title: "Regional pride", text: "Local voices, told with the depth the world reserves for others." },
+    { no: "04", title: "Beauty with meaning", text: "Aesthetics are welcome — emptiness is not." },
+  ],
+} as const;
+
+export type Site = typeof site;

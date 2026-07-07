@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&amp;family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{background:#ffffff}
+  body{background:#ffffff;min-height:100vh;color:#1c1a17;font-family:'Newsreader',Georgia,serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:#e8e8e8;color:#1c1a17}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes ovfade{from{opacity:0}to{opacity:1}}
+  @keyframes drawerin{from{transform:translateX(-100%)}to{transform:none}}
+  .navdrawer{animation:drawerin .38s cubic-bezier(.2,.75,.25,1) both}
+  .drawerlink{transition:color .25s,padding-left .3s cubic-bezier(.2,.7,.2,1)}
+  .drawerlink:hover{color:var(--accent,#9a6b3f);padding-left:9px}
+  .burger span{transition:transform .3s,opacity .3s}
+  .inqbtn{transition:opacity .3s}
+  .inqbtn:hover{opacity:.5}
+  @keyframes modup{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
+  .ov{animation:ovfade .3s ease both}
+  .modcard{animation:modup .5s cubic-bezier(.16,.8,.3,1) both}
+  .inqfield{background:transparent;border:none;border-bottom:1px solid #d6d6d6;padding:11px 2px;font-family:'Newsreader',serif;font-size:16px;color:#1c1a17;outline:none;width:100%;transition:border-color .3s}
+  .inqfield:focus{border-color:#1c1a17}
+  .inqfield::placeholder{color:#a3a3a0}
+  .drop{transition:border-color .3s,background .3s,color .3s}
+  .drop:hover{border-color:#1c1a17;background:#f1f1f1}
+  .modclose{transition:transform .3s,color .3s}
+  .modclose:hover{transform:rotate(90deg);color:#1c1a17}
+  .pg{animation:fadeUp .5s ease both}
+  [data-reveal]{opacity:0;transform:translateY(30px);transition:opacity .95s cubic-bezier(.2,.7,.2,1),transform .95s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
+  [data-reveal="left"]{transform:translateX(-42px)}
+  [data-reveal="right"]{transform:translateX(42px)}
+  [data-reveal="scale"]{transform:scale(.965)}
+  [data-reveal="rise"]{transform:translateY(46px)}
+  [data-reveal].in{opacity:1;transform:none}
+  .navlink{position:relative}
+  .navlink::after{content:"";position:absolute;left:0;bottom:-4px;height:1px;width:0;background:currentColor;transition:width .35s cubic-bezier(.2,.7,.2,1)}
+  .navlink:hover::after{width:100%}
+  .card .media,.thumb .media,.heroimg .media{transition:transform .85s cubic-bezier(.2,.7,.2,1)}
+  .card:hover .media{transform:scale(1.05)}
+  .card h3{transition:color .3s}
+  .card:hover h3{color:#000}
+  .card:hover .revealline{width:44px}
+  .revealline{transition:width .5s cubic-bezier(.2,.7,.2,1)}
+  .latestrow{transition:background .35s,border-color .35s}
+  .latestrow:hover{background:#f1f1f1;border-color:#d6d6d6}
+  .latestrow:hover .media{transform:scale(1.07)}
+  .herofeat:hover .heroimg .media{transform:scale(1.035)}
+  .pillbtn{transition:background .3s,color .3s,border-color .3s,transform .3s}
+  .pillbtn:hover{background:#1c1a17;color:#f5f5f5;border-color:#1c1a17}
+  .viewall .arr{display:inline-block;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .viewall:hover .arr{transform:translateX(7px)}
+  .chip{transition:all .3s}
+  .chip:hover{border-color:#1c1a17!important}
+  .rellink{transition:padding-left .45s cubic-bezier(.2,.7,.2,1),background .4s}
+  .rellink:hover{padding-left:15px;background:rgba(28,26,23,.03)}
+  .rellink .relarrow{transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .3s;opacity:.35}
+  .rellink:hover .relarrow{transform:translateX(9px);opacity:1}
+  .darkband:hover .bandbtn{background:#f5f5f5;color:#1c1a17;border-color:#f5f5f5}
+  .bandbtn{transition:background .35s,color .35s,border-color .35s}
+  header{transition:box-shadow .4s,background .4s}
+  header.scrolled{box-shadow:0 12px 34px -26px rgba(20,16,14,.5)}
+  .scrollbar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent,#9a6b3f);z-index:120;transition:width .12s linear;pointer-events:none}
+  .marquee{overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .marquee-track{display:inline-block;animation:marquee 42s linear infinite;will-change:transform}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .mq{display:inline-block;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);color:#4a463f}
+  .mq-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent,#9a6b3f);vertical-align:middle;margin:0 clamp(9px,1vw,15px);font-size:0;line-height:0;position:relative;top:-4px}
+  .dropcap::first-letter{font-family:'Playfair Display',serif;font-weight:500;float:left;font-size:4.2em;line-height:.64;padding:10px 14px 0 0;color:var(--accent,#9a6b3f)}
+  input::placeholder{color:#9a9a97}
+  @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1!important;transform:none!important;transition:none}.marquee-track,.pg{animation:none!important}}
+  .homenavlink{position:relative;width:max-content;transition:color .3s,padding-left .35s cubic-bezier(.2,.7,.2,1)}
+  .homenavlink:hover{color:var(--accent,#9a6b3f);padding-left:10px}
+  .iggrid{column-count:4;column-gap:14px}
+  .gcard{break-inside:avoid;margin:0 0 14px;display:block;position:relative;overflow:hidden;cursor:pointer}
+  .gcard .media{transition:transform .85s cubic-bezier(.2,.7,.2,1)}
+  .gcard:hover .media{transform:scale(1.06)}
+  .gcard .gover{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 52%,rgba(0,0,0,.62));opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:16px}
+  .gcard:hover .gover{opacity:1}
+  .igarrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.88);color:#111;font-size:22px;line-height:0;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .3s,transform .3s;padding:0 0 3px}
+  .igarrow:hover{background:#fff;transform:translateY(-50%) scale(1.09)}
+  @media(max-width:1100px){.iggrid{column-count:3}}
+  @media(max-width:760px){.iggrid{column-count:2}.igviewer{grid-template-columns:1fr!important;max-height:94vh!important}.igpanel{max-height:42vh!important}}
+  @media(max-width:820px){.valuegrid{grid-template-columns:1fr 1fr!important}}
+  @media(max-width:480px){.valuegrid{grid-template-columns:1fr!important}}
+  @media(max-width:1080px){.homehero{grid-template-columns:1fr 260px!important}}
+  @media(max-width:780px){.hidesm{display:none!important}.herowrap{grid-template-columns:1fr!important}.homehero{grid-template-columns:1fr!important}.readerwrap{grid-template-columns:1fr!important}.sidesticky{position:static!important}.carstage{height:clamp(340px,74vw,520px)!important}}
+  @media(max-width:480px){.carstage{height:clamp(300px,86vw,460px)!important}}
+  @media(max-width:620px){.formrow{grid-template-columns:1fr!important}}
+</style>
+<script>
+(function(){
+  function tick(){
+    try{
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var els = document.querySelectorAll('[data-reveal]:not(.in), [data-countup]:not(.in)');
+      for(var i=0;i<els.length;i++){
+        var r = els[i].getBoundingClientRect();
+        if(r.top < vh*0.9 && r.bottom > 0) els[i].classList.add('in');
+      }
+      var doc = document.documentElement;
+      var max = (doc.scrollHeight - vh) || 1;
+      var p = Math.max(0, Math.min(1, (window.scrollY || doc.scrollTop || 0)/max));
+      var bar = document.querySelector('.scrollbar');
+      if(bar) bar.style.width = (p*100).toFixed(2) + '%';
+      var h = document.querySelector('header');
+      if(h){ if((window.scrollY||0) > 14) h.classList.add('scrolled'); else h.classList.remove('scrolled'); }
+    }catch(e){}
+  }
+  var scheduled = false;
+  function onScroll(){ if(!scheduled){ scheduled = true; requestAnimationFrame(function(){ tick(); scheduled = false; }); } }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll, { passive:true });
+  setInterval(tick, 120);
+  tick();
+})();
+</script>
+</helmet>
+
+<div style="min-height:0;display:flex;flex-direction:column;position:relative;overflow-x:hidden">
+
+  <div class="scrollbar" ref="{{ barRef }}"></div>
+
+  <sc-if value="{{ viewerOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="ov" onClick="{{ closeViewer }}" style="position:fixed;inset:0;z-index:200;background:rgba(12,10,9,.84);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:clamp(10px,3vw,44px)">
+    <div class="modcard igviewer" onClick="{{ stop }}" style="width:100%;max-width:1120px;max-height:90vh;display:grid;grid-template-columns:1fr 372px;background:#000;border-radius:3px;overflow:hidden;box-shadow:0 50px 120px -30px rgba(0,0,0,.7)">
+      <div style="position:relative;background:#0d0d0d;display:flex;align-items:center;justify-content:center;min-height:320px">
+        <img src="{{ viewer.image }}" alt="{{ viewer.name }}" style="width:100%;height:100%;max-height:90vh;object-fit:contain;display:block">
+        <sc-if value="{{ viewer.multi }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ viewerPrev }}" aria-label="Previous" class="igarrow" style="left:14px">‹</button>
+          <button onClick="{{ viewerNext }}" aria-label="Next" class="igarrow" style="right:14px">›</button>
+          <div style="position:absolute;top:14px;right:14px;z-index:2;font-family:'Hanken Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;color:#fff;background:rgba(0,0,0,.55);border-radius:20px;padding:5px 11px">{{ viewer.pos }}</div>
+        </sc-if>
+      </div>
+      <div class="igpanel" style="background:#141414;color:#ededed;display:flex;flex-direction:column;max-height:90vh">
+        <div style="display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.1)">
+          <div style="flex:none;width:38px;height:38px;border-radius:50%;background:#1c1a17;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:14px;color:#fff">T</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Hanken Grotesk',sans-serif;font-size:12.5px;font-weight:700;color:#fff">{{ viewer.handle }}</div>
+            <div style="font-family:'Hanken Grotesk',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#9a9a9a">{{ viewer.cat }}</div>
+          </div>
+          <button onClick="{{ closeViewer }}" aria-label="Close" class="modclose" style="cursor:pointer;background:none;border:none;color:#c2c2c2;line-height:0;padding:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:20px 18px">
+          <div style="font-family:'Playfair Display',serif;font-weight:500;font-size:24px;line-height:1.08;color:#fff;margin-bottom:16px">{{ viewer.title }}</div>
+          <sc-for list="{{ viewer.capParas }}" as="cp" hint-placeholder-count="3">
+            <p style="font-family:'Newsreader',serif;font-size:14px;line-height:1.62;color:#d6d6d6;margin:0 0 14px">{{ cp }}</p>
+          </sc-for>
+          <p style="font-family:'Hanken Grotesk',sans-serif;font-size:13.5px;color:#7fb0e6;margin:2px 0 16px">{{ viewer.hashtag }}</p>
+          <p style="font-family:'Newsreader',serif;font-style:italic;font-size:14px;color:#cfcfcf;margin:0 0 18px">{{ viewer.note }}</p>
+          <div style="font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a">{{ viewer.time }}</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.1);padding:14px 18px">
+          <a onClick="{{ viewer.read }}" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fff">The Human Thread_AE</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <header ref="{{ headerRef }}" style="position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid #e3e3e3">
+    <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px clamp(18px,4vw,54px)">
+      <div style="display:flex;align-items:center;gap:clamp(12px,1.6vw,18px);flex:none">
+        <button onClick="{{ openNav }}" aria-label="Open menu" class="burger" style="cursor:pointer;background:none;border:none;padding:6px 4px;display:flex;flex-direction:column;gap:5px">
+          <span style="display:block;height:1.6px;width:24px;background:#1c1a17"></span>
+          <span style="display:block;height:1.6px;width:24px;background:#1c1a17"></span>
+          <span style="display:block;height:1.6px;width:24px;background:#1c1a17"></span>
+        </button>
+        <a onClick="{{ gotoHome }}" style="cursor:pointer;display:block;line-height:.86">
+          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(19px,2vw,26px);letter-spacing:.005em;color:#1c1a17">THE HUMAN THREAD</div>
+          <div style="font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:600;letter-spacing:.44em;color:#6d6a62;margin-top:4px;padding-left:2px">MAGAZINE · AE</div>
+        </a>
+      </div>
+      <div style="display:flex;align-items:center;gap:clamp(10px,1.6vw,20px);flex:none">
+        <button onClick="{{ doSearch }}" aria-label="Search" style="cursor:pointer;background:none;border:none;padding:6px;color:#1c1a17;display:flex"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg></button>
+        <button class="inqbtn" onClick="{{ openInquire }}" style="cursor:pointer;border:none;background:transparent;color:#1c1a17;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:8px 4px">Inquire</button>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="ov" onClick="{{ closeNav }}" style="position:fixed;inset:0;z-index:150;background:rgba(20,18,16,.42);backdrop-filter:blur(2px)">
+    <aside class="navdrawer" onClick="{{ stop }}" style="position:absolute;left:0;top:0;height:100%;width:min(330px,84vw);background:#ffffff;box-shadow:24px 0 60px -30px rgba(20,18,16,.5);display:flex;flex-direction:column;padding:clamp(24px,3vw,34px) clamp(24px,3vw,34px)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:clamp(26px,3.4vw,40px)">
+        <div style="line-height:.86">
+          <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:17px;letter-spacing:.005em;color:#1c1a17">THE HUMAN THREAD</div>
+          <div style="font-family:'Hanken Grotesk',sans-serif;font-size:8px;font-weight:600;letter-spacing:.4em;color:#9a9a97;margin-top:4px">MAGAZINE · AE</div>
+        </div>
+        <button onClick="{{ closeNav }}" aria-label="Close menu" style="cursor:pointer;background:none;border:none;color:#1c1a17;font-size:26px;line-height:1;padding:0 2px;margin-top:-2px">×</button>
+      </div>
+      <sc-for list="{{ drawerLinks }}" as="d" hint-placeholder-count="9">
+        <a class="drawerlink" onClick="{{ d.pick }}" style="cursor:pointer;font-family:'Playfair Display',serif;font-weight:500;font-size:26px;line-height:1;color:#1c1a17;padding:clamp(11px,1.4vw,15px) 0;border-bottom:1px solid #ececec">{{ d.label }}</a>
+      </sc-for>
+    </aside>
+  </div>
+  </sc-if>
+
+  <main ref="{{ pageRef }}" style="flex:1;width:100%;position:relative">
+
+    <!-- ===================== HOME ===================== -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div class="pg" data-screen-label="Home" style="position:relative">
+
+      <section style="max-width:1280px;margin:0 auto;padding:clamp(30px,4vw,58px) clamp(18px,4vw,54px) clamp(30px,4vw,52px)">
+        <div class="homehero" style="display:grid;grid-template-columns:1fr 300px;gap:clamp(24px,3.4vw,64px);align-items:start">
+
+          <article class="herofeat" onClick="{{ hero.open }}" style="cursor: pointer; position: relative; text-align:left">
+            <div style="display:flex;align-items:center;gap:12px;margin:0 0 clamp(12px,1.4vw,16px)"><span style="font-family:'Hanken Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:{{ accent }}">Featured</span><span style="flex:1;height:1px;background:#e3e3e3"></span></div>
+            <div data-reveal="scale" class="heroimg" style="position:relative;overflow:hidden;width:100%;max-width:330px;margin:0 auto;background:#ececec"><img class="media" src="{{ hero.cover }}" alt="{{ hero.name }}" style="display:block;width:100%;height:auto"></div>
+            <span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4a463f;background:#eeeeee;border-radius:2px;padding:6px 11px;margin:clamp(18px,2.2vw,26px) 0 0">{{ hero.cat }}</span>
+            <h1 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(28px,3.1vw,42px);line-height:1.06;letter-spacing:-.005em;margin:14px 0 0;color:#1c1a17;text-wrap:balance;max-width:14ch">{{ hero.title }}</h1>
+          </article>
+
+          <aside class="sidesticky" style="position:sticky;top:120px;display:flex;flex-direction:column;gap:clamp(22px,2.6vw,32px)">
+            <sc-for list="{{ sidebarLatest }}" as="l" hint-placeholder-count="4">
+              <a class="latestrow" onClick="{{ l.open }}" style="display:flex;gap:16px;align-items:flex-start;cursor:pointer">
+                <div class="thumb" style="flex:none;width:112px;height:88px;overflow:hidden;background:#ececec"><img class="media" src="{{ l.cover }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top"></div>
+                <div style="min-width:0;padding-top:2px">
+                  <span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4a463f;background:#eeeeee;border-radius:2px;padding:4px 8px">{{ l.cat }}</span>
+                  <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.16;margin:10px 0 0;color:#1c1a17">{{ l.title }}</h3>
+                </div>
+              </a>
+            </sc-for>
+          </aside>
+        </div>
+      </section>
+
+      <section data-screen-label="Editorial Carousel" onMouseEnter="{{ carPause }}" onMouseLeave="{{ carResume }}" style="background:#f4f4f3;border-top:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;padding:clamp(40px,5.5vw,84px) 0;overflow:hidden">
+        <div style="max-width:1280px;margin:0 auto;padding:0 clamp(18px,4vw,54px)">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,3.6vw,46px)">
+            <div data-reveal="left" style="max-width:34ch">
+              <div style="font-family:'Hanken Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:{{ accent }};margin-bottom:14px">The Editorial · Issue 03</div>
+              <h2 style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(32px,4.6vw,60px);line-height:.98;letter-spacing:-.01em;margin:0;color:#1c1a17">Kateryna Migush</h2>
+              <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(16px,1.7vw,21px);line-height:1.4;color:#6d6a62;margin:12px 0 0">A quiet kind of becoming — turn through the full spread.</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:clamp(14px,2vw,22px)">
+              <span style="font-family:'Hanken Grotesk',sans-serif;font-size:12px;letter-spacing:.16em;color:#9a9a97"><span style="color:#1c1a17">{{ carNum }}</span> / {{ carTotal }}</span>
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ carPrev }}" aria-label="Previous" class="carbtn" style="width:46px;height:46px;border-radius:50%;border:none;background:#e3e3e3;color:#1c1a17;font-family:'Hanken Grotesk',sans-serif;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s ease,border-color .3s ease" style-hover="background:#1c1a17;border-color:#1c1a17;color:#f5f5f5">←</button>
+                <button onClick="{{ carNext }}" aria-label="Next" class="carbtn" style="width:46px;height:46px;border-radius:50%;border:none;background:#e3e3e3;color:#1c1a17;font-family:'Hanken Grotesk',sans-serif;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s ease,border-color .3s ease" style-hover="background:#1c1a17;border-color:#1c1a17;color:#f5f5f5">→</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carstage" style="position:relative;height:clamp(400px,52vw,640px);margin:0 auto">
+          <sc-for list="{{ carItems }}" as="ci" hint-placeholder-count="5">
+            <div onClick="{{ ci.pick }}" style="{{ ci.style }}">
+              <img src="{{ ci.src }}" alt="{{ ci.label }}" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block;user-select:none">
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="max-width:1280px;margin:0 auto;padding:0 clamp(18px,4vw,54px)">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2vw,22px);margin-top:clamp(26px,3.4vw,42px)">
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(17px,1.8vw,22px);color:#1c1a17;letter-spacing:.01em;text-align:center;min-height:1.4em">{{ carCaption }}</div>
+            <div style="display:flex;align-items:center;gap:9px">
+              <sc-for list="{{ carDots }}" as="d" hint-placeholder-count="5">
+                <button onClick="{{ d.pick }}" aria-label="Go to slide" style="{{ d.dotStyle }}"></button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="max-width:1280px;margin:0 auto;padding:0 clamp(18px,4vw,54px)">
+        <div style="border-top:1px solid #e3e3e3;padding-top:clamp(14px,2vw,22px);text-align:center;font-family:'Hanken Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:#9a9a97;margin-bottom:clamp(10px,1.4vw,18px)">Featured in this issue</div>
+      </div>
+      <div class="marquee" style="padding:clamp(6px,1vw,12px) 0 clamp(18px,2.4vw,28px);border-bottom:1px solid #e3e3e3"><div class="marquee-track"><span class="mq">Nathalya Rai<span class="mq-dot">•</span>Ruben<span class="mq-dot">•</span>BTS<span class="mq-dot">•</span>Vikki Feltham<span class="mq-dot">•</span>Noj Barker<span class="mq-dot">•</span>Hala Kazim<span class="mq-dot">•</span>Nadine Njeim<span class="mq-dot">•</span>Caroline Labouchere<span class="mq-dot">•</span></span><span class="mq" aria-hidden="true">Nathalya Rai<span class="mq-dot">•</span>Ruben<span class="mq-dot">•</span>BTS<span class="mq-dot">•</span>Vikki Feltham<span class="mq-dot">•</span>Noj Barker<span class="mq-dot">•</span>Hala Kazim<span class="mq-dot">•</span>Nadine Njeim<span class="mq-dot">•</span>Caroline Labouchere<span class="mq-dot">•</span></span></div></div>
+
+      <section id="posters" style="scroll-margin-top:80px;max-width:1360px;margin:0 auto;padding:clamp(44px,6vw,88px) clamp(18px,4vw,54px) clamp(20px,3vw,34px)">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid #e3e3e3;padding-bottom:clamp(16px,2vw,26px)">
+          <div data-reveal="left">
+            <div style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:#6d6a62;margin-bottom:16px">The cover gallery</div>
+            <h2 style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(40px,7vw,92px);line-height:.9;letter-spacing:-.015em;margin:0">Posters</h2>
+          </div>
+          <p style="max-width:34ch;font-size:16px;line-height:1.6;color:#3a352f;margin:0">Every cover of the issue, printed as a poster. Choose one to read the story behind it.</p>
+        </div>
+      </section>
+      <section style="max-width:1360px;margin:0 auto;padding:clamp(26px,4vw,44px) clamp(18px,4vw,54px) clamp(30px,4vw,52px)">
+        <div class="iggrid">
+          <sc-for list="{{ posters }}" as="p" hint-placeholder-count="8">
+            <a class="gcard" onClick="{{ p.open }}">
+              <div style="{{ p.frameStyle }}"><img class="media" src="{{ p.cover }}" alt="{{ p.name }}" style="width:100%;height:100%;object-fit:cover;object-position:center top"></div>
+              <div class="gover">
+                <div>
+                  <span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#1c1a17;background:rgba(255,255,255,.9);border-radius:2px;padding:4px 8px">{{ p.cat }}</span>
+                  <div style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.08;color:#fff;margin-top:10px">{{ p.title }}</div>
+                </div>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+      <sc-for list="{{ catSections }}" as="s" hint-placeholder-count="4">
+        <section id="{{ s.anchor }}" style="scroll-margin-top:80px;max-width:1280px;margin:0 auto;padding:clamp(30px,4vw,52px) clamp(18px,4vw,54px)">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:clamp(20px,2.6vw,32px);border-bottom:1px solid #e3e3e3;padding-bottom:clamp(14px,1.8vw,20px)">
+            <div data-reveal="left" style="display:flex;align-items:baseline;gap:16px">
+              <h2 style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(30px,4vw,54px);line-height:1;margin:0">{{ s.name }}</h2>
+              <span style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;letter-spacing:.14em;color:#9a9a97">{{ s.count }}</span>
+            </div>
+            <a class="viewall" onClick="{{ s.viewAll }}" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Hanken Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#6d6a62">View all <span class="arr">→</span></a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(258px,100%),1fr));gap:clamp(20px,2.2vw,34px)">
+            <sc-for list="{{ s.cards }}" as="c" hint-placeholder-count="3">
+              <a data-reveal="scale" class="card" onClick="{{ c.open }}" style="cursor:pointer;display:block">
+                <div style="position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:#ececec"><img class="media" src="{{ c.cover }}" alt="{{ c.name }}" style="width:100%;height:100%;object-fit:cover;object-position:center top"></div>
+                <div style="display:flex;align-items:center;gap:10px;margin:15px 0 9px">
+                  <sc-if value="{{ c.latest }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#f5f5f5;background:#1c1a17;border-radius:2px;padding:4px 8px">Latest</span></sc-if>
+                  <span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4a463f;background:#eeeeee;border-radius:2px;padding:4px 8px">{{ c.cat }}</span>
+                  <span class="revealline" style="width:22px;height:1px;background:{{ accent }}"></span>
+                </div>
+                <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(22px,2.3vw,28px);line-height:1.06;margin:0 0 8px;color:#1c1a17">{{ c.title }}</h3>
+                <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:{{ accent }};margin:0 0 8px">{{ c.name }} — {{ c.role }}</p>
+                <p style="font-size:14px;line-height:1.55;color:#6d6a62;margin:0;text-wrap:pretty">{{ c.deck }}</p>
+              </a>
+            </sc-for>
+          </div>
+        </section>
+      </sc-for>
+
+      <section id="about" style="scroll-margin-top:80px;max-width:1000px;margin:0 auto;padding:clamp(48px,8vw,110px) clamp(18px,4vw,40px) clamp(20px,3vw,34px);text-align:center">
+        <div data-reveal="" style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:#6d6a62;margin-bottom:26px">About the publication</div>
+        <h2 data-reveal="" data-reveal-delay="80" style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(34px,5.2vw,70px);line-height:1.12;letter-spacing:-.01em;margin:0;text-wrap:balance">A magazine for what is <em style="font-weight:500">seen</em>, and what deserves to be <em style="font-weight:500">understood</em>.</h2>
+      </section>
+      <section style="max-width:680px;margin:0 auto;padding:clamp(18px,3vw,38px) clamp(18px,4vw,40px) clamp(40px,5vw,60px)">
+        <sc-for list="{{ aboutBody }}" as="p" hint-placeholder-count="3">
+          <p data-reveal="" style="font-size:clamp(17px,1.5vw,20px);line-height:1.72;color:#231f1b;margin:0 0 26px">{{ p }}</p>
+        </sc-for>
+      </section>
+      <section style="background:#1c1a17;color:#f5f5f5;padding:clamp(46px,6vw,84px) clamp(18px,4vw,54px)">
+        <div style="max-width:1280px;margin:0 auto">
+          <div style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:{{ accent }};margin-bottom:32px">What we stand for</div>
+          <div class="valuegrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,40px)">
+            <sc-for list="{{ values }}" as="v" hint-placeholder-count="4">
+              <div data-reveal="" style="border-top:1px solid rgba(245,245,245,.28);padding-top:20px">
+                <div style="font-family:'Playfair Display',serif;font-size:34px;color:{{ accent }};line-height:1;margin-bottom:14px">{{ v.no }}</div>
+                <div style="font-family:'Playfair Display',serif;font-weight:600;font-size:24px;margin-bottom:10px">{{ v.title }}</div>
+                <p style="font-size:15px;line-height:1.6;color:rgba(245,245,245,.72);margin:0">{{ v.text }}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <section class="darkband" onClick="{{ coverBand.open }}" style="cursor:pointer;position:relative;padding:clamp(50px,8vw,110px) clamp(18px,4vw,54px);background:#1c1a17;color:#f5f5f5;overflow:hidden;margin-top:clamp(20px,3vw,36px)">
+        <div data-parallax="0.12" data-parallax-base="translateY(-50%)" style="position:absolute;right:-3%;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:clamp(180px,32vw,440px);line-height:.7;color:rgba(245,245,245,.055);font-weight:900;pointer-events:none">13</div>
+        <div style="position:relative;max-width:1280px;margin:0 auto">
+          <div data-reveal="" style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:{{ accent }};margin-bottom:20px">{{ coverBand.kicker }} · {{ coverBand.cat }}</div>
+          <h2 data-reveal="" data-reveal-delay="90" style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(38px,6vw,88px);line-height:1;letter-spacing:-.01em;margin:0;max-width:16ch">{{ coverBand.title }}</h2>
+          <p data-reveal="" data-reveal-delay="160" style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(18px,2vw,24px);line-height:1.4;color:rgba(245,245,245,.66);margin:22px 0 0;max-width:44ch">{{ coverBand.deck }}</p>
+          <div data-reveal="" data-reveal-delay="230" class="bandbtn viewall" style="display:inline-flex;align-items:center;gap:12px;margin-top:32px;border:none;color:#f5f5f5;font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;padding:13px 22px;border-radius:2px">Read the feature <span class="arr">→</span></div>
+        </div>
+      </section>
+
+      <section style="max-width:760px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,40px);text-align:center">
+        <div style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:{{ accent }};margin-bottom:20px">The newsletter</div>
+        <div style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(30px,4.4vw,50px);line-height:1.1;margin-bottom:20px;text-wrap:balance">Join the thread.</div>
+        <p style="font-size:16px;line-height:1.6;color:#3a352f;max-width:46ch;margin:0 auto 30px">A letter from the editors, new portraits and one long read — to your inbox, once a month.</p>
+        <form onSubmit="{{ onSubscribe }}" style="display:flex;gap:10px;max-width:460px;margin:0 auto;flex-wrap:wrap;justify-content:center">
+          <input value="{{ email }}" onInput="{{ onEmail }}" placeholder="your@email.com" style="flex:1;min-width:210px;background:transparent;border:none;border-bottom:1px solid #1c1a17;padding:12px 4px;font-family:'Newsreader',serif;font-size:16px;outline:none;color:#1c1a17">
+          <button class="pillbtn" type="submit" style="cursor:pointer;border:none;background:#1c1a17;color:#f5f5f5;font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:13px 26px;border-radius:2px">{{ subLabel }}</button>
+        </form>
+      </section>
+
+    </div>
+    </sc-if>
+
+    <!-- ===================== ARTICLE (READER) ===================== -->
+    <sc-if value="{{ isArticle }}" hint-placeholder-val="{{ true }}">
+    <div class="pg" data-screen-label="Article" style="position:relative">
+      <section style="max-width:1280px;margin:0 auto;padding:clamp(20px,3vw,36px) clamp(18px,4vw,54px) 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid #e3e3e3;padding-bottom:clamp(14px,1.8vw,20px)">
+          <a class="navlink" onClick="{{ gotoArticles }}" style="cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6d6a62">← All articles</a>
+          <div style="font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:{{ story.accent }}">{{ story.cat }} · The Human Thread</div>
+        </div>
+      </section>
+
+      <section style="max-width:1280px;margin:0 auto;padding:clamp(26px,4vw,50px) clamp(18px,4vw,54px) clamp(40px,6vw,80px)">
+        <div class="readerwrap" style="display:grid;grid-template-columns:1fr 320px;gap:clamp(34px,5vw,72px);align-items:start">
+          <article>
+            <h1 data-reveal="" style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(34px,4.4vw,58px);line-height:1.02;letter-spacing:-.01em;margin:0 0 clamp(22px,3vw,34px);text-wrap:balance">{{ story.title }}</h1>
+            <div data-reveal="scale" style="position:relative;overflow:hidden;background:#ececec"><img src="{{ story.cover }}" alt="{{ story.name }}" style="display:block;width:100%;height:auto"></div>
+            <p data-reveal="" style="font-family:'Newsreader',serif;font-style:italic;font-size:13.5px;line-height:1.5;color:{{ story.accent }};margin:14px 0 clamp(22px,3vw,32px);max-width:60ch">{{ story.deck }}</p>
+
+            <div style="margin-top:clamp(26px,4vw,44px)">
+              <sc-for list="{{ readerSections }}" as="sec" hint-placeholder-count="4">
+                <section data-reveal="rise" style="padding:clamp(14px,2.4vw,26px) 0">
+                  <h3 style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:clamp(11px,1vw,13px);letter-spacing:.18em;text-transform:uppercase;color:#1c1a17;margin:0 0 16px;padding-top:clamp(14px,2vw,20px);border-top:2px solid {{ story.accent }};display:inline-block">{{ sec.h }}</h3>
+                  <sc-for list="{{ sec.paras }}" as="para" hint-placeholder-count="2">
+                    <p class="artpara" style="font-size:clamp(17px,1.4vw,19.5px);line-height:1.76;color:#231f1b;margin:0 0 22px;text-wrap:pretty">{{ para }}</p>
+                  </sc-for>
+                  <sc-if value="{{ sec.hasImg }}" hint-placeholder-val="{{ false }}">
+                    <figure style="margin:clamp(20px,3vw,34px) 0"><div style="overflow:hidden;border-radius:2px;background:#ececec"><img src="{{ sec.img }}" alt="{{ story.name }}" style="display:block;width:100%;height:auto"></div></figure>
+                  </sc-if>
+                  <sc-if value="{{ sec.hasPull }}" hint-placeholder-val="{{ false }}">
+                    <blockquote style="margin:clamp(20px,3vw,34px) 0 6px;padding:0 0 0 26px;border-left:2px solid {{ story.accent }}"><span style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(24px,3vw,38px);line-height:1.16;color:#1c1a17">{{ sec.pull }}</span></blockquote>
+                  </sc-if>
+                </section>
+              </sc-for>
+            </div>
+
+            <div data-reveal="" style="margin-top:clamp(12px,2vw,22px);padding-top:22px;border-top:1px solid #e3e3e3;font-family:'Hanken Grotesk',sans-serif;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#9a9a97">End of feature · The Human Thread — AE</div>
+
+            <div style="margin-top:clamp(34px,5vw,60px)">
+              <div style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#6d6a62;margin-bottom:4px">More from the issue</div>
+              <sc-for list="{{ related }}" as="t" hint-placeholder-count="3">
+                <a class="rellink" onClick="{{ t.open }}" style="display:flex;align-items:center;gap:clamp(16px,3vw,28px);padding:clamp(18px,2.6vw,26px) 0;border-top:1px solid #e3e3e3;cursor:pointer">
+                  <div style="flex:none;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(20px,2.4vw,30px);color:{{ accent }};min-width:2.2ch;line-height:1">{{ t.no }}</div>
+                  <div style="flex:1;min-width:0"><div style="font-family:'Hanken Grotesk',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#9a9a97;margin-bottom:5px">{{ t.cat }}</div><div style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(20px,2.4vw,29px);line-height:1.1;color:#1c1a17">{{ t.title }}</div></div>
+                  <div class="relarrow" style="flex:none;font-family:'Hanken Grotesk',sans-serif;font-size:16px;color:#1c1a17">→</div>
+                </a>
+              </sc-for>
+            </div>
+          </article>
+
+          <aside class="sidesticky" style="position:sticky;top:132px">
+            <sc-if value="{{ showFollow }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-bottom:30px">
+              <h4 style="font-family:'Playfair Display',serif;font-weight:500;font-size:24px;margin:0 0 14px;color:#1c1a17">Follow Us</h4>
+              <a onClick="{{ doSearch }}" style="cursor:pointer;display:flex;align-items:center;justify-content:center;height:62px;border:none;background:#f4f4f3;border-radius:2px;color:#4a463f"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></a>
+            </div>
+            </sc-if>
+            <h4 style="font-family:'Playfair Display',serif;font-weight:500;font-size:24px;margin:0 0 16px;color:#1c1a17">The Latest</h4>
+            <sc-for list="{{ sidebarLatest }}" as="l" hint-placeholder-count="4">
+              <a class="latestrow" onClick="{{ l.open }}" style="display:flex;gap:14px;align-items:flex-start;padding:12px;border:none;border-radius:2px;cursor:pointer;margin-bottom:12px">
+                <div class="thumb" style="flex:none;width:72px;height:72px;overflow:hidden;border-radius:2px;background:#ececec"><img class="media" src="{{ l.cover }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top"></div>
+                <div style="min-width:0">
+                  <span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4a463f;background:#eeeeee;border-radius:2px;padding:4px 8px">{{ l.cat }}</span>
+                  <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:19px;line-height:1.14;margin:8px 0 3px;color:#1c1a17">{{ l.title }}</h3>
+                  <p style="font-family:'Newsreader',serif;font-size:12.5px;line-height:1.4;color:#6d6a62;margin:0">{{ l.desc }}</p>
+                </div>
+              </a>
+            </sc-for>
+          </aside>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ===================== ARTICLES (CATALOGUE) ===================== -->
+    <sc-if value="{{ isArticles }}" hint-placeholder-val="{{ true }}">
+    <div class="pg" data-screen-label="Articles">
+      <section style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,86px) clamp(18px,4vw,54px) clamp(20px,3vw,34px)">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+          <div>
+            <div style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:#6d6a62;margin-bottom:16px">The catalogue</div>
+            <h1 style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(48px,9vw,120px);line-height:.9;letter-spacing:-.015em;margin:0">Articles</h1>
+          </div>
+          <p style="max-width:34ch;font-size:16px;line-height:1.6;color:#3a352f;margin:0">Every story in the issue — portraits, essays and conversations. Choose a thread to follow.</p>
+        </div>
+      </section>
+      <section style="max-width:1280px;margin:0 auto;padding:0 clamp(18px,4vw,54px) clamp(18px,2.4vw,28px)">
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;border-top:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;padding:16px 0">
+          <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="7">
+            <button class="chip" onClick="{{ ch.pick }}" style="{{ ch.style }}">{{ ch.label }}</button>
+          </sc-for>
+          <span style="margin-left:auto;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#6d6a62">{{ countLabel }}</span>
+        </div>
+      </section>
+      <section style="max-width:1280px;margin:0 auto;padding:clamp(24px,3vw,40px) clamp(18px,4vw,54px) clamp(52px,7vw,96px)">
+        <div ref="{{ gridRef }}" data-stagger="70" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:clamp(22px,2.4vw,38px)">
+          <sc-for list="{{ articleCards }}" as="c" hint-placeholder-count="6">
+            <a data-reveal="scale" class="card" onClick="{{ c.open }}" style="cursor:pointer;display:block">
+              <div style="position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:#ececec"><img class="media" src="{{ c.cover }}" alt="{{ c.name }}" style="width:100%;height:100%;object-fit:cover;object-position:center top"></div>
+              <div style="display:flex;align-items:center;gap:10px;margin:16px 0 9px">
+                <sc-if value="{{ c.latest }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#f5f5f5;background:#1c1a17;border-radius:2px;padding:4px 8px">Latest</span></sc-if>
+                <span style="display:inline-block;font-family:'Hanken Grotesk',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4a463f;background:#eeeeee;border-radius:2px;padding:4px 8px">{{ c.cat }}</span>
+                <span class="revealline" style="width:22px;height:1px;background:{{ accent }}"></span>
+              </div>
+              <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.4vw,30px);line-height:1.05;margin:0 0 8px;color:#1c1a17">{{ c.title }}</h3>
+              <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:{{ accent }};margin:0 0 8px">{{ c.name }} — {{ c.role }}</p>
+              <p style="font-size:14px;line-height:1.55;color:#6d6a62;margin:0;text-wrap:pretty">{{ c.deck }}</p>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ABOUT + POSTERS now live as sections inside HOME -->
+
+    <!-- ===================== INQUIRE ===================== -->
+    <sc-if value="{{ isInquire }}" hint-placeholder-val="{{ false }}">
+    <div class="pg" data-screen-label="Inquire">
+      <section style="max-width:820px;margin:0 auto;padding:clamp(40px,6vw,86px) clamp(18px,4vw,54px) clamp(20px,3vw,34px)">
+        <a class="navlink" onClick="{{ gotoHome }}" style="cursor:pointer;font-family:'Hanken Grotesk',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6d6a62">← Back to the issue</a>
+        <div style="font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:{{ accent }};margin:clamp(26px,3.4vw,40px) 0 16px">Submit to the issue</div>
+        <h1 style="font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(48px,8vw,104px);line-height:.9;letter-spacing:-.015em;margin:0">Inquire</h1>
+        <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(19px,2.2vw,27px);line-height:1.4;color:#3a352f;margin:22px 0 0;max-width:46ch">Share your story with The Human Thread — send us your magazine images, a draft of your article, and where we can reach you.</p>
+      </section>
+
+      <section style="max-width:820px;margin:0 auto;padding:clamp(20px,3vw,36px) clamp(18px,4vw,54px) clamp(56px,8vw,110px)">
+        <sc-if value="{{ inqSent }}" hint-placeholder-val="{{ false }}">
+          <div style="border-top:1px solid #e3e3e3;padding:clamp(40px,6vw,72px) 0;text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(30px,4vw,52px);line-height:1.16;color:#1c1a17;margin-bottom:18px;text-wrap:balance">Thank you — your thread is with us.</div>
+            <p style="font-size:16px;line-height:1.6;color:#3a352f;max-width:46ch;margin:0 auto 30px">Our editors read every submission by hand. If your story is a fit for the issue, we will be in touch by email.</p>
+            <button class="pillbtn" onClick="{{ gotoHome }}" style="cursor:pointer;border:none;background:#1c1a17;color:#f5f5f5;font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:14px 30px;border-radius:2px">Back to the issue</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ inqOpen }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submitInquire }}" style="border-top:1px solid #e3e3e3;padding-top:clamp(30px,4vw,48px)">
+          <div style="display:flex;flex-direction:column;gap:clamp(26px,3.4vw,40px)">
+            <div data-reveal="">
+              <label style="display:block;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#4a463f;margin-bottom:14px">Magazine images</label>
+              <label class="drop" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;border:none;background:#f4f4f3;border-radius:2px;padding:clamp(34px,5vw,60px);color:#6d6a62">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.6"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+                <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:21px;color:#1c1a17">{{ inqFilesLabel }}</span>
+                <span style="font-family:'Hanken Grotesk',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a97">JPG · PNG · up to 20MB each</span>
+                <input type="file" accept="image/*" multiple="" onChange="{{ onInqFiles }}" style="display:none">
+              </label>
+            </div>
+
+            <div data-reveal="">
+              <label style="display:block;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#4a463f;margin-bottom:12px">Article content</label>
+              <textarea value="{{ inqContent }}" onInput="{{ onInqContent }}" placeholder="Tell us the story — a draft, an outline, or the idea you want to explore…" rows="7" class="inqfield" style="resize:vertical;line-height:1.66;border:none;border-bottom:1px solid #d6d6d6;padding:14px 2px"></textarea>
+            </div>
+
+            <div data-reveal="" class="formrow" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3vw,36px)">
+              <div>
+                <label style="display:block;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#4a463f;margin-bottom:12px">Your name</label>
+                <input value="{{ inqName }}" onInput="{{ onInqName }}" placeholder="Full name" class="inqfield">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#4a463f;margin-bottom:12px">Email</label>
+                <input value="{{ inqEmail }}" onInput="{{ onInqEmail }}" placeholder="your@email.com" type="email" class="inqfield">
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(30px,4vw,46px);border-top:1px solid #e3e3e3;padding-top:clamp(22px,2.8vw,32px)">
+            <span style="font-family:'Hanken Grotesk',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a97">The Human Thread · Editorial submissions</span>
+            <button class="pillbtn" type="submit" style="cursor:pointer;border:none;background:#1c1a17;color:#f5f5f5;font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:15px 36px;border-radius:2px">Send inquiry</button>
+          </div>
+        </form>
+        </sc-if>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- POSTERS now lives as a section inside HOME -->
+
+  </main>
+
+  <footer style="border-top:1px solid #e3e3e3;padding:clamp(34px,4vw,54px) clamp(18px,4vw,54px)">
+    <div style="max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(22px,2.4vw,30px);letter-spacing:.005em;color:#1c1a17">THE HUMAN THREAD</div>
+        <div style="font-family:'Hanken Grotesk',sans-serif;font-size:9px;font-weight:600;letter-spacing:.4em;color:#6d6a62;margin-top:6px">MAGAZINE · AE</div>
+      </div>
+      <div style="display:flex;gap:24px;align-items:center;font-family:'Hanken Grotesk',sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#6d6a62">
+        <a class="navlink" onClick="{{ gotoHome }}" style="cursor:pointer">Home</a>
+        <a class="navlink" onClick="{{ gotoArticles }}" style="cursor:pointer">Articles</a>
+        <a class="navlink" onClick="{{ gotoAbout }}" style="cursor:pointer">About Us</a>
+        <span>© 2026 The Human Thread</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1300,&quot;height&quot;:900},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#1c1a17&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#9a6b3f&quot;,&quot;#8f4b58&quot;,&quot;#5c6b57&quot;,&quot;#1c1a17&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;featuredStory&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Caroline Labouchere&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;Caroline Labouchere&quot;,&quot;Dr. Afnan&quot;,&quot;Safa Tayebi&quot;,&quot;Nathalya Rai&quot;,&quot;Ruben&quot;,&quot;BTS&quot;,&quot;Vikki Feltham&quot;,&quot;Noj Barker&quot;,&quot;Hala Kazim&quot;,&quot;Nadine Njeim&quot;],&quot;section&quot;:&quot;Home&quot;},&quot;showFollow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Home&quot;}}">
+class Component extends DCLogic {
+  state = { page: 'home', filter: 'All', story: 0, email: '', subbed: false, inquire: false, inqName: '', inqEmail: '', inqContent: '', inqFiles: 0, inqSent: false, viewer: -1, slide: 0, car: 0, navOpen: false };
+
+  openNav(){ this.setState({ navOpen:true }); }
+  closeNav(){ this.setState({ navOpen:false }); }
+
+  carSlides(){
+    return [
+      { src:'uploads/carousel/1.jpg', label:'The Opening' },
+      { src:'uploads/carousel/2.jpg', label:'A Quiet Kind of Becoming' },
+      { src:'uploads/carousel/3.jpg', label:'The Power of Modesty' },
+      { src:'uploads/carousel/4.jpg', label:'Behind the Image' },
+      { src:'uploads/carousel/5.jpg', label:'Beauty From Within' }
+    ];
+  }
+  carSet(i){ const n=this.carSlides().length; this.setState({ car:((i%n)+n)%n }); }
+  carStep(d){ this.carSet(this.state.car + d); }
+
+  openViewer(i){ this.setState({ viewer:i, slide:0 }); }
+  closeViewer(){ this.setState({ viewer:-1 }); }
+  viewerStep(d){ const c=(this._posterCounts&&this._posterCounts[this.state.viewer])||1; this.setState(s=>({ slide:((s.slide+d)%c+c)%c })); }
+
+  constructor(p){
+    super(p);
+    this.pageRef = React.createRef();
+    this.gridRef = React.createRef();
+    this.barRef = React.createRef();
+    this.headerRef = React.createRef();
+    this._seen = new WeakSet();
+  }
+
+  componentDidMount(){
+    if('IntersectionObserver' in window){
+      this._io = new IntersectionObserver((entries)=>{
+        entries.forEach(en=>{ if(en.isIntersecting){ this._activate(en.target); this._io.unobserve(en.target); } });
+      }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+    }
+    this.scanReveals();
+    this._mo = new MutationObserver(()=>{ clearTimeout(this._scanT); this._scanT=setTimeout(()=>{ this.scanReveals(); }, 30); });
+    if(this.pageRef.current) this._mo.observe(this.pageRef.current, { childList:true, subtree:true });
+    this._onScroll = ()=>{ if(!this._raf) this._raf=requestAnimationFrame(()=>{ this.applyParallax(); this.updateScrollUI(); this._raf=0; }); };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+    window.addEventListener('resize', this._onScroll, { passive:true });
+    this._revTimer = setInterval(()=>this.updateScrollUI(), 120);
+    this.applyParallax();
+    this.updateScrollUI();
+    this.syncAccent();
+    this._carTimer = setInterval(()=>{ if(!this._carPaused && this.state.page==='home') this.carStep(1); }, 5200);
+  }
+
+  componentDidUpdate(){
+    requestAnimationFrame(()=>{ this.scanReveals(); this.updateScrollUI(); this.syncAccent(); });
+  }
+
+  componentWillUnmount(){
+    if(this._io) this._io.disconnect();
+    if(this._mo) this._mo.disconnect();
+    if(this._revTimer) clearInterval(this._revTimer);
+    if(this._carTimer) clearInterval(this._carTimer);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onScroll);
+  }
+
+  syncAccent(){ try{ document.documentElement.style.setProperty('--accent', this.accent); }catch(e){} }
+  _activate(el){ el.classList.add('in'); if(el.hasAttribute('data-countup')) this.countUp(el); }
+
+  revealVisible(){
+    const els = document.querySelectorAll('[data-reveal]:not(.in), [data-countup]:not(.in)');
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    els.forEach(el=>{ const r = el.getBoundingClientRect(); if(r.top < vh*0.9 && r.bottom > 0) this._activate(el); });
+  }
+
+  updateScrollUI(){
+    this.revealVisible();
+    const doc=document.documentElement;
+    const max=(doc.scrollHeight - window.innerHeight)||1;
+    const p=Math.max(0,Math.min(1,(window.scrollY||doc.scrollTop||0)/max));
+    const bar=(this.barRef&&this.barRef.current)||document.querySelector('.scrollbar');
+    if(bar) bar.style.width=(p*100).toFixed(2)+'%';
+    const h=(this.headerRef&&this.headerRef.current)||document.querySelector('header');
+    if(h){ if((window.scrollY||0)>14) h.classList.add('scrolled'); else h.classList.remove('scrolled'); }
+  }
+
+  countUp(el){
+    if(el._cu) return; el._cu=true;
+    const target=(el.textContent||'').trim();
+    const m=target.match(/^(\D*)(\d[\d,]*)(.*)$/);
+    if(!m){ return; }
+    const pre=m[1]; const suf=m[3]; const raw=m[2].replace(/,/g,'');
+    const end=parseInt(raw,10); if(isNaN(end)){ return; }
+    const width=m[2].length; const padZero=(m[2][0]==='0');
+    const fmt=(v)=>{ let s=String(v); if(padZero) s=s.padStart(width,'0'); return pre+s+suf; };
+    const dur=1300; const t0=performance.now(); const ease=(x)=>1-Math.pow(1-x,3);
+    el.textContent=fmt(0);
+    const step=(t)=>{ const p=Math.min(1,(t-t0)/dur); el.textContent=fmt(Math.round(ease(p)*end)); if(p<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+
+  scanReveals(){
+    const root = this.pageRef.current; if(!root) return;
+    root.querySelectorAll('[data-reveal],[data-countup]').forEach(el=>{
+      if(this._seen.has(el)) return;
+      this._seen.add(el);
+      const d = el.getAttribute('data-reveal-delay');
+      if(d){ el.style.transitionDelay = d+'ms'; }
+      else { const par=el.parentElement; if(par && par.hasAttribute('data-stagger')){ const i=Array.prototype.indexOf.call(par.children, el); const step=parseInt(par.getAttribute('data-stagger'),10)||70; el.style.transitionDelay=(i*step)+'ms'; } }
+      if(this._io){
+        const r = el.getBoundingClientRect();
+        if(r.top < window.innerHeight*0.92) this._activate(el);
+        else this._io.observe(el);
+      } else { this._activate(el); }
+    });
+    this._parallaxEls = root.querySelectorAll('[data-parallax]');
+  }
+
+  applyParallax(){
+    const els = this._parallaxEls; if(!els) return;
+    const vh = window.innerHeight;
+    els.forEach(el=>{
+      const speed = parseFloat(el.getAttribute('data-parallax')) || 0.15;
+      const base = el.getAttribute('data-parallax-base') || '';
+      const r = el.getBoundingClientRect();
+      const offset = (r.top + r.height/2 - vh/2);
+      el.style.transform = (base ? base+' ' : '') + 'translateY(' + (-offset*speed).toFixed(1) + 'px)';
+    });
+  }
+
+  scrollTop(){
+    const el = this.pageRef.current;
+    if(el){ el.style.animation='none'; void el.offsetWidth; el.style.animation=''; }
+    try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ window.scrollTo(0,0); }
+  }
+
+  restaggerGrid(){
+    const g = this.gridRef.current;
+    if(g) Array.from(g.children).forEach(c=>{ this._seen.delete(c); c.classList.remove('in'); });
+    setTimeout(()=>{ this.scanReveals(); this.revealVisible(); }, 20);
+  }
+
+  go(page, opts){
+    opts = opts || {};
+    this.setState(s=>({ page, story: opts.story!=null?opts.story:s.story, filter: opts.filter!=null?opts.filter:s.filter }));
+    setTimeout(()=>this.scrollTop(), 0);
+    [60,180,400,800].forEach(ms=>setTimeout(()=>{ this.scanReveals(); this.revealVisible(); }, ms));
+  }
+
+  scrollToSection(id){
+    this.setState({ navOpen:false });
+    const targetY=()=>{ if(id==='top') return 0; const el=document.getElementById(id); if(!el) return null; return Math.max(0, el.getBoundingClientRect().top+window.pageYOffset-64); };
+    let last=null, stable=0, tries=0;
+    const tick=()=>{
+      this.revealVisible();
+      const y=targetY();
+      if(y==null){ if(tries++<30) setTimeout(tick,80); return; }
+      window.scrollTo({top:y,behavior:'smooth'});
+      if(last!==null && Math.abs(y-last)<4) stable++; else stable=0;
+      last=y; tries++;
+      if(stable<3 && tries<44) setTimeout(tick,90);
+    };
+    const start=()=>{ this.scanReveals(); tick(); };
+    if(this.state.page!=='home'){ this.setState({ page:'home' }); setTimeout(start,80); }
+    else { start(); }
+  }
+
+  get accent(){ return this.props.accentColor || '#9a6b3f'; }
+
+  articles(){
+    const base='uploads/MagazineArticles/';
+    const A=[
+      { folder:'MagazineArticle1', name:'Nathalya Rai', role:'Founder, Rootélia Beauty', category:'Human Stories',
+        title:'Beauty With Roots', deck:'A story of healing, resilience, and the brand born from returning to herself.',
+        read:'6 min read', accent:'#6f7a63',
+        sections:[
+          {h:'Beauty as Return', paras:["For Nathalya Rai, beauty was never about perfection. It became deeply personal during one of the most painful chapters of her life. When her mother lost her hair to chemotherapy, beauty changed meaning. It became care, softness, dignity, and love — a quiet way to hold someone through their most vulnerable moments.","Today, Nathalya sees beauty as something she returns to. It is rooted in her story, her pain, and her strength. For her, beauty is not appearance. It is presence, resilience, and truth."], pull:"Beauty is not something I chase — it is something I return to."},
+          {h:'The Birth of Rootélia', paras:["Rootélia Beauty was born from Nathalya's own healing journey. Through loss, rebuilding, motherhood, and resilience, she found purpose. She wanted to create something that reflected real women — not perfection, not pressure, not appearance alone, but restoration, softness, and the courage to rebuild."], pull:"Rootélia Beauty was born from restoration, not perfection."},
+          {h:'Hair, Identity & Confidence', paras:["For Nathalya, hair is memory and identity in visible form. Her confidence was rebuilt from within, not from appearance. Today, confidence means peace, truth, and standing in her story."], pull:"Confidence is not performance — it is peace."},
+          {h:'Motherhood & Meaning', paras:["Motherhood changed Nathalya's ambition completely. It became less about achievement and more about meaning. Her children teach her patience, strength, and emotional truth."], pull:"Motherhood made everything I build feel more intentional."},
+          {h:'Strength in Silence', paras:["Behind Nathalya's strength are quiet battles and silent transformations. Business taught her that strength is not loud — it is consistent. Through Rootélia, she hopes women feel safe, seen, and real within themselves."], pull:"Beauty begins when you feel safe, seen, and real within yourself."},
+          {h:'The Woman Behind Rootélia', paras:["Before Rootélia, Nathalya's story had already been shaped by many lives within one life. She began her studies in psychology, drawn to understanding people, emotions, and the hidden strength behind human experience. Then motherhood arrived with the birth of her first daughter, changing the rhythm of her ambition.","Her time in the army also became part of that foundation — a chapter of discipline, courage, and resilience. It taught her strength in a different form, one that would later meet the softness of motherhood, healing, and creation.","Today, all these chapters live quietly inside Rootélia Beauty. Her story is not only about beauty. It is about returning to yourself after life changes you, and still choosing to create with softness, intention, and truth."], pull:"Her story is not only about beauty. It is about returning to yourself after life changes you."}
+        ]},
+      { folder:'MagazineArticle2', name:'Ruben', role:'Painter', category:'Art',
+        title:'Against the Current', deck:'Ruben on art, water, and the courage to follow his own path.',
+        read:'7 min read', accent:'#b5646f',
+        sections:[
+          {h:'From the Outside, Everything Looked Stable', paras:["Ruben's story did not begin in a studio. It began with instinct, creativity, and a quiet feeling that the signs had always been there. As a teenager he dreamed of becoming a car designer. But growing up in Gran Canaria as the eldest of four siblings, studying abroad felt unrealistic. That path led him first to advertising, then to marketing — a Master's in London, a successful career in multinational companies. From the outside, everything looked stable. But deep down, another life was waiting."], pull:"From the outside, everything looked stable."},
+          {h:'The Shift', paras:["In 2017, at the age of 42, something shifted. After losing more than twenty kilograms and completing Ironman Lanzarote, Ruben felt a confidence he had never known. A few months later he realised that although his life looked successful, he was not fully happy. Then, by chance, he discovered the work of Portuguese artist Carla Sá Fernandes, and one thought stayed with him: if someone else can do it, perhaps I can too. That summer, he decided to become a painter."], pull:"Sometimes the life waiting for us begins the moment we stop following the one expected of us."},
+          {h:'No Roadmap, Only Instinct', paras:["There was no art school. No mentor. No artistic circle. No roadmap. When Ruben returned to Madrid, he simply began painting every day. Day after day, canvas after canvas, he began to understand his own language. Slowly, he discovered his voice — and that voice became the foundation of everything he does today.","For Ruben, the image was always clear: crystal-blue water and the feeling of floating peacefully above the seabed. Growing up in the Canary Islands, the sea was part of his memory, movement, and identity. Then he painted one swimmer moving in the opposite direction from everyone else. That swimmer became a symbol of authenticity — not rebellion, not ambition, simply the courage to follow your own path."]},
+          {h:'Something Shared', paras:["Above all, Ruben hopes people feel recognised when they see his work. His paintings are not created to tell people what to think — they are spaces where viewers can bring their own memories and emotions. The most meaningful moments come when collectors tell him a painting reminds them of a moment in their own lives. That is when the work becomes more than an image. It becomes something shared."]},
+          {h:'The Body in Water', paras:["Ruben is drawn to the simplicity of the human body in water. When we swim, there is very little between ourselves and nature. No status symbols. No distractions. No possessions. Just a body moving through a natural environment. The body represents the individual. Water represents life. And emotion is created through the relationship between the two."], pull:"The current will always exist. What matters is continuing to swim."},
+          {h:'His Message', paras:["Challenge yourself more often — not always with enormous goals, but with small ones. Small challenges build confidence. Confidence leads to bigger challenges. And slowly, we begin to do things that once felt impossible. Be honest with yourself. Keep moving. Do not let fear make decisions on your behalf."]}
+        ]},
+      { folder:'MagazineArticle3', name:'BTS', role:'Seven voices, one story', category:'Human Stories',
+        title:'13 Years of Connection', deck:'BTS and ARMY — a bond that crossed languages, borders, and generations.',
+        read:'4 min read', accent:'#b39152',
+        sections:[
+          {h:'BTS & ARMY', paras:["For thirteen years, BTS and ARMY have shared a story that extends far beyond music. What began in 2013 with seven young artists became a global community built on trust, loyalty, and belonging.","Through every album, every performance, every challenge, and every milestone, millions of people found comfort, inspiration, and connection in the journey of BTS. Their fans, known as ARMY, became more than supporters. They became part of the story.","Together they created one of the most remarkable relationships in modern culture — a bond that crossed languages, borders, and generations. Thirteen years later, the connection remains as strong as ever. Not because of records. Not because of awards. But because people felt seen."], pull:"And in a world searching for connection, that may be BTS's greatest achievement."}
+        ]},
+      { folder:'MagazineArticle4', name:'Vikki Feltham', role:'On being seen again', category:'Human Stories',
+        title:'The Woman Who Refused to Disappear', deck:'On cancer, motherhood, identity, and the courage to be seen again.',
+        read:'8 min read', accent:'#3f6b4f',
+        sections:[
+          {h:'The Beginning', paras:["She was 36, navigating motherhood, marriage, work, and the everyday movement of a life that kept asking her to continue. An unplanned pregnancy had led to a premature birth, followed by a difficult first year with her daughter. Then, when her daughter was just one year old, Vikki was diagnosed with a rare nasal cancer.","For years she had been experiencing nosebleeds. What began as something manageable slowly became impossible to ignore. \"I didn't really feel like I was being listened to,\" she recalls. She showed doctors photographs and described the pain, the swelling, and the fear of knowing her own body was changing while others could not see the urgency. Eventually, after years of appointments, a biopsy was finally taken."], pull:"She did not disappear. She became visible in a new way."},
+          {h:'The Moment Everything Changed', paras:["The diagnosis was squamous cell carcinoma inside her nose. The cancer had progressed into the cartilage of her septum and nasal bone. What followed was panic — fear for her life, fear for her daughter, fear for her family, and a quiet shame that so many women carry when illness enters the home.","The cancer had spread further than expected. Most of her nose would need to be removed. She describes that period as a suspended reality — a time when she became a patient number, a body moving through appointments, a person being treated but not always fully seen."], pull:"When treatment stopped, the real healing began."},
+          {h:'Beginning Again', paras:["Before cancer, Vikki had lived inside the identities many women are taught to carry. The smart girl. The capable one. The high achiever. The mother trying to do enough, be enough, look enough. After cancer, those identities no longer fit. At first, life became smaller, and quietly she slipped into depression.","Then came the turning point: her daughter. Vikki realised her daughter deserved a mother present in the world with her. So she began again — not dramatically, not all at once, but in small, brave steps. A short walk. A supermarket visit. A forest walk with her family. A running programme to rebuild her strength."]},
+          {h:'More Than One Version', paras:["People are more fluid than we allow ourselves to be. We place each other into boxes — the strong one, the organised one, the successful one. For Vikki, healing became about stepping outside those labels. She began to realise she was not only one version of herself.","Then came another moment of confirmation: she was headhunted for a senior leadership role and hired after one interview. Slowly, Vikki understood that her worth had not disappeared. Her face had changed, but her intelligence had not. Her confidence had been shaken, but her value had not."], pull:"Her face had changed, but her intelligence had not."},
+          {h:'Fully Seen', paras:["Vikki's story is not only a cancer story. It is a story of identity, of visible change, of motherhood, of being unheard — and then slowly finding the courage to become a woman with a voice again. It asks us to look again: at the woman behind the diagnosis, the mother behind the fear, the human being behind the visible difference.","Her story is a reminder that we are not fixed. We are allowed to change. We are allowed to begin again. And perhaps that is where the real power lives — not in returning to who we were before, but in discovering that we can still be whole after everything has changed."]}
+        ]},
+      { folder:'MagazineArticle5', name:'Noj Barker', role:'Artist', category:'Art',
+        title:'The Gravity of Colour', deck:'From movement to colour, from discipline to art, from one dot to a whole world.',
+        read:'8 min read', accent:'#b5445b',
+        sections:[
+          {h:'The Body Remembers', paras:["Before the canvas, there was movement. Noj Barker first learned beauty through the body. As a young dancer he understood rhythm, control, and repetition. Those early years never left him. They returned later through colour, gesture, and paint."], pull:"The body remembers before the canvas speaks."},
+          {h:'Ballet to Life', paras:["He trained as a classical ballet dancer and worked on stage, in theatre, and in dance. But life asked him to begin again. He moved from performance into business. Still, somewhere inside, the artist was waiting. The canvas had always haunted him."]},
+          {h:'The First Moment', paras:["In 2007, on a rainy family holiday, everything shifted. He sat with his children and began to paint. Broad strokes moved across the paper. A small holiday painting became a quiet awakening. He returned to London and had it framed."], pull:"Sometimes an artist begins in the smallest moment."},
+          {h:'The Dots', paras:["His lines became smaller. His movement became tighter. Then he discovered circular brushes, and the dot became his language. Painting became gravity, pressure, and rhythm. Dot by dot, the image begins to breathe. Each circle touches, cuts, or eclipses another. The surface becomes deeper, almost alive. Every mark carries purpose."], pull:"Painting became like gravity."},
+          {h:'Seen by Millions', paras:["Noj did not wait for permission. He printed his art onto clothes, posters, and objects. The work moved beyond the canvas — it became a world people could enter. Then social media opened a new door. One video changed everything: the world watched him paint, and the studio became visible."]},
+          {h:'Beyond the Art World', paras:["Noj has often felt outside the traditional art world. But instead of waiting to be accepted, he built his own path. His paintings entered restaurants, airports, and public spaces. He wanted the work seen by people, not only collectors. One day his postman knocked, having followed the work for years, and bought a painting. That moment changed Noj's understanding: art could belong to anyone who truly felt it."], pull:"Art should not belong to one type of person."},
+          {h:'Losing Fear', paras:["In his sixties, Noj feels awake and alive. He speaks about losing fear like shedding skin. The work has proven itself. People stop, stare, and connect. His art is not only made of dots. It is made of movement, family, discipline, and reinvention. The dancer gave him rhythm. The father gave him purpose. The artist gave him freedom. Dot by dot, he built a world."], pull:"Every dot, a life. Every painting, a world."}
+        ]},
+      { folder:'MagazineArticle6', name:'Hala Kazim', role:'Voice for self-development', category:'Human Stories',
+        title:'The Courage to Begin Again', deck:'On transformation, healing, and the lifelong journey of returning to oneself.',
+        read:'5 min read', accent:'#b39152',
+        sections:[
+          {h:'The Woman Who Chose to Begin Again', paras:["Some women build careers. Some build movements. And some quietly transform lives simply by choosing to live their truth. For decades, Hala Kazim has inspired people across the Arab world to embrace change — not as something to fear, but as something to welcome. Her journey has never been defined by titles or recognition. Instead, it has been shaped by courage — the courage to heal, to grow, and to continually reinvent herself."], pull:"The most important journey we take is not across the world — it is the journey back to ourselves."},
+          {h:'A Life in Motion', paras:["Long before personal growth became a global conversation, Hala Kazim understood a simple truth: healing begins with awareness. What started as a personal search for meaning evolved into a mission that would touch thousands of lives. Through coaching, writing, travel experiences, and honest conversations, she created spaces where people could reconnect with themselves beyond expectations, labels, and fear.","Her work is rooted in a belief that growth happens one step at a time. Not through perfection, but through presence. Today, her influence extends far beyond wellness — she has become a voice for resilience, authenticity, and human connection."], pull:"The journey is never about becoming more. It is about remembering who you have always been."}
+        ]},
+      { folder:'MagazineArticle7', name:'Nadine Njeim', role:'Actor & founder', category:'Human Stories',
+        title:'From Nadine, To The Fans', deck:'A warm message, a final episode, and a beautiful surprise to come.',
+        read:'3 min read', accent:'#8f4b58',
+        sections:[
+          {h:'From Nadine, To The Fans', paras:["Through a warm video message, Nadine Nassib Njeim spoke directly to the fans who have stood beside her for years. As Momken reaches its final episode, Nadine did not only speak about the end of a series. She spoke about a journey shared with her audience — a bond built through love, excitement, success, sadness, and unforgettable moments.","For more than fifteen years, her fans have been part of her story. They celebrated her victories, supported her through difficult chapters, and remained present through every season of her life and career. In her message, Nadine chose to thank them in a way that feels personal — not with many words, but with the promise of something beautiful coming soon."], pull:"A chapter may be closing with Momken, but between Nadine and her fans, the story continues."}
+        ]},
+      { folder:'MagazineArticle8', name:'Caroline Labouchere', role:'Model & author', category:'Human Stories',
+        title:'Grey Was Never The End', deck:'On visibility, ageing, motherhood, and becoming the woman she was always meant to be.',
+        read:'9 min read', accent:'#c26a8f',
+        sections:[
+          {h:'I Decided I Did Not Want To Be Invisible', paras:["Caroline Labouchere remembers the feeling clearly. She felt pushed around, ignored, and expected to accept a smaller version of herself. But something inside her was not ready to give in. Then came an invitation to London — a job, a hotel she had once only seen from the outside. A moment that felt like a door opening. She went. And in that moment, she began to believe again."], pull:"I decided I did not want to be invisible."},
+          {h:'Vogue Was The Beginning', paras:["That London opportunity became the beginning of something Caroline had never expected. The campaign culminated in eight full-page advertisements in British Vogue in one year. For Caroline, it was more than a career moment — it was a moment of visibility. A reminder that life can still surprise you, even in the years the world tells women to become quiet."], pull:"Can you imagine just being contacted and told that — at 54?"},
+          {h:'Not Just The Mother', paras:["Caroline speaks about motherhood with deep love. Her children are everything to her; both were born through IVF, children she worked hard to have and would do anything for. But love, she believes, should not require disappearance. A mother is still a woman. A woman is still a human being. And her identity deserves space too."], pull:"I deserve a birthday cake too. I'm not just the purchaser of everybody's birthday cake."},
+          {h:'The Woman She Was Always Meant To Be', paras:["For Caroline, this chapter was not about becoming someone new. It was about becoming the person she was always supposed to be, but never had the opportunity to be. Age did not close the door. It gave her a new room to walk into. A new kind of freedom. A new way to stand in her own life."], pull:"Age doesn't make any difference. It's a state of mind."},
+          {h:'The Freedom After Being Needed', paras:["As children grow and begin their own lives, many women find themselves standing in a new kind of space. Some may choose quiet. Some may choose rest. Some may choose to begin again. For Caroline, this stage became freedom — a reminder that motherhood can be a beautiful part of a woman's identity, without becoming the whole of her existence."]},
+          {h:'There Are Still Firsts To Come', paras:["Caroline believes later life can hold some of the most exciting firsts. Your first Dior handbag in your fifties. Your first Louboutin shoes. A full page in British Vogue. A Ferrari for three days. A memory that makes you laugh because you never expected it to belong to you. These firsts matter because they arrive after waiting, after lessons, after life has shaped you enough to understand their meaning."]},
+          {h:'Ageing Is Not Disappearing', paras:["For Caroline, ageing is about how you choose to carry yourself. It is about getting up. Walking tall. Keeping your shoulders back. Owning the room. Trying new things. Surrounding yourself with good people. And knowing there is still more to come. Ageing is not about giving in. It is about standing taller.","Ageing well is not only about beauty. It is about movement, health, mobility, strength, and independence — understanding that putting yourself first is not selfish. It is necessary. Because a woman cannot keep giving from a place where she has forgotten herself."], pull:"She never disappeared. She became impossible to ignore."},
+          {h:'The Final Thread', paras:["Life, Caroline says, is a rollercoaster. There will be downs. There will be mistakes. There will be moments that test you. But the downs teach you. The mistakes shape you. And the ups will come — you have to believe that, and you have to stay excited for them. Through her ebook, Aging Without Apology, Caroline extends her message beyond the page, inviting women to embrace visibility, confidence, and personal style at every stage of life."], pull:"Some women do not disappear with age. They become impossible to ignore."}
+        ]},
+      { folder:'MagazineArticle9', name:'Dr. Afnan', role:'The woman behind the voice', category:'Human Stories',
+        title:'The Human Behind Success', deck:'A story of faith, confidence, grief, commitment, and the human connections that shape who we become.',
+        read:'8 min read', accent:'#6f8a80',
+        sections:[
+          {h:'Beyond the Title', paras:["Beyond the title, Afnan describes herself as a woman deeply passionate about life.","Since childhood, she carried a natural curiosity for the world. She was the little girl who climbed the mountains of Al Baha during summer holidays, always looking beyond the house, beyond the familiar, beyond what was expected.","That curiosity never left her. It became part of who she is — a woman moved by life, by people, and by the invisible stories we all carry."], pull:"A woman moved by life, by people, and by the invisible stories we all carry."},
+          {h:'A Life Powered by People', paras:["For Afnan, energy has always come through people.","She enjoys her own space and values her private time, but her deepest joy is found in connection. With loved ones, friends, strangers, and even the waiter at her favourite café, she finds meaning in simple human exchanges.","To her, connection is not small. It is life-giving. She gives energy to people, and receives energy from them in return."], pull:"Connection is not small. It is life-giving."},
+          {h:'The Calling to Help Others', paras:["Long before medicine, psychiatry, or public speaking, helping others was already part of her nature.","As a young girl, people came to her with their problems. Friends and family trusted her with their emotions, their conflicts, and their private worries. Even then, she had a way of understanding people.","She could sense what might comfort them, what might hurt them, and how to reach their hearts. What later became her work was first a gift she carried naturally."]},
+          {h:'The Child Who Could Persuade', paras:["Afnan remembers being only nine years old when she convinced her father to let her join a computer course at school.","At that time, computers were not common in homes. The course was expensive, but she spoke with such belief and clarity that her father agreed.","Looking back, she sees that moment as more than a childhood memory. It was proof that she already understood communication, persuasion, and the power of believing in what you ask for."], pull:"The power of believing in what you ask for."},
+          {h:'The Loss That Changed Everything', paras:["In 2023, Afnan faced one of the hardest chapters of her life: the loss of her mother.","Her mother's illness came suddenly. She was diagnosed with cancer, and within eight months, she passed away. It was a painful, life-changing period, one that tested Afnan in ways she had never experienced before.","She had always known herself to be strong, but grief introduced her to a different kind of strength."], pull:"Grief introduced her to a different kind of strength."},
+          {h:'Living Through the Greatest Fear', paras:["Before losing her mother, Afnan had already lived through difficult moments.","In 2020, during the COVID lockdown, she was stuck alone in Tabuk, away from family and friends. At the time, she believed that was one of the hardest experiences she had faced.","But loss showed her another level of pain. It taught her that one of her greatest fears could happen, and still, life would continue."]},
+          {h:'What Grief Gave Her', paras:["Grief did not make Afnan bitter. It made her softer, deeper, and more surrendered.","During her mother's final eight months, she stayed beside her, holding her hand until the end, surrounded by her siblings. In that pain, her relationship with God grew stronger. Her trust in destiny deepened.","She learned that patience arrives in ways we do not expect, and comfort can come even after the thing we feared most has already happened."], pull:"Comfort can come even after the thing we feared most has already happened."},
+          {h:'Confidence Is Not Born in One Day', paras:["For Afnan, confidence is not something that appears suddenly.","It is built slowly, through childhood, support, practice, mistakes, fear, and courage. She believes support matters deeply, because the way someone sees us when we are young can shape how we see ourselves later.","Confidence is not only about standing strong. Sometimes, it begins with being seen, heard, and loved."], pull:"Sometimes, confidence begins with being seen, heard, and loved."},
+          {h:"Her Father's Gaze", paras:["Afnan's father played a powerful role in her early confidence.","Before he passed away, he used to listen to her stories after school. He looked into her eyes, encouraged her to speak, and made her feel that her voice mattered. Even today, she remembers the love in his gaze.","After his death, she lost part of that safety. A part of her confidence became quiet. But with time, she began to rebuild herself."]},
+          {h:'Finding Her Voice', paras:["Every new stage helped Afnan rebuild herself.","School gave her new beginnings. University taught her independence. Toastmasters taught her how to stand in front of a room, even when her heart was racing.","She was afraid. She shook. But she stood anyway."], pull:"She was afraid. She shook. But she stood anyway."},
+          {h:'Do Not Fear Fear', paras:["Afnan's message is simple: Do not be afraid of fear.","Fear teaches. Fear shapes. Fear shows us where we still need to grow.","The only way through fear is to walk toward it."], pull:"The only way through fear is to walk toward it."},
+          {h:'The Work of Relationships', paras:["For Afnan, relationships are one of the biggest challenges of our time.","People are more connected online, yet more distant in real life.","Afnan believes that every kind of relationship — whether in family, friendship, marriage, motherhood, or work — needs patience, listening, forgiveness, and presence.","Love is not only a feeling. It is work we choose."], pull:"Love is not only a feeling. It is work we choose."},
+          {h:'What Keeps Her Strong', paras:["Three things keep Afnan grounded: God. Commitment. People.","Her faith gives her peace. Her commitment gives her direction. Her relationships remind her she is human.","These are the roots that keep her balanced."], pull:"These are the roots that keep her balanced."}
+        ]},
+      { folder:'MagazineArticle10', name:'Safa Tayebi', role:'Founder & Designer of JAĀME', category:'Fashion',
+        title:'The Art of Quiet Luxury', deck:'Where sustainability, art, and identity become fashion — the story of JAĀME.',
+        read:'7 min read', accent:'#8a7d5c',
+        sections:[
+          {h:'Introduction', paras:["Safa Tayebi's journey is rooted in vision, patience, and purpose.","Her love for fashion began early and slowly became part of her identity. Her path later took her to the United Kingdom, where she studied fashion and shaped her creative voice.","What began as passion became a professional calling."]},
+          {h:'The Turning Point', paras:["In 2014, Safa won Young Designer of the Year in the UK. For her, it was more than an award — it was a moment of self-belief.","It proved that fashion was not only something she loved. It was a path she was meant to continue."], pull:"It was a path she was meant to continue."},
+          {h:'The Birth of JAĀME', paras:["JAĀME was born from Safa's search for something more honest. She wanted clothing made from natural and responsible materials.","She understood how deeply fabric touches women's lives. For her, sustainability was never just a trend — it became the heart of the brand."], pull:"Every piece begins with intention."},
+          {h:'Sustainability With Meaning', paras:["For Safa, sustainability is the whole journey. It is the fabric, the tailor, the team, and the process.","It is about fair work, care, and respect. JAĀME is built with responsibility from the inside out."]},
+          {h:'Art as Identity', paras:["Art lives at the centre of JAĀME. Safa's close bond with her artist sister shapes the brand's spirit.","Original artworks are transformed into garments. Natural fabrics become soft canvases of expression. Fashion becomes a place where art can be worn."], pull:"In JAĀME, fashion is not only worn — it is lived as art."},
+          {h:'Inspired by Life', paras:["Safa's inspiration comes from many worlds. Dubai, travel, culture, architecture, and motherhood all influence her vision.","Her designs carry emotion as much as beauty. They reflect movement, memory, and identity. Each piece holds something personal without needing to speak loudly."]},
+          {h:'The JAĀME Woman', paras:["The JAĀME woman values quality over quantity. She cares about art, sustainability, and the world around her.","She does not need visible labels to feel confident. Her luxury is quiet, strong, and intentional. She wears meaning, not only fashion."]},
+          {h:'The Meaning of Luxury', paras:["For Safa, luxury is not about price. It is not about logos or showing off.","Luxury is found in quality and ethical creation. It is found in knowing how something was made. True luxury carries responsibility."], pull:"A beautiful piece becomes meaningful when its story is known."},
+          {h:'The Challenge', paras:["Building JAĀME has required courage and patience. Sourcing trusted sustainable materials is one of the hardest parts.","Being taken seriously as a brand takes time. Every step has demanded learning and strength. But Safa continues because the purpose is bigger than the challenge."]},
+          {h:'The Future of JAĀME', paras:["Safa dreams of JAĀME growing with meaning. She wants people to understand the value behind each garment — not only the clothing, but the story it carries.","She hopes to build a community around the label: a community shaped by art, care, and quiet strength."]},
+          {h:'Her Message', paras:["Safa's advice is simple and honest: take every placement, internship, and experience you can. Work hard, learn deeply, and keep going.","The word no will come many times. But belief grows when you refuse to stop.","JAĀME is more than a fashion label. It is Safa Tayebi's story of identity, ethics, and emotion — a reminder that fashion can be gentle and powerful at once. Every garment carries a quiet human thread."], pull:"Before JAĀME became a collection, every color already held a story."}
+        ]}
+    ];
+    return A.map(a=>Object.assign(a,{cover:base+a.folder+'/cover.jpg'}));
+  }
+
+  renderVals(){
+    const A=this.articles();
+    const accent=this.accent;
+    const cats=['Fashion','Culture','Art','Human Stories','Lifestyle','Features'];
+    const catAnchor=cn=>'cat-'+cn.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+    const activeCats=cats.filter(cn=>A.some(a=>a.category===cn));
+
+    const navCats=activeCats.map(c=>({ label:c, pick:()=>this.scrollToSection(catAnchor(c)) }));
+    const drawerLinks=[
+      { label:'Home', pick:()=>this.scrollToSection('top') },
+      ...activeCats.map(c=>({ label:c, pick:()=>this.scrollToSection(catAnchor(c)) })),
+      { label:'Posters', pick:()=>this.scrollToSection('posters') },
+      { label:'About', pick:()=>this.scrollToSection('about') }
+    ];
+
+    // hero (featured)
+    const names=A.map(a=>a.name);
+    let hi=names.indexOf(this.props.featuredStory||'Caroline Labouchere'); if(hi<0) hi=0;
+    const h=A[hi];
+    const hero={ cat:h.category, title:h.title, deck:h.deck, name:h.name, role:h.role, cover:h.cover, open:()=>this.go('article',{story:hi}) };
+
+    // sidebar latest
+    const latIdx=[]; for(let i=0;i<A.length && latIdx.length<5;i++){ if(i!==hi) latIdx.push(i); }
+    const sidebarLatest=latIdx.map(i=>({ cat:A[i].category, title:A[i].title, desc:A[i].role, cover:A[i].cover, open:()=>this.go('article',{story:i}) }));
+
+    // category sections
+    const catOrder={
+      'Human Stories':['Caroline Labouchere','Dr. Afnan','Nadine Njeim','Nathalya Rai','Vikki Feltham','BTS','Hala Kazim'],
+      'Art':['Noj Barker','Ruben'],
+      'Fashion':['Safa Tayebi']
+    };
+    const orderIdx=(cn,name)=>{ const o=catOrder[cn]; if(!o) return 500; const k=o.indexOf(name); return k<0?400:k; };
+    const catFirstName={};
+    cats.forEach(cn=>{ const inCat=A.map((a,i)=>({a,i})).filter(x=>x.a.category===cn).slice().sort((x,y)=>orderIdx(cn,x.a.name)-orderIdx(cn,y.a.name)); if(inCat.length) catFirstName[cn]=inCat[0].a.name; });
+    const catSections=cats.map(cn=>{
+      let items=A.map((a,i)=>({a,i})).filter(x=>x.a.category===cn);
+      items=items.slice().sort((x,y)=>orderIdx(cn,x.a.name)-orderIdx(cn,y.a.name));
+      return { name:cn, anchor:catAnchor(cn), count:(items.length===1?'1 story':items.length+' stories'), viewAll:()=>this.go('articles',{filter:cn}),
+        cards:items.map(({a,i},ci)=>({ cat:a.category, name:a.name, role:a.role, title:a.title, deck:a.deck, cover:a.cover, latest: ci===0, open:()=>this.go('article',{story:i}) })) };
+    }).filter(s=>s.cards.length>0);
+
+    // dark cover band -> BTS
+    let bi=names.indexOf('BTS'); if(bi<0) bi=0; const cb=A[bi];
+    const coverBand={ kicker:'The Cover Story', cat:cb.category, title:cb.title, deck:cb.deck, open:()=>this.go('article',{story:bi}) };
+
+    // articles page
+    const filt=this.state.filter||'All';
+    const chipCats=['All'].concat(cats);
+    const chipStyle=(active)=>({ cursor:'pointer', fontFamily:"'Hanken Grotesk',sans-serif", fontSize:'10.5px', fontWeight:600, letterSpacing:'.16em', textTransform:'uppercase', padding:'9px 15px', borderRadius:'2px', border:'1px solid '+(active?'#1c1a17':'#e3e3e3'), background: active?'#1c1a17':'transparent', color: active?'#f5f5f5':'#4a463f' });
+    const chips=chipCats.map(c=>({ label:c, style:chipStyle(filt===c), pick:()=>{ this.setState({filter:c}); setTimeout(()=>this.restaggerGrid(),0); } }));
+    const visA=A.map((a,i)=>({a,i})).filter(x=>filt==='All'||x.a.category===filt).slice().sort((x,y)=>{ const co=cats.indexOf(x.a.category)-cats.indexOf(y.a.category); if(co!==0) return co; return orderIdx(x.a.category,x.a.name)-orderIdx(y.a.category,y.a.name); });
+    const articleCards=visA.map(({a,i})=>({ cat:a.category, name:a.name, role:a.role, title:a.title, deck:a.deck, cover:a.cover, latest: a.name===catFirstName[a.category], open:()=>this.go('article',{story:i}) }));
+    const countLabel=visA.length+(visA.length===1?' story':' stories');
+
+    // reader
+    const cur=A[this.state.story]||A[0];
+    const story={ cat:cur.category, title:cur.title, deck:cur.deck, name:cur.name, role:cur.role, read:cur.read, cover:cur.cover, accent:cur.accent||accent };
+    const readerSections=(cur.sections||[]).map((s,i)=>({ h:s.h, paras:s.paras, hasPull:!!s.pull, pull:s.pull||'', hasImg:false, img:'' }));
+    const related=[1,2,3].map(k=>{ const idx=(this.state.story+k)%A.length; const a=A[idx]; return { no:('0'+(idx+1)).slice(-2), cat:a.category, title:a.title, open:()=>this.go('article',{story:idx}) }; });
+
+    // posters — seeded from uploads/Posters (IG-style masonry + carousel viewer)
+    const posterAr=['3 / 4','1 / 1','4 / 5','3 / 4','2 / 3'];
+    const P=[
+      { dir:'Poster1', imgs:['Screenshot 2026-07-07 112437.png','Screenshot 2026-07-07 112501.png','Screenshot 2026-07-07 112533.png'], cat:'Fashion', title:'From the Heart to the Hands', ar:'4 / 3',
+        caps:["Dolce&Gabbana\u2019s exhibition is more than a celebration of fashion; it is a journey into craftsmanship, memory, and Italian beauty.","From the Heart to the Hands brings together Alta Moda, Alta Sartoria, and Alta Gioielleria, revealing the invisible work behind every creation \u2014 the embroidery, the devotion, the patience, and the human touch.","Curated by Florence M\u00fcller, the exhibition celebrates the artistic legacy of Domenico Dolce and Stefano Gabbana, connecting fashion with architecture, opera, cinema, photography, and the spirit of la dolce vita.","Each room feels like a dialogue between dream and detail, showing that true luxury is not only what we see, but what has been made slowly, carefully, and with soul.","Currently on view at ICA Miami, in the Miami Design District."],
+        tags:'#FromTheHeartToTheHands #DolceGabbana #altamoda', note:'True luxury is not only what we see, but what has been made with soul.', time:'1d' },
+      { dir:'Poster3', imgs:['Screenshot 2026-07-07 112711.png','Screenshot 2026-07-07 112730.png','Screenshot 2026-07-07 112747.png'], cat:'Fashion', title:'Where Couture Meets Energy', ar:'3 / 4',
+        caps:["Iris van Herpen\u2019s Sonic Starquakes Haute Couture collection moves beyond the traditional language of fashion, entering a space where science, light, and the body become one.","One of the most striking looks, The Fractal Universe, transforms the dress into more than a garment. Charged through scientific process and marked by branching flashes of lightning, the piece carries the feeling of a living surface \u2014 fragile, powerful, and almost cosmic.","Through this work, couture becomes an experiment in matter and imagination. It reminds us that fashion is not only about beauty or craftsmanship; it can also become a dialogue between nature, technology, and human presence.","In Iris van Herpen\u2019s world, the body does not simply wear the dress. It becomes part of the universe it creates."],
+        tags:'#irisvanherpen #hautecouture #parisfashionweek', note:'Where couture meets energy.', time:'2d' },
+      { dir:'Poster4', imgs:['Screenshot 2026-07-07 112836.png','Screenshot 2026-07-07 112853.png','Screenshot 2026-07-07 112903.png'], cat:'Fashion', title:'Into the Abyss', ar:'3 / 4',
+        caps:["Presented in Paris during Haute Couture Week, The Abyss transforms couture into a language of darkness, desire, and reinvention.","Sculpted bodies, surreal textures, and impossible silhouettes remind us that beauty does not always have to be soft. Sometimes, it must unsettle us first.","Schiaparelli Fall/Winter 2026\u20132027 Haute Couture, by Daniel Roseberry.","Image credit: Harper\u2019s Bazaar / Courtesy of Schiaparelli \u2014 Paris Haute Couture Week."],
+        tags:'#schiaparelli #hautecouture #danielroseberry', note:'Beauty does not always have to be soft. Sometimes, it must unsettle us first.', time:'3d' },
+      { dir:'Poster5', imgs:['Screenshot 2026-07-07 113032.png','Screenshot 2026-07-07 113051.png'], cat:'Human Stories', title:'The Tree That Holds the Mist', ar:'3 / 4',
+        caps:["In Socotra, Yemen, the dragon\u2019s blood tree stands like a sculpture shaped by survival.","Its crown opens like an umbrella \u2014 not for decoration, but to collect the mist and protect the earth beneath it. When its bark is wounded, it releases a deep red resin, the reason behind its mythical name.","For centuries, this tree has carried the story of nature\u2019s intelligence, beauty, and endurance.","It reminds us that rarity is not always loud. Sometimes, it grows slowly, survives quietly, and becomes unforgettable."],
+        tags:'#socotra #nature #THT_aemagazine', note:'Rarity is not always loud. Sometimes it grows slowly, and becomes unforgettable.', time:'4d' },
+      { dir:'Poster2', imgs:['Screenshot 2026-07-07 112625.png'], cat:'Art', title:'The Value of Stone', ar:'3 / 2',
+        caps:["At THT, we believe value is not only found in luxury, but in meaning.","Each stone, formed slowly under pressure and time, carries its own quiet story of transformation \u2014 rare, deliberate, and enduring."],
+        tags:'#stone #withvalue #THT_aemag', note:'Value is not only found in luxury, but in meaning.', time:'5d' },
+      { dir:'Poster1', imgs:['poster.png'], cat:'The Human Thread', title:'Every story matters',
+        caps:["Some magazines tell you what is trending. The Human Thread_AE is more interested in what is lasting.","The women who rebuilt themselves. The artists who turned pain into beauty. The founders who kept going when nobody was watching.","We believe every person carries a thread worth following.","So before you continue scrolling — tell us: what story has shaped who you are today?"],
+        tags:'#TheHumanThreadAE #newjourney #THTAE #explorar', note:'Where culture meets humanity, and every story matters.', time:'2d' },
+      { dir:'Poster2', imgs:['Screenshot 2026-07-06 130341.png','Screenshot 2026-07-06 130405.png','Screenshot 2026-07-06 130426.png','Screenshot 2026-07-06 130500.png'], cat:'Culture', title:'Meryl Streep',
+        caps:["A life in cinema. A voice of depth. A woman who turned every role into memory.","Today, we celebrate Meryl Streep, one of the most powerful and enduring actresses of our time. Across decades, she has given the world performances filled with intelligence, emotion, strength and truth.","Her career reminds us that greatness is not only talent. It is discipline. It is courage. It is the ability to keep becoming.","Happy Birthday, Meryl Streep."],
+        tags:'#22june #birthdaygirl #merylstreep #devilwearsprada', note:'A timeless woman.', time:'4d' },
+      { dir:'Poster3', imgs:['Screenshot 2026-07-06 130623.png','Screenshot 2026-07-06 130646.png'], cat:'Culture', title:'Princess Diana',
+        caps:["She was more than a princess. She became a symbol of kindness, humanity, and quiet strength. Through her compassion, her courage, and the way she connected with people, Diana changed the meaning of what it meant to be seen.","Her style became iconic, but her heart became her legacy. From unforgettable fashion moments to the warmth she gave to others, she remains one of the most beloved women in history.","Known as the People\u2019s Princess, Diana reminds us that true beauty is not only in what we wear, but in how we make people feel."],
+        tags:'#princessdiana', note:'A life remembered with grace. A legacy that still speaks.', time:'4d' },
+      { dir:'Poster4', imgs:['Screenshot 2026-07-06 130903.png','Screenshot 2026-07-06 130925.png'], cat:'Art', title:'Old Architecture',
+        caps:["Old architecture is memory carved into stone.","Every window, arch, and detail holds a story from another time — a time when buildings were created with patience, craftsmanship, and soul.","There is something powerful about looking at old architecture. It reminds us that beauty does not always need to be loud. Sometimes it lives quietly in the details, in the walls, in the shapes, and in the history that still remains.","In a world that moves quickly, these buildings ask us to slow down, look closer, and respect what came before us."],
+        tags:'#architecture #oldbuildings #art', note:'Because true elegance does not fade. It simply waits to be noticed again.', time:'6d' },
+      { dir:'Poster5', imgs:['Screenshot 2026-07-06 131045.png'], cat:'Human Stories', title:'The Will to Rise',
+        caps:["In one suspended moment, the image holds everything: danger, discipline, instinct, and the fragile line between control and surrender.","The dust rises like a witness. The body falls, the horse moves, and the arena becomes more than a place of performance — it becomes a place where courage is tested in its rawest form.","There is something deeply human in this scene. Not only the force of the fall, but the silence before the rise — the moment when strength is no longer about looking powerful, but about trusting yourself enough to continue.","For The Human Thread_AE, this photograph speaks to resilience in its most honest shape."],
+        tags:'#resilience #courage #discipline #magazine', note:'Some stories are written in dust, movement, and the will to rise again.', time:'1w' }
+    ];
+    const posters=P.map((p,i)=>{
+      const imgs=p.imgs.map(f=>encodeURI('uploads/Posters/'+p.dir+'/'+f));
+      return { cat:p.cat, title:p.title, name:p.title, cover:imgs[0], images:imgs, count:imgs.length,
+        frameStyle:{ position:'relative', aspectRatio:(p.ar||posterAr[i%posterAr.length]), overflow:'hidden', background:'#ececec' },
+        capParas:p.caps, hashtag:p.tags, tag2:'', note:p.note, time:p.time, handle:'thehumanthread_ae',
+        open:()=>this.openViewer(i), read:()=>this.closeViewer() };
+    });
+    this._posterCounts=posters.map(p=>p.count);
+    const vOpen=this.state.viewer>=0 && this.state.viewer<posters.length;
+    let vCur;
+    if(vOpen){ const pv=posters[this.state.viewer]; const si=Math.min(this.state.slide||0, pv.count-1); vCur=Object.assign({}, pv, { image:pv.images[si], multi:pv.count>1, pos:(si+1)+' / '+pv.count }); }
+    else { vCur={ capParas:[], frameStyle:{}, cover:'', image:'', name:'', title:'', cat:'', hashtag:'', tag2:'', note:'', time:'', handle:'', multi:false, pos:'', read:()=>{} }; }
+
+    // ---- editorial carousel ----
+    const cSlides=this.carSlides();
+    const cActive=this.state.car % cSlides.length;
+    const carItems=cSlides.map((s,i)=>{
+      let off=i-cActive; const n=cSlides.length;
+      if(off> n/2) off-=n; if(off< -n/2) off+=n;
+      const a=Math.abs(off);
+      const scale = a===0?1 : a===1?0.84 : 0.7;
+      const opacity = a===0?1 : a===1?0.55 : a===2?0.24 : 0;
+      const shift = off*64;
+      const blur = a===0?0:1.2;
+      const style={ position:'absolute', top:0, left:'50%', height:'100%', aspectRatio:'1236 / 1600',
+        transform:'translateX(-50%) translateX('+shift+'%) scale('+scale+')',
+        opacity:opacity, zIndex:10-a, cursor: a===0?'default':'pointer',
+        pointerEvents: a>2?'none':'auto', filter: blur?('blur('+blur+'px)'):'none',
+        transition:'transform .7s cubic-bezier(.22,.61,.36,1), opacity .7s ease, filter .7s ease',
+        boxShadow: a===0?'0 30px 70px -24px rgba(28,26,23,.42), 0 8px 22px -12px rgba(28,26,23,.22)':'0 16px 40px -22px rgba(28,26,23,.3)',
+        background:'#fff' };
+      return { src:s.src, label:s.label, style, pick:()=>this.carSet(i) };
+    });
+    const carDots=cSlides.map((s,i)=>({ active:i===cActive, dotStyle:{ width:i===cActive?'26px':'7px', height:'7px', borderRadius:'20px', background:i===cActive?accent:'#c9c3b6', border:'none', padding:0, cursor:'pointer', transition:'width .4s ease, background .4s ease' }, pick:()=>this.carSet(i) }));
+
+    return {
+      accent,
+      isHome:this.state.page==='home', isArticle:this.state.page==='article', isArticles:this.state.page==='articles', isAbout:this.state.page==='about', isPosters:this.state.page==='posters',
+      gotoHome:()=>this.scrollToSection('top'), gotoArticles:()=>this.go('articles',{filter:'All'}), gotoAbout:()=>this.scrollToSection('about'), gotoPosters:()=>this.scrollToSection('posters'),
+      posters, viewerOpen:vOpen, viewer:vCur, closeViewer:()=>this.closeViewer(), viewerNext:()=>this.viewerStep(1), viewerPrev:()=>this.viewerStep(-1), stop:(e)=>{ e.stopPropagation(); },
+      doSearch:()=>this.go('articles',{filter:'All'}),
+      isInquire:this.state.page==='inquire',
+      inqOpen:!this.state.inqSent,
+      inqSent:this.state.inqSent,
+      openInquire:()=>{ this.setState({inqSent:false}); this.go('inquire'); },
+      closeInquire:()=>this.go('home'),
+      inqName:this.state.inqName, inqEmail:this.state.inqEmail, inqContent:this.state.inqContent,
+      inqFilesLabel:this.state.inqFiles>0?(this.state.inqFiles+(this.state.inqFiles===1?' image selected':' images selected')):'Drag images here or click to browse',
+      onInqName:(e)=>this.setState({inqName:e.target.value}),
+      onInqEmail:(e)=>this.setState({inqEmail:e.target.value}),
+      onInqContent:(e)=>this.setState({inqContent:e.target.value}),
+      onInqFiles:(e)=>this.setState({inqFiles:(e.target.files?e.target.files.length:0)}),
+      submitInquire:(e)=>{ e.preventDefault(); this.setState({inqSent:true}); },
+      navCats,
+      drawerLinks, navOpen:this.state.navOpen, openNav:()=>this.openNav(), closeNav:()=>this.closeNav(),
+      barRef:this.barRef, headerRef:this.headerRef, gridRef:this.gridRef,
+      hero, sidebarLatest, showFollow: this.props.showFollow!==false, catSections, coverBand,
+      carItems, carDots, carNum:('0'+(cActive+1)).slice(-2), carTotal:('0'+cSlides.length).slice(-2), carCaption:cSlides[cActive].label,
+      carPrev:()=>this.carStep(-1), carNext:()=>this.carStep(1),
+      carPause:()=>{ this._carPaused=true; }, carResume:()=>{ this._carPaused=false; },
+      chips, articleCards, countLabel,
+      story, readerSections, related,
+      aboutStats:[
+        { n:'02', label:'Issues published' },
+        { n:'40+', label:'Contributors' },
+        { n:'14', label:'Cities read in' },
+        { n:'60k', label:'Monthly readers' }
+      ],
+      timeline:[
+        { year:'2024', title:'A single letter', text:'The Human Thread begins as a monthly email to a few hundred readers who wanted culture written slowly.' },
+        { year:'2025', title:'The first cover', text:'Issue 01 goes to print — one portrait, one long conversation, and a promise to stay unhurried.' },
+        { year:'2026', title:'A regional voice', text:'Contributors join from across the region and beyond, and the magazine finds its subject: people mid-becoming.' },
+        { year:'2026', title:'Issue 02', text:'The thread reaches readers in fourteen cities — still independent, still one story at a time.' }
+      ],
+      aboutBody:[
+        "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
+        "Created in the UAE with a global editorial vision, the magazine explores the people, places, brands, artists, and ideas that carry meaning beyond the surface. Through thoughtful features and refined visual storytelling, we look at fashion, art, culture, and community as reflections of something deeper: who we are, what we value, and how we are remembered.",
+        "At The Human Thread_AE, every story begins with a person. We are drawn to journeys of resilience, creativity, ambition, heritage, reinvention, and purpose — the moments that shape a life, a vision, or a legacy.",
+        "Our editorial voice is intimate yet elevated, emotional yet timeless. We do not chase noise. We follow substance.",
+        "From Dubai to the world, The Human Thread_AE exists to document the threads that connect us — the stories behind the faces, the meaning behind the work, and the humanity behind every expression."
+      ],
+      values:[
+        { no:'01', title:'Human first', text:'Every story starts with a person, never a product.' },
+        { no:'02', title:'Slow media', text:'Fewer, longer, better. We would rather be right than first.' },
+        { no:'03', title:'Regional pride', text:'Local voices, told with the depth the world reserves for others.' },
+        { no:'04', title:'Beauty with meaning', text:'Aesthetics are welcome — emptiness is not.' }
+      ],
+      email:this.state.email,
+      onEmail:(e)=>this.setState({email:e.target.value}),
+      subLabel:this.state.subbed?'Joined ✓':'Join',
+      onSubscribe:(e)=>{ e.preventDefault(); this.setState({subbed:true}); }
+    };
+  }
+}
+</script>
+</body>
+</html>

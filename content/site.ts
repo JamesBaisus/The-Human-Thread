@@ -7,6 +7,14 @@ export const site = {
 
   instagram: "https://www.instagram.com/thehumanthread_ae",
 
+  /** Social profiles shown in the nav drawer. NOTE: only Instagram is confirmed — verify the rest with the owner. */
+  socials: [
+    { label: "TikTok", href: "https://www.tiktok.com/@thehumanthread_ae" },
+    { label: "Facebook", href: "https://www.facebook.com/thehumanthread.ae" },
+    { label: "Threads", href: "https://www.threads.net/@thehumanthread_ae" },
+    { label: "Instagram", href: "https://www.instagram.com/thehumanthread_ae" },
+  ],
+
   /** Exactly one article drives the hero. */
   featuredSlug: "caroline-labouchere",
 

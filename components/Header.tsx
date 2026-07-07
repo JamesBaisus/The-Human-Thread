@@ -6,7 +6,13 @@ import Link from "next/link";
 export type DrawerLink = { label: string; href: string };
 export type DrawerGroup = { header: string | null; links: DrawerLink[] };
 
-export default function Header({ drawerGroups }: { drawerGroups: DrawerGroup[] }) {
+export default function Header({
+  drawerGroups,
+  socials,
+}: {
+  drawerGroups: DrawerGroup[];
+  socials: DrawerLink[];
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -93,6 +99,38 @@ export default function Header({ drawerGroups }: { drawerGroups: DrawerGroup[] }
                   ))}
                 </div>
               ))}
+            </div>
+
+            <div className="pt-5 mt-5 border-t border-hairline">
+              <div className="flex gap-x-5 gap-y-2 flex-wrap mb-4">
+                <Link
+                  href="/terms"
+                  onClick={() => setOpen(false)}
+                  className="font-hanken text-[9.5px] font-semibold tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
+                >
+                  Terms of Service
+                </Link>
+                <Link
+                  href="/privacy"
+                  onClick={() => setOpen(false)}
+                  className="font-hanken text-[9.5px] font-semibold tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
+                >
+                  Privacy Policy
+                </Link>
+              </div>
+              <div className="flex gap-x-5 gap-y-2 flex-wrap">
+                {socials.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-hanken text-[10px] font-bold tracking-[.18em] uppercase text-body-2 transition-colors hover:text-accent"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </aside>
         </div>

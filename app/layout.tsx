@@ -52,7 +52,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <div className="min-h-0 flex flex-col relative overflow-x-clip">
           <Effects />
           <div className="scrollbar" />
-          <Header drawerGroups={drawerGroups} />
+          <Header drawerGroups={drawerGroups} socials={[...site.socials]} />
           <main className="flex-1 w-full relative">{children}</main>
           <Footer />
         </div>

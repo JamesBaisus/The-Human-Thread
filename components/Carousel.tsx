@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { site } from "@/content/site";
+import type { CarouselSlide } from "@/lib/content";
 
-const SLIDES = site.carousel.slides;
-
-export default function Carousel() {
+export default function Carousel({ slides }: { slides: CarouselSlide[] }) {
   const [active, setActive] = useState(0);
   const paused = useRef(false);
+  const SLIDES = slides;
 
   const set = (i: number) => {
     const n = SLIDES.length;
@@ -20,7 +20,7 @@ export default function Carousel() {
       if (!paused.current) setActive((a) => (a + 1) % SLIDES.length);
     }, 5200);
     return () => clearInterval(t);
-  }, []);
+  }, [SLIDES.length]);
 
   const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -108,6 +108,8 @@ export default function Carousel() {
                 fill
                 draggable={false}
                 sizes="(max-width: 780px) 74vw, 500px"
+                placeholder="blur"
+                blurDataURL={s.blur}
                 className="object-cover select-none"
               />
             </div>

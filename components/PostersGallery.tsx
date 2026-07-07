@@ -70,6 +70,8 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                   alt={p.title}
                   fill
                   sizes="(max-width: 760px) 50vw, (max-width: 1100px) 33vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={p.blurs[0]}
                   className="media object-cover object-top"
                 />
               </div>
@@ -107,6 +109,8 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                 alt={cur.title}
                 fill
                 sizes="(max-width: 760px) 100vw, 748px"
+                placeholder="blur"
+                blurDataURL={cur.blurs[slide]}
                 className="object-contain"
               />
               {multi && (

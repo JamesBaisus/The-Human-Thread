@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const drawerLinks = [
     { label: "Home", href: "/#top" },
-    ...getCategorySections().map((s) => ({ label: s.name, href: `/#${catAnchor(s.name)}` })),
+    ...(await getCategorySections()).map((s) => ({ label: s.name, href: `/#${catAnchor(s.name)}` })),
     { label: "Posters", href: "/#posters" },
     { label: "About", href: "/#about" },
   ];

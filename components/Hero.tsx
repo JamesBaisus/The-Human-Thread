@@ -19,6 +19,8 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
               height={featured.coverHeight}
               priority
               sizes="330px"
+              placeholder="blur"
+              blurDataURL={featured.coverBlur}
               className="media block w-full h-auto"
             />
           </div>
@@ -38,7 +40,15 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
           {latest.map((a) => (
             <Link key={a.slug} href={`/article/${a.slug}`} className="latestrow flex gap-4 items-start cursor-pointer">
               <div className="thumb flex-none w-[112px] h-[88px] overflow-hidden bg-ph relative">
-                <Image src={a.cover} alt="" fill sizes="112px" className="media object-cover object-top" />
+                <Image
+                  src={a.cover}
+                  alt=""
+                  fill
+                  sizes="112px"
+                  placeholder="blur"
+                  blurDataURL={a.coverBlur}
+                  className="media object-cover object-top"
+                />
               </div>
               <div className="min-w-0 pt-[2px]">
                 <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">

@@ -9,6 +9,7 @@ export type ArticleCardData = {
   title: string;
   deck: string;
   cover: string;
+  coverBlur: string;
   latest: boolean;
 };
 
@@ -21,6 +22,8 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
           alt={card.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          placeholder="blur"
+          blurDataURL={card.coverBlur}
           className="media object-cover object-top"
         />
       </div>

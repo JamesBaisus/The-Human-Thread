@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site } from "@/content/site";
-import { getArticle, getCategorySections, getFeatured, getLatest, getPosters } from "@/lib/content";
+import { getArticle, getCarouselSlides, getCategorySections, getFeatured, getLatest, getPosters } from "@/lib/content";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import Marquee from "@/components/Marquee";
@@ -8,18 +8,21 @@ import PostersGallery from "@/components/PostersGallery";
 import ArticleCard from "@/components/ArticleCard";
 import Newsletter from "@/components/Newsletter";
 
-export default function Home() {
-  const featured = getFeatured();
-  const latest = getLatest(5);
-  const sections = getCategorySections();
-  const posters = getPosters();
-  const coverBand = getArticle(site.coverBand.slug) ?? featured;
+export default async function Home() {
+  const [featured, latest, sections, posters, slides] = await Promise.all([
+    getFeatured(),
+    getLatest(5),
+    getCategorySections(),
+    getPosters(),
+    getCarouselSlides(),
+  ]);
+  const coverBand = (await getArticle(site.coverBand.slug)) ?? featured;
 
   return (
     <div className="pg relative">
       <Hero featured={featured} latest={latest} />
 
-      <Carousel />
+      <Carousel slides={slides} />
 
       <Marquee />
 
@@ -57,6 +60,7 @@ export default function Home() {
                   title: a.title,
                   deck: a.deck,
                   cover: a.cover,
+                  coverBlur: a.coverBlur,
                   latest: i === 0,
                 }}
               />

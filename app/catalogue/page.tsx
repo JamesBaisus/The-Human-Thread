@@ -9,17 +9,21 @@ export const metadata: Metadata = {
   description: "Every story in the issue — portraits, essays and conversations.",
 };
 
-export default function CataloguePage() {
-  const cards = getCatalogue().map((a) => ({
-    slug: a.slug,
-    category: a.category,
-    name: a.name,
-    role: a.role,
-    title: a.title,
-    deck: a.deck,
-    cover: a.cover,
-    latest: isLatestInCategory(a),
-  }));
+export default async function CataloguePage() {
+  const catalogue = await getCatalogue();
+  const cards = await Promise.all(
+    catalogue.map(async (a) => ({
+      slug: a.slug,
+      category: a.category,
+      name: a.name,
+      role: a.role,
+      title: a.title,
+      deck: a.deck,
+      cover: a.cover,
+      coverBlur: a.coverBlur,
+      latest: await isLatestInCategory(a),
+    }))
+  );
 
   return (
     <div className="pg">

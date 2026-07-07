@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import sizeOf from "image-size";
+import sharp from "sharp";
 import { site } from "@/content/site";
 
 const ROOT = process.cwd();
@@ -28,6 +29,8 @@ export type Article = {
   cover: string;
   coverWidth: number;
   coverHeight: number;
+  /** Tiny inline blur-up placeholder (data URL), generated at build time. */
+  coverBlur: string;
   featured: boolean;
   date: string;
   sections: ArticleSection[];
@@ -38,6 +41,8 @@ export type Poster = {
   category: string;
   title: string;
   images: string[];
+  /** Blur-up placeholders, parallel to `images`. */
+  blurs: string[];
   aspectRatio: string;
   captions: string[];
   hashtags: string;
@@ -47,6 +52,8 @@ export type Poster = {
   date: string;
 };
 
+export type CarouselSlide = { src: string; label: string; blur: string };
+
 export type CategorySection = {
   name: string;
   anchor: string;
@@ -55,6 +62,27 @@ export type CategorySection = {
 
 export function catAnchor(category: string): string {
   return "cat-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+// 1×1 grey gif, used if a blur thumbnail can't be generated.
+const FALLBACK_BLUR =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAOzq6AAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
+
+const blurCache = new Map<string, Promise<string>>();
+
+/** Tiny (16px) blurred webp of a /public image, inlined as a data URL. */
+function blurFor(publicPath: string): Promise<string> {
+  let cached = blurCache.get(publicPath);
+  if (!cached) {
+    cached = sharp(path.join(ROOT, "public", publicPath))
+      .resize(16, 16, { fit: "inside" })
+      .webp({ quality: 20 })
+      .toBuffer()
+      .then((buf) => `data:image/webp;base64,${buf.toString("base64")}`)
+      .catch(() => FALLBACK_BLUR);
+    blurCache.set(publicPath, cached);
+  }
+  return cached;
 }
 
 /** Body = a series of `## heading` sections with paragraphs, optional `> pull quote` and `![alt](src)` image. */
@@ -98,83 +126,88 @@ function imageDims(publicPath: string): { width: number; height: number } {
   }
 }
 
-let _articles: Article[] | null = null;
-
-/** All articles, newest first. Validates required fields at build time. */
-export function getArticles(): Article[] {
-  if (_articles) return _articles;
+async function loadArticles(): Promise<Article[]> {
   const files = fs.readdirSync(ARTICLES_DIR).filter((f) => /\.mdx?$/.test(f));
-  const articles = files.map((file) => {
-    const raw = fs.readFileSync(path.join(ARTICLES_DIR, file), "utf8");
-    const { data, content } = matter(raw);
-    const slug = data.slug ?? file.replace(/\.mdx?$/, "");
-    for (const field of ["name", "role", "category", "title", "deck", "readTime", "accent", "cover", "date"]) {
-      if (!data[field]) throw new Error(`content/articles/${file}: missing frontmatter field "${field}"`);
-    }
-    if (!(site.categories as readonly string[]).includes(data.category)) {
-      throw new Error(`content/articles/${file}: unknown category "${data.category}"`);
-    }
-    const dims = imageDims(data.cover);
-    return {
-      slug,
-      name: String(data.name),
-      role: String(data.role),
-      category: String(data.category),
-      title: String(data.title),
-      deck: String(data.deck),
-      readTime: String(data.readTime),
-      accent: String(data.accent),
-      cover: String(data.cover),
-      coverWidth: dims.width,
-      coverHeight: dims.height,
-      featured: Boolean(data.featured),
-      date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
-      sections: parseSections(content),
-    } satisfies Article;
-  });
+  const articles = await Promise.all(
+    files.map(async (file) => {
+      const raw = fs.readFileSync(path.join(ARTICLES_DIR, file), "utf8");
+      const { data, content } = matter(raw);
+      const slug = data.slug ?? file.replace(/\.mdx?$/, "");
+      for (const field of ["name", "role", "category", "title", "deck", "readTime", "accent", "cover", "date"]) {
+        if (!data[field]) throw new Error(`content/articles/${file}: missing frontmatter field "${field}"`);
+      }
+      if (!(site.categories as readonly string[]).includes(data.category)) {
+        throw new Error(`content/articles/${file}: unknown category "${data.category}"`);
+      }
+      const dims = imageDims(data.cover);
+      return {
+        slug,
+        name: String(data.name),
+        role: String(data.role),
+        category: String(data.category),
+        title: String(data.title),
+        deck: String(data.deck),
+        readTime: String(data.readTime),
+        accent: String(data.accent),
+        cover: String(data.cover),
+        coverWidth: dims.width,
+        coverHeight: dims.height,
+        coverBlur: await blurFor(String(data.cover)),
+        featured: Boolean(data.featured),
+        date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
+        sections: parseSections(content),
+      } satisfies Article;
+    })
+  );
   articles.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug)));
-  _articles = articles;
   return articles;
 }
 
-export function getArticle(slug: string): Article | undefined {
-  return getArticles().find((a) => a.slug === slug);
+let _articles: Promise<Article[]> | null = null;
+
+/** All articles, newest first. Validates required fields at build time. */
+export function getArticles(): Promise<Article[]> {
+  return (_articles ??= loadArticles());
+}
+
+export async function getArticle(slug: string): Promise<Article | undefined> {
+  return (await getArticles()).find((a) => a.slug === slug);
 }
 
 /** The single featured article (drives the hero). Falls back to site.featuredSlug, then newest. */
-export function getFeatured(): Article {
-  const all = getArticles();
+export async function getFeatured(): Promise<Article> {
+  const all = await getArticles();
   return all.find((a) => a.featured) ?? all.find((a) => a.slug === site.featuredSlug) ?? all[0];
 }
 
 /** Latest N articles excluding the featured one (hero/reader sidebar). */
-export function getLatest(count = 5): Article[] {
-  const featured = getFeatured();
-  return getArticles().filter((a) => a.slug !== featured.slug).slice(0, count);
+export async function getLatest(count = 5): Promise<Article[]> {
+  const featured = await getFeatured();
+  return (await getArticles()).filter((a) => a.slug !== featured.slug).slice(0, count);
 }
 
 /** Categories in site order, each with its articles newest-first. First article per category is the "Latest". */
-export function getCategorySections(): CategorySection[] {
-  const all = getArticles();
+export async function getCategorySections(): Promise<CategorySection[]> {
+  const all = await getArticles();
   return site.categories
     .map((name) => ({ name, anchor: catAnchor(name), articles: all.filter((a) => a.category === name) }))
     .filter((s) => s.articles.length > 0);
 }
 
 /** True when the article is the newest in its category (drives the "Latest" chip). */
-export function isLatestInCategory(article: Article): boolean {
-  const first = getArticles().find((a) => a.category === article.category);
+export async function isLatestInCategory(article: Article): Promise<boolean> {
+  const first = (await getArticles()).find((a) => a.category === article.category);
   return first?.slug === article.slug;
 }
 
 /** Catalogue ordering: category order, then newest-first within category. */
-export function getCatalogue(): Article[] {
-  return getCategorySections().flatMap((s) => s.articles);
+export async function getCatalogue(): Promise<Article[]> {
+  return (await getCategorySections()).flatMap((s) => s.articles);
 }
 
 /** Next `count` articles after `slug` in catalogue order, with their catalogue position. */
-export function getRelated(slug: string, count = 3): { no: string; article: Article }[] {
-  const list = getCatalogue();
+export async function getRelated(slug: string, count = 3): Promise<{ no: string; article: Article }[]> {
+  const list = await getCatalogue();
   const idx = Math.max(0, list.findIndex((a) => a.slug === slug));
   return Array.from({ length: count }, (_, k) => {
     const i = (idx + k + 1) % list.length;
@@ -182,20 +215,30 @@ export function getRelated(slug: string, count = 3): { no: string; article: Arti
   });
 }
 
-let _posters: Poster[] | null = null;
-
-/** All posters, newest first. */
-export function getPosters(): Poster[] {
-  if (_posters) return _posters;
-  const posters = JSON.parse(fs.readFileSync(POSTERS_FILE, "utf8")) as Poster[];
-  for (const p of posters) {
+async function loadPosters(): Promise<Poster[]> {
+  const raw = JSON.parse(fs.readFileSync(POSTERS_FILE, "utf8")) as Omit<Poster, "blurs">[];
+  for (const p of raw) {
     for (const field of ["slug", "category", "title", "images", "aspectRatio", "captions", "date"] as const) {
       if (!p[field] || (Array.isArray(p[field]) && p[field].length === 0)) {
         throw new Error(`content/posters/posters.json: poster "${p.slug ?? "?"}" missing "${field}"`);
       }
     }
   }
+  const posters = await Promise.all(
+    raw.map(async (p) => ({ ...p, blurs: await Promise.all(p.images.map(blurFor)) }))
+  );
   posters.sort((a, b) => (a.date < b.date ? 1 : -1));
-  _posters = posters;
   return posters;
+}
+
+let _posters: Promise<Poster[]> | null = null;
+
+/** All posters, newest first. */
+export function getPosters(): Promise<Poster[]> {
+  return (_posters ??= loadPosters());
+}
+
+/** Editorial carousel slides with blur placeholders. */
+export async function getCarouselSlides(): Promise<CarouselSlide[]> {
+  return Promise.all(site.carousel.slides.map(async (s) => ({ ...s, blur: await blurFor(s.src) })));
 }

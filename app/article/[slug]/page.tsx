@@ -5,26 +5,24 @@ import { notFound } from "next/navigation";
 import { site } from "@/content/site";
 import { getArticle, getArticles, getRelated } from "@/lib/content";
 
-export function generateStaticParams() {
-  return getArticles().map((a) => ({ slug: a.slug }));
+export async function generateStaticParams() {
+  return (await getArticles()).map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) return {};
   return { title: `${article.title} — The Human Thread`, description: article.deck };
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) notFound();
 
-  const sidebar = getArticles()
-    .filter((a) => a.slug !== article.slug)
-    .slice(0, 4);
-  const related = getRelated(article.slug);
+  const sidebar = (await getArticles()).filter((a) => a.slug !== article.slug).slice(0, 4);
+  const related = await getRelated(article.slug);
 
   return (
     <div className="pg relative">
@@ -62,6 +60,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 height={article.coverHeight}
                 priority
                 sizes="(max-width: 780px) 100vw, 860px"
+                placeholder="blur"
+                blurDataURL={article.coverBlur}
                 className="block w-full h-auto"
               />
             </div>
@@ -171,7 +171,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 className="latestrow flex gap-[14px] items-start p-3 rounded-[2px] cursor-pointer mb-3"
               >
                 <div className="thumb flex-none w-[72px] h-[72px] overflow-hidden rounded-[2px] bg-ph relative">
-                  <Image src={a.cover} alt="" fill sizes="72px" className="media object-cover object-top" />
+                  <Image
+                    src={a.cover}
+                    alt=""
+                    fill
+                    sizes="72px"
+                    placeholder="blur"
+                    blurDataURL={a.coverBlur}
+                    className="media object-cover object-top"
+                  />
                 </div>
                 <div className="min-w-0">
                   <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">

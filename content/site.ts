@@ -7,11 +7,11 @@ export const site = {
 
   instagram: "https://www.instagram.com/thehumanthread_ae",
 
-  /** Social profiles shown in the nav drawer. NOTE: only Instagram is confirmed — verify the rest with the owner. */
+  /** Social profiles shown in the nav drawer. */
   socials: [
-    { label: "TikTok", href: "https://www.tiktok.com/@thehumanthread_ae" },
-    { label: "Facebook", href: "https://www.facebook.com/thehumanthread.ae" },
-    { label: "Threads", href: "https://www.threads.net/@thehumanthread_ae" },
+    { label: "TikTok", href: "https://www.tiktok.com/@tht_ae" },
+    { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61591122367063" },
+    { label: "Threads", href: "https://www.threads.com/@thehumanthread_ae" },
     { label: "Instagram", href: "https://www.instagram.com/thehumanthread_ae" },
   ],
 
@@ -65,8 +65,7 @@ export const site = {
     "BTS",
     "Vikki Feltham",
     "Noj Barker",
-    "Hala Kazim",
-    "Nadine Njeim",
+    "Hiba Osman",
     "Caroline Labouchere",
   ],
 

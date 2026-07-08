@@ -24,14 +24,36 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const sidebar = (await getArticles()).filter((a) => a.slug !== article.slug).slice(0, 4);
   const related = await getRelated(article.slug);
 
-  // running figure numbers across the whole article ("No. 01", "No. 02", …)
+  // running figure numbers across the whole article ("No. 01", "No. 02", …),
+  // plus a resolved layout per figure block: an explicit `|hint` in the MDX wins,
+  // otherwise layouts rotate, seeded by the slug so each article opens differently.
+  const SOLO_LAYOUTS = ["wide", "right", "inset", "left"] as const;
+  const seed = [...article.slug].reduce((a, c) => a + c.charCodeAt(0), 0);
   let figCount = 0;
+  let soloCount = 0;
+  let pairCount = 0;
   const sections = article.sections.map((sec) => {
     const figStart = figCount;
     figCount += sec.images.length;
-    return { ...sec, figStart };
+    let soloLayout: (typeof SOLO_LAYOUTS)[number] | null = null;
+    let flip = false;
+    if (sec.images.length === 1) {
+      const hint = sec.images[0].layout;
+      soloLayout = hint && hint !== "flip" ? hint : SOLO_LAYOUTS[(seed + soloCount) % SOLO_LAYOUTS.length];
+      soloCount++;
+    } else if (sec.images.length > 1) {
+      flip = sec.images.some((im) => im.layout === "flip") || (seed + pairCount) % 2 === 1;
+      pairCount++;
+    }
+    return { ...sec, figStart, soloLayout, flip };
   });
   const figNo = (n: number) => String(n + 1).padStart(2, "0");
+  const soloClass = {
+    wide: "min-[900px]:-mx-[7%]",
+    right: "min-[700px]:w-[66%] min-[700px]:ml-auto",
+    left: "min-[700px]:w-[66%] min-[700px]:mr-auto",
+    inset: "min-[700px]:max-w-[78%] mx-auto",
+  } as const;
 
   return (
     <div className="pg relative">
@@ -98,8 +120,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       {para}
                     </p>
                   ))}
-                  {sec.images.length === 1 && (
-                    <figure data-reveal="scale" className="my-[clamp(28px,5vw,56px)] min-[900px]:-mx-[7%]">
+                  {sec.images.length === 1 && sec.soloLayout && (
+                    <figure data-reveal="scale" className={`my-[clamp(28px,5vw,56px)] ${soloClass[sec.soloLayout]}`}>
                       <div className="overflow-hidden rounded-[2px] bg-ph">
                         <Image
                           src={sec.images[0].src}
@@ -127,13 +149,19 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     </figure>
                   )}
                   {sec.images.length > 1 && (
-                    <div className="my-[clamp(28px,5vw,56px)] grid grid-cols-[7fr_5fr] max-[620px]:grid-cols-1 gap-[clamp(16px,2.6vw,32px)] items-start">
-                      {sec.images.map((im, k) => (
+                    <div
+                      className={`my-[clamp(28px,5vw,56px)] grid ${
+                        sec.flip ? "grid-cols-[5fr_7fr]" : "grid-cols-[7fr_5fr]"
+                      } max-[620px]:grid-cols-1 gap-[clamp(16px,2.6vw,32px)] items-start`}
+                    >
+                      {sec.images.map((im, k) => {
+                        const offset = sec.flip ? k % 2 === 0 : k % 2 === 1;
+                        return (
                         <figure
                           key={im.src}
                           data-reveal="scale"
-                          data-reveal-delay={k % 2 === 1 ? "140" : undefined}
-                          className={k % 2 === 1 ? "min-[621px]:mt-[clamp(36px,9vw,110px)]" : ""}
+                          data-reveal-delay={offset ? "140" : undefined}
+                          className={offset ? "min-[621px]:mt-[clamp(36px,9vw,110px)]" : ""}
                         >
                           <div className="overflow-hidden rounded-[2px] bg-ph">
                             <Image
@@ -162,7 +190,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                             </span>
                           </figcaption>
                         </figure>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                   {sec.pullQuote && (

@@ -9,10 +9,22 @@ const ROOT = process.cwd();
 const ARTICLES_DIR = path.join(ROOT, "content", "articles");
 const POSTERS_FILE = path.join(ROOT, "content", "posters", "posters.json");
 
+/**
+ * Optional layout hint, written after the caption in the MDX alt text:
+ * `![A caption|right](/articles/x/01.jpg)`.
+ * Solo images: wide (full-bleed breakout) | right | left (offset two-thirds) | inset (centered, quiet).
+ * Paired images: flip reverses the diptych (large column on the right).
+ * Without a hint, layouts rotate automatically, seeded per article.
+ */
+export type ImageLayout = "wide" | "right" | "left" | "inset" | "flip";
+
+const IMAGE_LAYOUTS: ImageLayout[] = ["wide", "right", "left", "inset", "flip"];
+
 export type SectionImage = {
   src: string;
   /** Alt text in the MDX doubles as the printed caption. */
   caption: string;
+  layout?: ImageLayout;
   width: number;
   height: number;
   blur: string;
@@ -25,7 +37,9 @@ export type ArticleSection = {
   pullQuote?: string;
 };
 
-type RawSection = Omit<ArticleSection, "images"> & { images: { src: string; caption: string }[] };
+type RawSection = Omit<ArticleSection, "images"> & {
+  images: { src: string; caption: string; layout?: ImageLayout }[];
+};
 
 export type Article = {
   slug: string;
@@ -118,7 +132,17 @@ function parseSections(body: string): RawSection[] {
     }
     const img = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
     if (img) {
-      current.images.push({ caption: img[1], src: img[2] });
+      let caption = img[1];
+      let layout: ImageLayout | undefined;
+      const bar = caption.lastIndexOf("|");
+      if (bar >= 0) {
+        const hint = caption.slice(bar + 1).trim() as ImageLayout;
+        if (IMAGE_LAYOUTS.includes(hint)) {
+          layout = hint;
+          caption = caption.slice(0, bar).trim();
+        }
+      }
+      current.images.push({ caption, layout, src: img[2] });
       continue;
     }
     current.paragraphs.push(line);

@@ -108,7 +108,7 @@ export default function Header({
                   onClick={() => setOpen(false)}
                   className="font-hanken text-[9.5px] font-semibold tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
                 >
-                  Terms of Service
+                  Terms & Conditions
                 </Link>
                 <Link
                   href="/privacy"

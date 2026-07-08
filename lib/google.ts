@@ -32,11 +32,16 @@ async function accessToken(): Promise<string> {
 
 const calendarId = () => encodeURIComponent(process.env.GOOGLE_CALENDAR_ID || "primary");
 
-/** London wall-clock time for a date+slot, as a UTC Date (handles GMT/BST). */
+/**
+ * London wall-clock time for a date+slot, as a UTC Date (handles GMT/BST).
+ * Both renderings are parsed with the same local-time rules, so the offset
+ * is correct regardless of the server's own timezone.
+ */
 function slotToUtc(date: string, time: string): Date {
   const guess = new Date(`${date}T${time}:00Z`);
-  const inLondon = new Date(guess.toLocaleString("en-US", { timeZone: MEETING_TIMEZONE }));
-  const offsetMs = inLondon.getTime() - guess.getTime();
+  const asUtc = new Date(guess.toLocaleString("en-US", { timeZone: "UTC" }));
+  const asLondon = new Date(guess.toLocaleString("en-US", { timeZone: MEETING_TIMEZONE }));
+  const offsetMs = asLondon.getTime() - asUtc.getTime();
   return new Date(guess.getTime() - offsetMs);
 }
 

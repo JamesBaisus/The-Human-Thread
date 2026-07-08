@@ -44,6 +44,37 @@ Short version: drop a folder in `content/_inbox/<slug>/` with screenshots + a co
 ask Claude Code to extract it into an article/poster entry, review, then
 `git push` — Vercel redeploys automatically.
 
+## Backend: booking & newsletter
+
+Two API routes power the interactive features (they run as Netlify Functions —
+no separate server). Both degrade to a clearly-labelled **demo mode** until
+their environment variables are set, so the site never breaks.
+
+**Meeting booking → Google Calendar + Meet** (`/api/book`, `/api/availability`)
+When a visitor confirms a slot, an event is created on the owner's Google
+Calendar with an auto-generated Google Meet link; Google emails the invitation
+to both sides. Picking a day also queries the calendar's free/busy status and
+greys out already-taken slots. One-time setup (owner's Google account):
+
+1. [console.cloud.google.com](https://console.cloud.google.com) → new project → enable **Google Calendar API**
+2. OAuth consent screen → External → add the owner's Gmail as a test user
+3. Credentials → **OAuth client ID** (Web application) with redirect URI `https://developers.google.com/oauthplayground`
+4. [OAuth Playground](https://developers.google.com/oauthplayground) → gear icon →
+   "Use your own OAuth credentials" → authorize scopes
+   `https://www.googleapis.com/auth/calendar.events` and `.../auth/calendar.freebusy`
+   → exchange for tokens → copy the **refresh token**
+5. In Netlify → Site → Environment variables, set `GOOGLE_CLIENT_ID`,
+   `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN` (and optionally
+   `GOOGLE_CALENDAR_ID`), then redeploy.
+
+**Newsletter** (`/api/subscribe`)
+Set `BUTTONDOWN_API_KEY` ([buttondown.com](https://buttondown.com) → Settings →
+API) — the owner writes and sends the monthly letter from the Buttondown
+dashboard. Mailchimp works as an alternative via `MAILCHIMP_API_KEY` +
+`MAILCHIMP_AUDIENCE_ID`. Subscribers are collected automatically either way.
+
+See [.env.example](.env.example) for the full list.
+
 ## Develop
 
 ```bash

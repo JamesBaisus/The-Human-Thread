@@ -1,11 +1,12 @@
 import { site } from "@/content/site";
+import SimpleAmp from "@/components/SimpleAmp";
 
 function Track({ hidden = false }: { hidden?: boolean }) {
   return (
     <span className="mq" aria-hidden={hidden || undefined}>
       {site.marqueeNames.map((name) => (
         <span key={name}>
-          {name}
+          <SimpleAmp text={name} />
           <span className="mq-dot" />
         </span>
       ))}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { site } from "@/content/site";
 import { getArticle, getArticles, getRelated } from "@/lib/content";
+import SimpleAmp from "@/components/SimpleAmp";
 
 export async function generateStaticParams() {
   return (await getArticles()).map((a) => ({ slug: a.slug }));
@@ -101,7 +102,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               className="font-news italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(22px,3vw,32px)] max-w-[60ch]"
               style={{ color: article.accent }}
             >
-              {article.deck}
+              <SimpleAmp text={article.deck} />
             </p>
 
             <div className="mt-[clamp(26px,4vw,44px)]">
@@ -143,7 +144,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         </span>
                         <span className="flex-1 h-px bg-hairline" />
                         <span className="font-playfair italic text-[13.5px] leading-[1.5] text-muted text-right max-w-[46ch]">
-                          {sec.images[0].caption}
+                          <SimpleAmp text={sec.images[0].caption} />
                         </span>
                       </figcaption>
                     </figure>
@@ -186,7 +187,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                               <span className="flex-1 h-px bg-hairline" />
                             </div>
                             <span className="font-playfair italic text-[13px] leading-[1.5] text-muted">
-                              {im.caption}
+                              <SimpleAmp text={im.caption} />
                             </span>
                           </figcaption>
                         </figure>
@@ -200,7 +201,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       style={{ borderLeftColor: article.accent }}
                     >
                       <span className="font-playfair italic text-[clamp(24px,3vw,38px)] leading-[1.16] text-ink">
-                        {sec.pullQuote}
+                        <SimpleAmp text={sec.pullQuote} />
                       </span>
                     </blockquote>
                   )}

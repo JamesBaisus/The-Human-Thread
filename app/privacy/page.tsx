@@ -10,14 +10,14 @@ const sections = [
   {
     h: "What we collect",
     ps: [
-      "We collect only what you choose to give us: your email address if you join the newsletter; your name, email, and the material you send if you submit through the Inquire page; and your name, email, and chosen time if you book an editorial meeting.",
+      "We collect only what you choose to give us: your name, email, and the material you send if you submit through the Inquire page; and your name, email, and chosen time if you book an editorial meeting.",
       "Like nearly every website, our hosting provider also processes basic technical logs (such as IP addresses and browser type) to serve pages securely and reliably.",
     ],
   },
   {
     h: "How we use it",
     ps: [
-      "Newsletter addresses are used for one thing: sending the newsletter. Submission details are used to review your material and to reply to you. Meeting details are used to confirm and hold the conversation you requested.",
+      "Submission details are used to review your material and to reply to you. Meeting details are used to confirm and hold the conversation you requested.",
       "We do not sell, rent, or trade your personal information. Ever.",
     ],
   },
@@ -36,13 +36,13 @@ const sections = [
   {
     h: "Retention",
     ps: [
-      "We keep newsletter addresses until you unsubscribe, and submission or meeting correspondence for as long as needed to work together on a story. You can ask us to delete your information at any time.",
+      "We keep submission and meeting correspondence for as long as needed to work together on a story. You can ask us to delete your information at any time.",
     ],
   },
   {
     h: "Your choices",
     ps: [
-      "Every newsletter includes a way to unsubscribe. You may also ask us at any time what information we hold about you, ask us to correct it, or ask us to delete it — via the Inquire page or through our Instagram, @thehumanthread_ae.",
+      "You may ask us at any time what information we hold about you, ask us to correct it, or ask us to delete it — via the Inquire page or through our Instagram, @thehumanthread_ae.",
     ],
   },
   {

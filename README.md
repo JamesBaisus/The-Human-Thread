@@ -14,7 +14,7 @@ All content lives **in the repo** as MDX/JSON — no CMS, no database.
 
 | Route | View |
 | --- | --- |
-| `/` | Single-page landing: hero, editorial carousel, marquee, posters gallery (+lightbox), category sections (`#cat-<slug>`), about (`#about`), dark feature band, newsletter |
+| `/` | Single-page landing: hero, editorial carousel, marquee, posters gallery (+lightbox), category sections (`#cat-<slug>`), about (`#about`), dark feature band |
 | `/article/[slug]` | Article reader |
 | `/catalogue?filter=<category>` | Full article catalogue with category chips |
 | `/inquire` | Submission form |
@@ -44,11 +44,11 @@ Short version: drop a folder in `content/_inbox/<slug>/` with screenshots + a co
 ask Claude Code to extract it into an article/poster entry, review, then
 `git push` — Vercel redeploys automatically.
 
-## Backend: booking & newsletter
+## Backend: meeting booking
 
-Two API routes power the interactive features (they run as Netlify Functions —
-no separate server). Both degrade to a clearly-labelled **demo mode** until
-their environment variables are set, so the site never breaks.
+Two API routes power the booking feature (they run as Netlify Functions —
+no separate server). They degrade to a clearly-labelled **demo mode** until
+the environment variables are set, so the site never breaks.
 
 **Meeting booking → Google Calendar + Meet** (`/api/book`, `/api/availability`)
 When a visitor confirms a slot, an event is created on the owner's Google
@@ -66,12 +66,6 @@ greys out already-taken slots. One-time setup (owner's Google account):
 5. In Netlify → Site → Environment variables, set `GOOGLE_CLIENT_ID`,
    `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN` (and optionally
    `GOOGLE_CALENDAR_ID`), then redeploy.
-
-**Newsletter** (`/api/subscribe`)
-Set `BUTTONDOWN_API_KEY` ([buttondown.com](https://buttondown.com) → Settings →
-API) — the owner writes and sends the monthly letter from the Buttondown
-dashboard. Mailchimp works as an alternative via `MAILCHIMP_API_KEY` +
-`MAILCHIMP_AUDIENCE_ID`. Subscribers are collected automatically either way.
 
 See [.env.example](.env.example) for the full list.
 

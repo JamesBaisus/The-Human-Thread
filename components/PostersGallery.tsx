@@ -158,10 +158,14 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                     {cp}
                   </p>
                 ))}
-                <p className="font-hanken text-[13.5px] text-[#7fb0e6] mt-[2px] mb-4">{cur.hashtags}</p>
-                <p className="font-news italic text-[14px] text-[#cfcfcf]">
-                  <SimpleAmp text={cur.note} />
-                </p>
+                {cur.hashtags && (
+                  <p className="font-hanken text-[13.5px] text-[#7fb0e6] mt-[2px] mb-4">{cur.hashtags}</p>
+                )}
+                {cur.note && (
+                  <p className="font-news italic text-[14px] text-[#cfcfcf]">
+                    <SimpleAmp text={cur.note} />
+                  </p>
+                )}
               </div>
               <div className="border-t border-[rgba(255,255,255,.1)] py-[14px] px-[18px]">
                 <a

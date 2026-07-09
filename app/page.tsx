@@ -6,7 +6,6 @@ import Carousel from "@/components/Carousel";
 import Marquee from "@/components/Marquee";
 import PostersGallery from "@/components/PostersGallery";
 import ArticleCard from "@/components/ArticleCard";
-import Newsletter from "@/components/Newsletter";
 
 export default async function Home() {
   const [featured, latest, sections, posters, slides] = await Promise.all([
@@ -147,8 +146,6 @@ export default async function Home() {
           </div>
         </div>
       </Link>
-
-      <Newsletter />
     </div>
   );
 }

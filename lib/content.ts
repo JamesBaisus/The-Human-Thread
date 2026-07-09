@@ -265,11 +265,13 @@ export async function getRelated(slug: string, count = 3): Promise<{ no: string;
 async function loadPosters(): Promise<Poster[]> {
   const raw = JSON.parse(fs.readFileSync(POSTERS_FILE, "utf8")) as Omit<Poster, "blurs">[];
   for (const p of raw) {
-    for (const field of ["slug", "category", "title", "images", "aspectRatio", "captions", "date"] as const) {
+    // captions/hashtags/note are optional — self-captioned poster artwork needs none
+    for (const field of ["slug", "category", "title", "images", "aspectRatio", "date"] as const) {
       if (!p[field] || (Array.isArray(p[field]) && p[field].length === 0)) {
         throw new Error(`content/posters/posters.json: poster "${p.slug ?? "?"}" missing "${field}"`);
       }
     }
+    p.captions ??= [];
   }
   const posters = await Promise.all(
     raw.map(async (p) => ({ ...p, blurs: await Promise.all(p.images.map(blurFor)) }))

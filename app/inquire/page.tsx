@@ -14,7 +14,7 @@ export default function InquirePage() {
         <Link href="/#top" className="navlink cursor-pointer font-hanken text-[11px] tracking-[.2em] uppercase text-muted">
           ← Back to the issue
         </Link>
-        <div className="font-hanken text-[11px] font-semibold tracking-[.3em] uppercase text-accent mt-[clamp(26px,3.4vw,40px)] mb-4">
+        <div className="font-hanken text-[11px] font-semibold tracking-[.3em] uppercase text-ink mt-[clamp(26px,3.4vw,40px)] mb-4">
           Arrange an online meeting
         </div>
         <h1 className="font-playfair font-normal text-[clamp(48px,8vw,104px)] leading-[.9] tracking-[-.015em]">

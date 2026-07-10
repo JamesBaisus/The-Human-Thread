@@ -78,10 +78,10 @@ export const site = {
   ],
 
   values: [
-    { no: "01", title: "Human first", text: "Every story starts with a person, never a product." },
-    { no: "02", title: "Slow media", text: "Fewer, longer, better. We would rather be right than first." },
-    { no: "03", title: "Regional pride", text: "Local voices, told with the depth the world reserves for others." },
-    { no: "04", title: "Beauty with meaning", text: "Aesthetics are welcome — emptiness is not." },
+    { title: "Human first", text: "Every story starts with a person, never a product." },
+    { title: "Slow media", text: "Fewer, longer, better. We would rather be right than first." },
+    { title: "Regional pride", text: "Local voices, told with the depth the world reserves for others." },
+    { title: "Beauty with meaning", text: "Aesthetics are welcome — emptiness is not." },
   ],
 } as const;
 

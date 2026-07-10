@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import SimpleAmp from "@/components/SimpleAmp";
 import type { Article } from "@/lib/content";
 
 export default function Hero({ featured, latest }: { featured: Article; latest: Article[] }) {
@@ -8,7 +9,7 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
       <div className="grid grid-cols-[1fr_300px] max-[1080px]:grid-cols-[1fr_260px] max-[780px]:grid-cols-1 gap-[clamp(24px,3.4vw,64px)] items-start">
         <Link href={`/article/${featured.slug}`} className="herofeat cursor-pointer relative text-left block">
           <div className="flex items-center gap-3 mb-[clamp(12px,1.4vw,16px)]">
-            <span className="font-hanken text-[10px] font-bold tracking-[.28em] uppercase text-accent">Featured</span>
+            <span className="font-hanken text-[10px] font-bold tracking-[.28em] uppercase text-ink">Featured</span>
             <span className="flex-1 h-px bg-hairline" />
           </div>
           <div data-reveal="scale" className="heroimg relative overflow-hidden w-full max-w-[330px] mx-auto bg-ph">
@@ -31,7 +32,7 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
             data-reveal=""
             className="font-playfair font-medium text-[clamp(28px,3.1vw,42px)] leading-[1.06] tracking-[-.005em] mt-[14px] text-ink [text-wrap:balance] max-w-[14ch]"
           >
-            {featured.title}
+            <SimpleAmp text={featured.title} />
           </h1>
         </Link>
 
@@ -54,7 +55,9 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
                 <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
                   {a.category}
                 </span>
-                <h3 className="font-playfair font-medium text-[20px] leading-[1.16] mt-[10px] text-ink">{a.title}</h3>
+                <h3 className="font-playfair font-medium text-[20px] leading-[1.16] mt-[10px] text-ink">
+                  <SimpleAmp text={a.title} />
+                </h3>
               </div>
             </Link>
           ))}

@@ -82,7 +82,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                     {p.category}
                   </span>
                   <div className="font-playfair font-medium text-[21px] leading-[1.08] text-white mt-[10px]">
-                    {p.title}
+                    <SimpleAmp text={p.title} />
                   </div>
                 </div>
               </div>
@@ -152,7 +152,9 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto py-5 px-[18px]">
-                <div className="font-playfair font-medium text-[24px] leading-[1.08] text-white mb-4">{cur.title}</div>
+                <div className="font-playfair font-medium text-[24px] leading-[1.08] text-white mb-4">
+                  <SimpleAmp text={cur.title} />
+                </div>
                 {cur.captions.map((cp, k) => (
                   <p key={k} className="font-news text-[14px] leading-[1.62] text-[#d6d6d6] mb-[14px]">
                     {cp}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SimpleAmp from "@/components/SimpleAmp";
 
 export type LegalSection = { h: string; ps: string[] };
 
@@ -21,10 +22,12 @@ export default function LegalDoc({
         <Link href="/#top" className="navlink cursor-pointer font-hanken text-[11px] tracking-[.2em] uppercase text-muted">
           ← Back to the issue
         </Link>
-        <div className="font-hanken text-[11px] font-semibold tracking-[.3em] uppercase text-accent mt-[clamp(26px,3.4vw,40px)] mb-4">
+        <div className="font-hanken text-[11px] font-semibold tracking-[.3em] uppercase text-ink mt-[clamp(26px,3.4vw,40px)] mb-4">
           {eyebrow}
         </div>
-        <h1 className="font-playfair font-normal text-[clamp(38px,6vw,72px)] leading-[.95] tracking-[-.015em]">{title}</h1>
+        <h1 className="font-playfair font-normal text-[clamp(38px,6vw,72px)] leading-[.95] tracking-[-.015em]">
+          <SimpleAmp text={title} />
+        </h1>
         <p className="font-hanken text-[10px] tracking-[.2em] uppercase text-muted-2 mt-5">Last updated · {updated}</p>
         <p className="font-playfair italic text-[clamp(17px,1.9vw,22px)] leading-[1.5] text-body-1 mt-6 max-w-[52ch]">
           {intro}

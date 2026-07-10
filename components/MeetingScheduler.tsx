@@ -45,7 +45,7 @@ export default function MeetingScheduler() {
         <div className="font-playfair italic text-[clamp(30px,4vw,52px)] leading-[1.16] text-ink mb-[18px] [text-wrap:balance]">
           Your thread is on the calendar.
         </div>
-        <p className="font-hanken text-[11px] font-semibold tracking-[.2em] uppercase text-accent mb-[18px]">
+        <p className="font-hanken text-[11px] font-semibold tracking-[.2em] uppercase text-ink mb-[18px]">
           {dayLabel(selDate)} · {timeLabel(selTime)} {tz} · Online video call
         </p>
         {meetLink ? (
@@ -125,7 +125,7 @@ export default function MeetingScheduler() {
       <div className="grid grid-cols-[minmax(220px,280px)_1fr_minmax(180px,220px)] max-[900px]:grid-cols-1 gap-[clamp(26px,4vw,54px)]">
         {/* meeting info */}
         <div data-reveal="">
-          <div className="font-hanken text-[10px] font-bold tracking-[.28em] uppercase text-accent mb-[14px]">
+          <div className="font-hanken text-[10px] font-bold tracking-[.28em] uppercase text-ink mb-[14px]">
             Editorial meetings
           </div>
           <h2 className="font-playfair font-medium text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-ink mb-5">
@@ -152,7 +152,7 @@ export default function MeetingScheduler() {
               </div>
               <div className="font-playfair font-medium text-[18px] leading-[1.3] text-ink">
                 {dayLabel(selDate)}
-                {selTime && <span className="text-accent"> · {timeLabel(selTime)}</span>}
+                {selTime && <span> · {timeLabel(selTime)}</span>}
               </div>
             </div>
           )}

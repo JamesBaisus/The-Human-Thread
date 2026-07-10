@@ -93,13 +93,12 @@ export default async function Home() {
       </section>
       <section className="bg-ink text-ondark py-[clamp(46px,6vw,84px)] px-[clamp(18px,4vw,54px)]">
         <div className="max-w-[1280px] mx-auto">
-          <div className="font-hanken text-[11px] font-semibold tracking-[.28em] uppercase text-accent mb-8">
+          <div className="font-hanken text-[11px] font-semibold tracking-[.28em] uppercase text-ondark mb-8">
             What we stand for
           </div>
           <div className="grid grid-cols-4 max-[820px]:grid-cols-2 max-[480px]:grid-cols-1 gap-[clamp(20px,2.4vw,40px)]">
             {site.values.map((v) => (
-              <div key={v.no} data-reveal="" className="border-t border-[rgba(245,245,245,.28)] pt-5">
-                <div className="font-playfair text-[34px] text-accent leading-none mb-[14px]">{v.no}</div>
+              <div key={v.title} data-reveal="" className="border-t border-[rgba(245,245,245,.28)] pt-5">
                 <div className="font-playfair font-semibold text-[24px] mb-[10px]">{v.title}</div>
                 <p className="text-[15px] leading-[1.6] text-[rgba(245,245,245,.72)]">{v.text}</p>
               </div>
@@ -112,15 +111,8 @@ export default async function Home() {
         href={`/article/${coverBand.slug}`}
         className="darkband block cursor-pointer relative py-[clamp(50px,8vw,110px)] px-[clamp(18px,4vw,54px)] bg-ink text-ondark overflow-hidden mt-[clamp(20px,3vw,36px)]"
       >
-        <div
-          data-parallax="0.12"
-          data-parallax-base="translateY(-50%)"
-          className="absolute -right-[3%] top-1/2 -translate-y-1/2 font-playfair text-[clamp(180px,32vw,440px)] leading-[.7] text-[rgba(245,245,245,.055)] font-black pointer-events-none"
-        >
-          13
-        </div>
         <div className="relative max-w-[1280px] mx-auto">
-          <div data-reveal="" className="font-hanken text-[11px] font-semibold tracking-[.32em] uppercase text-accent mb-5">
+          <div data-reveal="" className="font-hanken text-[11px] font-semibold tracking-[.32em] uppercase text-ondark mb-5">
             {site.coverBand.kicker} · {coverBand.category}
           </div>
           <h2

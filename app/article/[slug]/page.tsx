@@ -66,10 +66,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           >
             ← All articles
           </Link>
-          <div
-            className="font-hanken text-[10.5px] font-semibold tracking-[.22em] uppercase"
-            style={{ color: article.accent }}
-          >
+          <div className="font-hanken text-[10.5px] font-semibold tracking-[.22em] uppercase text-ink">
             {article.category} · The Human Thread
           </div>
         </div>
@@ -82,7 +79,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               data-reveal=""
               className="font-playfair font-normal text-[clamp(34px,4.4vw,58px)] leading-[1.02] tracking-[-.01em] mb-[clamp(22px,3vw,34px)] [text-wrap:balance]"
             >
-              {article.title}
+              <SimpleAmp text={article.title} />
             </h1>
             <div data-reveal="scale" className="relative overflow-hidden bg-ph">
               <Image
@@ -99,8 +96,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
             <p
               data-reveal=""
-              className="font-news italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(22px,3vw,32px)] max-w-[60ch]"
-              style={{ color: article.accent }}
+              className="font-news italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(22px,3vw,32px)] max-w-[60ch] text-ink"
             >
               <SimpleAmp text={article.deck} />
             </p>
@@ -136,10 +132,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         />
                       </div>
                       <figcaption className="flex items-center gap-4 mt-[14px]">
-                        <span
-                          className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap"
-                          style={{ color: article.accent }}
-                        >
+                        <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
                           No. {figNo(sec.figStart)}
                         </span>
                         <span className="flex-1 h-px bg-hairline" />
@@ -178,10 +171,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                           </div>
                           <figcaption className="mt-3">
                             <div className="flex items-center gap-3 mb-[6px]">
-                              <span
-                                className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap"
-                                style={{ color: article.accent }}
-                              >
+                              <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
                                 No. {figNo(sec.figStart + k)}
                               </span>
                               <span className="flex-1 h-px bg-hairline" />
@@ -226,7 +216,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   href={`/article/${r.article.slug}`}
                   className="rellink flex items-center gap-[clamp(16px,3vw,28px)] py-[clamp(18px,2.6vw,26px)] border-t border-hairline cursor-pointer"
                 >
-                  <div className="flex-none font-playfair italic text-[clamp(20px,2.4vw,30px)] text-accent min-w-[2.2ch] leading-none">
+                  <div className="flex-none font-playfair italic text-[clamp(20px,2.4vw,30px)] text-ink min-w-[2.2ch] leading-none">
                     {r.no}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -234,7 +224,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       {r.article.category}
                     </div>
                     <div className="font-playfair font-medium text-[clamp(20px,2.4vw,29px)] leading-[1.1] text-ink">
-                      {r.article.title}
+                      <SimpleAmp text={r.article.title} />
                     </div>
                   </div>
                   <div className="relarrow flex-none font-hanken text-[16px] text-ink">→</div>
@@ -283,9 +273,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     {a.category}
                   </span>
                   <h3 className="font-playfair font-medium text-[19px] leading-[1.14] mt-2 mb-[3px] text-ink">
-                    {a.title}
+                    <SimpleAmp text={a.title} />
                   </h3>
-                  <p className="font-news text-[12.5px] leading-[1.4] text-muted">{a.role}</p>
+                  <p className="font-news text-[12.5px] leading-[1.4] text-muted">
+                    <SimpleAmp text={a.role} />
+                  </p>
                 </div>
               </Link>
             ))}

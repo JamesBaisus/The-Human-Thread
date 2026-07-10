@@ -33,7 +33,7 @@ export default function Carousel({ slides }: { slides: CarouselSlide[] }) {
       <div className="max-w-[1280px] mx-auto px-[clamp(18px,4vw,54px)]">
         <div className="flex items-end justify-between gap-6 flex-wrap mb-[clamp(28px,3.6vw,46px)]">
           <div data-reveal="left" className="max-w-[34ch]">
-            <div className="font-hanken text-[10px] font-bold tracking-[.32em] uppercase text-accent mb-[14px]">
+            <div className="font-hanken text-[10px] font-bold tracking-[.32em] uppercase text-ink mb-[14px]">
               {site.carousel.eyebrow}
             </div>
             <h2 className="font-playfair font-normal text-[clamp(32px,4.6vw,60px)] leading-[.98] tracking-[-.01em] text-ink">

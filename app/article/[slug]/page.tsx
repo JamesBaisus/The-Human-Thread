@@ -236,19 +236,19 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <aside className="sticky top-[132px] max-[780px]:static">
             <div className="mb-[30px]">
               <h4 className="font-playfair font-medium text-[24px] mb-[14px] text-ink">Follow Us</h4>
-              <a
-                href={site.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="The Human Thread on Instagram"
-                className="cursor-pointer flex items-center justify-center h-[62px] bg-soft rounded-[2px] text-body-2"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
+              <div className="bg-soft rounded-[2px] px-4 py-5 grid grid-cols-2 gap-x-4 gap-y-3">
+                {site.socials.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inqbtn cursor-pointer text-center font-hanken text-[10px] font-bold tracking-[.18em] uppercase text-ink"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
             </div>
             <h4 className="font-playfair font-medium text-[24px] mb-4 text-ink">The Latest</h4>
             {sidebar.map((a) => (

@@ -49,7 +49,7 @@ async function accentFromCover(file: File): Promise<string> {
   }
 }
 
-type Summary = { slug: string; name: string; title: string; category: string; date: string; featured: boolean };
+type Summary = { slug: string; name: string; title: string; category: string; date: string; featured: boolean; hidden: boolean };
 
 export default function AdminPanel() {
   const [password, setPassword] = useState("");
@@ -115,6 +115,29 @@ export default function AdminPanel() {
       setTab("add"); setState("idle"); setMessage(""); setManageMsg("");
     } catch {
       setManageMsg("Could not open the article.");
+    }
+  };
+
+  const toggleHidden = async (slug: string, hidden: boolean) => {
+    setManageMsg(hidden ? "Hiding…" : "Unhiding…");
+    try {
+      const res = await fetch("/api/admin/visibility", {
+        method: "POST",
+        headers: { ...authHeaders, "Content-Type": "application/json" },
+        body: JSON.stringify({ slug, hidden }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setManageMsg(friendlyError(data.error)); return; }
+      setArticles((list) => (list ?? []).map((a) => (a.slug === slug ? { ...a, hidden } : a)));
+      setManageMsg(
+        data.demo
+          ? "Dry run — GitHub not connected, nothing changed."
+          : hidden
+            ? "Hidden. The site is rebuilding — the article disappears in about two minutes."
+            : "Unhidden. The site is rebuilding — the article returns in about two minutes."
+      );
+    } catch {
+      setManageMsg("Could not change visibility.");
     }
   };
 
@@ -223,11 +246,12 @@ export default function AdminPanel() {
           {manageMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{manageMsg}</p>}
           {articles?.map((a) => (
             <div key={a.slug} className="flex items-center gap-4 py-[14px] border-b border-hairline">
-              <div className="flex-1 min-w-0">
+              <div className={`flex-1 min-w-0 ${a.hidden ? "opacity-45" : ""}`}>
                 <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{a.title}</div>
                 <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {a.name} · {a.category} · {a.date}
                   {a.featured && <span className="ml-2 bg-ink text-ondark rounded-[2px] px-[6px] py-[2px]">Featured</span>}
+                  {a.hidden && <span className="ml-2 border border-hairline text-muted rounded-[2px] px-[6px] py-[2px]">Hidden</span>}
                 </div>
               </div>
               <button
@@ -236,6 +260,13 @@ export default function AdminPanel() {
                 className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
               >
                 Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleHidden(a.slug, !a.hidden)}
+                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+              >
+                {a.hidden ? "Unhide" : "Hide"}
               </button>
               <button
                 type="button"

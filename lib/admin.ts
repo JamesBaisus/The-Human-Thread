@@ -35,6 +35,7 @@ export function parseArticleFile(filename: string, text: string) {
     accent: fm(frontmatter, "accent"),
     date: fm(frontmatter, "date"),
     featured: fm(frontmatter, "featured") === "true",
+    hidden: fm(frontmatter, "hidden") === "true",
     body,
   };
 }
@@ -63,6 +64,7 @@ export function buildMdx(f: {
   readTime: string;
   accent: string;
   featured: boolean;
+  hidden?: boolean;
   date: string;
   body: string;
 }): string {
@@ -76,7 +78,7 @@ deck: "${f.deck.replace(/"/g, "'")}"
 readTime: ${f.readTime}
 accent: "${f.accent}"
 cover: /articles/${f.slug}/cover.jpg
-${f.featured ? "featured: true\n" : ""}date: ${f.date}
+${f.featured ? "featured: true\n" : ""}${f.hidden ? "hidden: true\n" : ""}date: ${f.date}
 ---
 
 ${f.body}

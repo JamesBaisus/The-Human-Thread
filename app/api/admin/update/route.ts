@@ -73,6 +73,7 @@ export async function POST(request: Request) {
       readTime: `${Math.max(2, Math.round(words / 200))} min read`,
       accent: /^#[0-9a-fA-F]{6}$/.test(accentIn) ? accentIn : existing.accent || site.accent,
       featured,
+      hidden: existing.hidden,
       date: existing.date || new Date().toISOString().slice(0, 10),
       body,
     });

@@ -56,6 +56,7 @@ export type Article = {
   /** Tiny inline blur-up placeholder (data URL), generated at build time. */
   coverBlur: string;
   featured: boolean;
+  hidden: boolean;
   date: string;
   sections: ArticleSection[];
 };
@@ -201,13 +202,17 @@ async function loadArticles(): Promise<Article[]> {
         coverHeight: dims.height,
         coverBlur: await blurFor(String(data.cover)),
         featured: Boolean(data.featured),
+        hidden: Boolean(data.hidden),
         date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
         sections: await enrichSections(parseSections(content)),
       } satisfies Article;
     })
   );
-  articles.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug)));
-  return articles;
+  // Articles marked `hidden: true` in frontmatter (admin panel hide toggle)
+  // vanish from the whole public site: listings, ordering, and their URL.
+  const visible = articles.filter((a) => !a.hidden);
+  visible.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug)));
+  return visible;
 }
 
 let _articles: Promise<Article[]> | null = null;

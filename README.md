@@ -74,7 +74,9 @@ See [.env.example](.env.example) for the full list.
 A hidden, password-protected editor page for publishing articles without the
 inbox workflow. Inputs: author, role, title, category, deck (optional), cover
 image, up to six article pictures, content, and a **featured** toggle (which
-automatically un-features the current hero in the same commit).
+automatically un-features the current hero in the same commit). The Manage
+view supports **edit**, **hide/unhide** (article vanishes from the public
+site but stays in the repo, restorable any time), and **remove**.
 
 Publishing does not write to the server — it **commits the MDX + images to the
 GitHub repo** via the API, which triggers the normal rebuild; the article is

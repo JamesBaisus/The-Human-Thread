@@ -69,6 +69,24 @@ greys out already-taken slots. One-time setup (owner's Google account):
 
 See [.env.example](.env.example) for the full list.
 
+## Admin panel (/admin)
+
+A hidden, password-protected editor page for publishing articles without the
+inbox workflow. Inputs: author, role, title, category, deck (optional), cover
+image, up to six article pictures, content, and a **featured** toggle (which
+automatically un-features the current hero in the same commit).
+
+Publishing does not write to the server — it **commits the MDX + images to the
+GitHub repo** via the API, which triggers the normal rebuild; the article is
+live in ~2 minutes with blur placeholders, image layouts, and ordering handled
+by the existing pipeline. Images are downscaled in the browser before upload,
+and the per-article accent colour is derived from the cover automatically.
+
+Setup (env vars in the host): `ADMIN_PASSWORD` (what the editor types in),
+`GITHUB_TOKEN` (fine-grained PAT, Contents read/write on this repo only),
+optional `GITHUB_REPO` / `GITHUB_BRANCH`. Without them the panel runs in a
+dry-run mode that validates and previews but publishes nothing.
+
 ## Develop
 
 ```bash

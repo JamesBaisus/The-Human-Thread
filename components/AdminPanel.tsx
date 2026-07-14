@@ -63,7 +63,7 @@ type Summary = { slug: string; name: string; title: string; category: string; da
 
 export default function AdminPanel() {
   const [password, setPassword] = useState("");
-  const [tab, setTab] = useState<"add" | "manage" | "poster">("add");
+  const [tab, setTab] = useState<"add" | "manage" | "poster" | "editorial">("add");
 
   // form state (shared by add & edit)
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
@@ -81,7 +81,7 @@ export default function AdminPanel() {
   const [message, setMessage] = useState("");
   const [doneSlug, setDoneSlug] = useState("");
   const [doneVerb, setDoneVerb] = useState("Published");
-  const [doneIsPoster, setDoneIsPoster] = useState(false);
+  const [doneKind, setDoneKind] = useState<"article" | "poster" | "editorial">("article");
 
   // manage state
   const [articles, setArticles] = useState<Summary[] | null>(null);
@@ -94,6 +94,11 @@ export default function AdminPanel() {
   const [pCaptions, setPCaptions] = useState("");
   const [pHashtags, setPHashtags] = useState("");
   const [pNote, setPNote] = useState("");
+
+  // editorial form state
+  const [eTitle, setETitle] = useState("");
+  const [eEyebrow, setEEyebrow] = useState("");
+  const [eImages, setEImages] = useState<File[]>([]);
 
   const authHeaders = { "x-admin-password": password };
 
@@ -204,7 +209,7 @@ export default function AdminPanel() {
       if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
       setDoneSlug(data.slug ?? "");
       setDoneVerb(editingSlug ? "Updated" : "Published");
-      setDoneIsPoster(false);
+      setDoneKind("article");
       setState(data.demo ? "demo" : "done");
       setArticles(null);
     } catch {
@@ -238,7 +243,36 @@ export default function AdminPanel() {
       if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
       setDoneSlug(data.slug ?? "");
       setDoneVerb("Added");
-      setDoneIsPoster(true);
+      setDoneKind("poster");
+      setState(data.demo ? "demo" : "done");
+    } catch {
+      setState("error");
+      setMessage("Something went wrong — please try again.");
+    }
+  };
+
+  const resetEditorial = () => {
+    setETitle(""); setEEyebrow(""); setEImages([]);
+  };
+
+  const submitEditorial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state === "busy") return;
+    if (!eImages.length) { setState("error"); setMessage("Please attach at least one carousel image."); return; }
+    setState("busy");
+    setMessage("");
+    try {
+      const fd = new FormData();
+      fd.set("title", eTitle);
+      fd.set("eyebrow", eEyebrow);
+      for (const img of eImages.slice(0, 12)) fd.append("images", await resizeImage(img), img.name);
+
+      const res = await fetch("/api/admin/editorials", { method: "POST", headers: authHeaders, body: fd });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; demo?: boolean; slug?: string; error?: string };
+      if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
+      setDoneSlug(data.slug ?? "");
+      setDoneVerb("Added");
+      setDoneKind("editorial");
       setState(data.demo ? "demo" : "done");
     } catch {
       setState("error");
@@ -257,18 +291,22 @@ export default function AdminPanel() {
       <div className="border-t border-hairline py-[clamp(40px,6vw,72px)] text-center">
         <div className="font-playfair italic text-[clamp(28px,3.6vw,44px)] leading-[1.16] text-ink mb-[18px]">
           {state === "done"
-            ? doneIsPoster ? `${doneVerb} — the poster is on its way.` : `${doneVerb} — the story is on its way.`
+            ? doneKind === "poster" ? `${doneVerb} — the poster is on its way.`
+              : doneKind === "editorial" ? `${doneVerb} — the editorial is on its way.`
+              : `${doneVerb} — the story is on its way.`
             : "Dry run complete."}
         </div>
         <p className="text-[15px] leading-[1.6] text-body-1 max-w-[52ch] mx-auto mb-6">
           {state === "done"
-            ? doneIsPoster
+            ? doneKind === "poster"
               ? "The poster was committed to the repository. Hosting is rebuilding now — it appears in the cover gallery in about two minutes."
-              : `The change was committed to the repository. Hosting is rebuilding now — see it at /article/${doneSlug} in about two minutes.`
+              : doneKind === "editorial"
+                ? "The editorial was committed to the repository. Hosting is rebuilding now — its card appears in the editorials band in about two minutes."
+                : `The change was committed to the repository. Hosting is rebuilding now — see it at /article/${doneSlug} in about two minutes.`
             : "GitHub is not connected yet (GITHUB_TOKEN missing), so nothing was committed. The form and validation all work."}
         </p>
         <button
-          onClick={() => { doneIsPoster ? resetPoster() : resetForm(); setState("idle"); }}
+          onClick={() => { doneKind === "poster" ? resetPoster() : doneKind === "editorial" ? resetEditorial() : resetForm(); setState("idle"); }}
           className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[13px] px-[26px] rounded-[2px]"
         >
           Back to the editor
@@ -293,6 +331,9 @@ export default function AdminPanel() {
         </button>
         <button type="button" className={tabBtn(tab === "poster")} onClick={() => { setTab("poster"); setState("idle"); setMessage(""); }}>
           Add poster
+        </button>
+        <button type="button" className={tabBtn(tab === "editorial")} onClick={() => { setTab("editorial"); setState("idle"); setMessage(""); }}>
+          Add editorial
         </button>
         {editingSlug && (
           <button type="button" className={tabBtn(false)} onClick={resetForm}>
@@ -408,6 +449,46 @@ export default function AdminPanel() {
               className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
             >
               {state === "busy" ? "Working…" : "Add poster"}
+            </button>
+          </div>
+          {state === "error" && (
+            <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
+          )}
+        </form>
+      ) : tab === "editorial" ? (
+        <form onSubmit={submitEditorial} className="flex flex-col gap-[clamp(24px,3vw,34px)]">
+          <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
+            <div>
+              <label className={label}>Editorial title</label>
+              <input value={eTitle} onChange={(e) => setETitle(e.target.value)} required className="inqfield" placeholder="e.g. Kateryna Migush" />
+            </div>
+            <div>
+              <label className={label}>Eyebrow (optional)</label>
+              <input value={eEyebrow} onChange={(e) => setEEyebrow(e.target.value)} className="inqfield" placeholder="e.g. The Editorial · Issue 03" />
+            </div>
+          </div>
+
+          <div>
+            <label className={label}>Carousel images — the first is the cover (up to 12)</label>
+            <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
+              {eImages.length ? `${eImages.length} selected · ${eImages[0].name}` : "Choose the carousel images…"}
+              <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setEImages([...(e.target.files ?? [])])} />
+            </label>
+            <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
+              This becomes a card in the editorials band; the first image is the cover. Select images in the order they should appear in the pop-up carousel.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
+            <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
+              Adding an editorial commits it and goes live in about two minutes
+            </span>
+            <button
+              type="submit"
+              disabled={state === "busy"}
+              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+            >
+              {state === "busy" ? "Working…" : "Add editorial"}
             </button>
           </div>
           {state === "error" && (

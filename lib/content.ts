@@ -8,6 +8,7 @@ import { site } from "@/content/site";
 const ROOT = process.cwd();
 const ARTICLES_DIR = path.join(ROOT, "content", "articles");
 const POSTERS_FILE = path.join(ROOT, "content", "posters", "posters.json");
+const EDITORIALS_FILE = path.join(ROOT, "content", "editorials", "editorials.json");
 
 /**
  * Optional layout hint, written after the caption in the MDX alt text:
@@ -295,13 +296,40 @@ export function getPosters(): Promise<Poster[]> {
   return (_posters ??= loadPosters());
 }
 
-/** Editorial catalogue — each feature with its slides' blur placeholders. */
-export async function getCarouselFeatures(): Promise<CarouselFeature[]> {
+type EditorialRecord = {
+  slug: string;
+  title: string;
+  eyebrow?: string;
+  images: string[];
+  /** Optional per-page labels, parallel to `images`. */
+  labels?: string[];
+  date: string;
+};
+
+async function loadEditorials(): Promise<CarouselFeature[]> {
+  const raw = JSON.parse(fs.readFileSync(EDITORIALS_FILE, "utf8")) as EditorialRecord[];
+  for (const e of raw) {
+    for (const field of ["slug", "title", "images", "date"] as const) {
+      if (!e[field] || (Array.isArray(e[field]) && e[field].length === 0)) {
+        throw new Error(`content/editorials/editorials.json: editorial "${e.slug ?? "?"}" missing "${field}"`);
+      }
+    }
+  }
+  raw.sort((a, b) => (a.date < b.date ? 1 : -1));
   return Promise.all(
-    site.carousel.features.map(async (f) => ({
-      title: f.title,
-      eyebrow: f.eyebrow,
-      slides: await Promise.all(f.slides.map(async (s) => ({ ...s, blur: await blurFor(s.src) }))),
+    raw.map(async (e) => ({
+      title: e.title,
+      eyebrow: e.eyebrow,
+      slides: await Promise.all(
+        e.images.map(async (src, i) => ({ src, label: e.labels?.[i] ?? "", blur: await blurFor(src) }))
+      ),
     }))
   );
+}
+
+let _editorials: Promise<CarouselFeature[]> | null = null;
+
+/** Editorial catalogue — each feature with its slides' blur placeholders. */
+export function getCarouselFeatures(): Promise<CarouselFeature[]> {
+  return (_editorials ??= loadEditorials());
 }

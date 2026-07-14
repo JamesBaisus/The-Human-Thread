@@ -44,25 +44,12 @@ export const site = {
     { header: null, items: ["About"] },
   ],
 
-  /** Editorial band — a catalogue of editorials; each card opens its own coverflow.
-   *  Add a new editorial by appending to `features` (first slide is its cover). */
+  /** Editorial band header. The editorials themselves live in
+   *  content/editorials/editorials.json (added via the admin panel). */
   carousel: {
     eyebrow: "The Editorials",
     title: "Inside the Issue",
     sub: "Photo stories from the issue — open one to turn through the full spread.",
-    features: [
-      {
-        title: "Kateryna Migush",
-        eyebrow: "The Editorial · Issue 03",
-        slides: [
-          { src: "/carousel/1.jpg", label: "The Opening" },
-          { src: "/carousel/2.jpg", label: "A Quiet Kind of Becoming" },
-          { src: "/carousel/3.jpg", label: "The Power of Modesty" },
-          { src: "/carousel/4.jpg", label: "Behind the Image" },
-          { src: "/carousel/5.jpg", label: "Beauty From Within" },
-        ],
-      },
-    ],
   },
 
   /** "Featured in this issue" marquee names. */

@@ -9,6 +9,7 @@
     "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "gray-matter": "^4.0.3",
     "image-size": "^1.2.1",
     "next": "^15.5.4",

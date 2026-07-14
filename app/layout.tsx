@@ -6,6 +6,7 @@ import { getCategorySections, catAnchor } from "@/lib/content";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Effects from "@/components/Effects";
+import { Analytics } from "@vercel/analytics/next";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <main className="flex-1 w-full relative">{children}</main>
           <Footer />
         </div>
+        <Analytics />
       </body>
     </html>
   );

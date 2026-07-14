@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     const articles = await Promise.all(
       (await readArticleList()).map(async (file) => {
         const a = parseArticleFile(file, await readArticleText(file));
-        return { slug: a.slug, name: a.name, role: a.role, title: a.title, category: a.category, date: a.date, featured: a.featured, hidden: a.hidden };
+        return { slug: a.slug, name: a.name, role: a.role, title: a.title, category: a.category, date: a.date, featured: a.featured, hidden: a.hidden, cover: a.cover || `/articles/${a.slug}/cover.jpg` };
       })
     );
     articles.sort((a, b) => (a.date < b.date ? 1 : -1));

@@ -16,6 +16,7 @@ export type ArticleSummary = {
   category: string;
   date: string;
   featured: boolean;
+  cover: string;
 };
 
 const fm = (text: string, key: string) =>
@@ -33,6 +34,7 @@ export function parseArticleFile(filename: string, text: string) {
     deck: fm(frontmatter, "deck"),
     category: fm(frontmatter, "category"),
     accent: fm(frontmatter, "accent"),
+    cover: fm(frontmatter, "cover"),
     date: fm(frontmatter, "date"),
     featured: fm(frontmatter, "featured") === "true",
     hidden: fm(frontmatter, "hidden") === "true",

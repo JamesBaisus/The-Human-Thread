@@ -49,7 +49,7 @@ async function accentFromCover(file: File): Promise<string> {
   }
 }
 
-type Summary = { slug: string; name: string; title: string; category: string; date: string; featured: boolean; hidden: boolean };
+type Summary = { slug: string; name: string; title: string; category: string; date: string; featured: boolean; hidden: boolean; cover: string };
 
 export default function AdminPanel() {
   const [password, setPassword] = useState("");
@@ -246,6 +246,13 @@ export default function AdminPanel() {
           {manageMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{manageMsg}</p>}
           {articles?.map((a) => (
             <div key={a.slug} className="flex items-center gap-4 py-[14px] border-b border-hairline">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={a.cover}
+                alt=""
+                className={`w-[52px] h-[68px] flex-none object-cover rounded-[2px] bg-soft border border-hairline ${a.hidden ? "opacity-45" : ""}`}
+                loading="lazy"
+              />
               <div className={`flex-1 min-w-0 ${a.hidden ? "opacity-45" : ""}`}>
                 <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{a.title}</div>
                 <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">

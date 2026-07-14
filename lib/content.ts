@@ -79,6 +79,9 @@ export type Poster = {
 
 export type CarouselSlide = { src: string; label: string; blur: string };
 
+/** One editorial in the catalogue — its first slide is the card cover. */
+export type CarouselFeature = { title: string; eyebrow?: string; slides: CarouselSlide[] };
+
 export type CategorySection = {
   name: string;
   anchor: string;
@@ -292,7 +295,13 @@ export function getPosters(): Promise<Poster[]> {
   return (_posters ??= loadPosters());
 }
 
-/** Editorial carousel slides with blur placeholders. */
-export async function getCarouselSlides(): Promise<CarouselSlide[]> {
-  return Promise.all(site.carousel.slides.map(async (s) => ({ ...s, blur: await blurFor(s.src) })));
+/** Editorial catalogue — each feature with its slides' blur placeholders. */
+export async function getCarouselFeatures(): Promise<CarouselFeature[]> {
+  return Promise.all(
+    site.carousel.features.map(async (f) => ({
+      title: f.title,
+      eyebrow: f.eyebrow,
+      slides: await Promise.all(f.slides.map(async (s) => ({ ...s, blur: await blurFor(s.src) }))),
+    }))
+  );
 }

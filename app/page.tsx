@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site } from "@/content/site";
-import { getArticle, getCarouselSlides, getCategorySections, getFeatured, getLatest, getPosters } from "@/lib/content";
+import { getArticle, getCarouselFeatures, getCategorySections, getFeatured, getLatest, getPosters } from "@/lib/content";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import Marquee from "@/components/Marquee";
@@ -8,12 +8,12 @@ import PostersGallery from "@/components/PostersGallery";
 import ArticleCard from "@/components/ArticleCard";
 
 export default async function Home() {
-  const [featured, latest, sections, posters, slides] = await Promise.all([
+  const [featured, latest, sections, posters, features] = await Promise.all([
     getFeatured(),
     getLatest(5),
     getCategorySections(),
     getPosters(),
-    getCarouselSlides(),
+    getCarouselFeatures(),
   ]);
   const coverBand = (await getArticle(site.coverBand.slug)) ?? featured;
 
@@ -21,7 +21,7 @@ export default async function Home() {
     <div className="pg relative">
       <Hero featured={featured} latest={latest} />
 
-      <Carousel slides={slides} />
+      <Carousel features={features} />
 
       <Marquee />
 

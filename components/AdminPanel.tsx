@@ -16,6 +16,16 @@ async function resizeImage(file: File, maxEdge = 1600): Promise<Blob> {
   return new Promise((resolve) => canvas.toBlob((b) => resolve(b ?? file), "image/jpeg", 0.85));
 }
 
+/** Aspect ratio "W / H" from an image file, for the poster's card sizing. */
+async function aspectFromImage(file: File): Promise<string> {
+  try {
+    const bmp = await createImageBitmap(file);
+    return `${bmp.width} / ${bmp.height}`;
+  } catch {
+    return "3 / 4";
+  }
+}
+
 /** Muted editorial accent derived from the cover's average colour. */
 async function accentFromCover(file: File): Promise<string> {
   try {
@@ -53,7 +63,7 @@ type Summary = { slug: string; name: string; title: string; category: string; da
 
 export default function AdminPanel() {
   const [password, setPassword] = useState("");
-  const [tab, setTab] = useState<"add" | "manage">("add");
+  const [tab, setTab] = useState<"add" | "manage" | "poster">("add");
 
   // form state (shared by add & edit)
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
@@ -71,10 +81,19 @@ export default function AdminPanel() {
   const [message, setMessage] = useState("");
   const [doneSlug, setDoneSlug] = useState("");
   const [doneVerb, setDoneVerb] = useState("Published");
+  const [doneIsPoster, setDoneIsPoster] = useState(false);
 
   // manage state
   const [articles, setArticles] = useState<Summary[] | null>(null);
   const [manageMsg, setManageMsg] = useState("");
+
+  // poster form state
+  const [pTitle, setPTitle] = useState("");
+  const [pCategory, setPCategory] = useState<string>(site.categories[0]);
+  const [pImages, setPImages] = useState<File[]>([]);
+  const [pCaptions, setPCaptions] = useState("");
+  const [pHashtags, setPHashtags] = useState("");
+  const [pNote, setPNote] = useState("");
 
   const authHeaders = { "x-admin-password": password };
 
@@ -185,8 +204,42 @@ export default function AdminPanel() {
       if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
       setDoneSlug(data.slug ?? "");
       setDoneVerb(editingSlug ? "Updated" : "Published");
+      setDoneIsPoster(false);
       setState(data.demo ? "demo" : "done");
       setArticles(null);
+    } catch {
+      setState("error");
+      setMessage("Something went wrong — please try again.");
+    }
+  };
+
+  const resetPoster = () => {
+    setPTitle(""); setPCategory(site.categories[0]); setPImages([]); setPCaptions(""); setPHashtags(""); setPNote("");
+  };
+
+  const submitPoster = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state === "busy") return;
+    if (!pImages.length) { setState("error"); setMessage("Please attach at least one poster image."); return; }
+    setState("busy");
+    setMessage("");
+    try {
+      const fd = new FormData();
+      fd.set("title", pTitle);
+      fd.set("category", pCategory);
+      fd.set("captions", pCaptions);
+      fd.set("hashtags", pHashtags);
+      fd.set("note", pNote);
+      fd.set("aspectRatio", await aspectFromImage(pImages[0]));
+      for (const img of pImages.slice(0, 10)) fd.append("images", await resizeImage(img), img.name);
+
+      const res = await fetch("/api/admin/posters", { method: "POST", headers: authHeaders, body: fd });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; demo?: boolean; slug?: string; error?: string };
+      if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
+      setDoneSlug(data.slug ?? "");
+      setDoneVerb("Added");
+      setDoneIsPoster(true);
+      setState(data.demo ? "demo" : "done");
     } catch {
       setState("error");
       setMessage("Something went wrong — please try again.");
@@ -203,15 +256,19 @@ export default function AdminPanel() {
     return (
       <div className="border-t border-hairline py-[clamp(40px,6vw,72px)] text-center">
         <div className="font-playfair italic text-[clamp(28px,3.6vw,44px)] leading-[1.16] text-ink mb-[18px]">
-          {state === "done" ? `${doneVerb} — the story is on its way.` : "Dry run complete."}
+          {state === "done"
+            ? doneIsPoster ? `${doneVerb} — the poster is on its way.` : `${doneVerb} — the story is on its way.`
+            : "Dry run complete."}
         </div>
         <p className="text-[15px] leading-[1.6] text-body-1 max-w-[52ch] mx-auto mb-6">
           {state === "done"
-            ? `The change was committed to the repository. Hosting is rebuilding now — see it at /article/${doneSlug} in about two minutes.`
-            : "GitHub is not connected yet (GITHUB_TOKEN missing), so nothing was committed. The form, validation, and article generation all work."}
+            ? doneIsPoster
+              ? "The poster was committed to the repository. Hosting is rebuilding now — it appears in the cover gallery in about two minutes."
+              : `The change was committed to the repository. Hosting is rebuilding now — see it at /article/${doneSlug} in about two minutes.`
+            : "GitHub is not connected yet (GITHUB_TOKEN missing), so nothing was committed. The form and validation all work."}
         </p>
         <button
-          onClick={() => { resetForm(); setState("idle"); }}
+          onClick={() => { doneIsPoster ? resetPoster() : resetForm(); setState("idle"); }}
           className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[13px] px-[26px] rounded-[2px]"
         >
           Back to the editor
@@ -233,6 +290,9 @@ export default function AdminPanel() {
         </button>
         <button type="button" className={tabBtn(tab === "manage")} onClick={() => { setTab("manage"); if (!articles) loadArticles(); }}>
           Manage articles
+        </button>
+        <button type="button" className={tabBtn(tab === "poster")} onClick={() => { setTab("poster"); setState("idle"); setMessage(""); }}>
+          Add poster
         </button>
         {editingSlug && (
           <button type="button" className={tabBtn(false)} onClick={resetForm}>
@@ -288,6 +348,72 @@ export default function AdminPanel() {
             <p className="font-playfair italic text-[15px] text-muted-2">No articles found.</p>
           )}
         </div>
+      ) : tab === "poster" ? (
+        <form onSubmit={submitPoster} className="flex flex-col gap-[clamp(24px,3vw,34px)]">
+          <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
+            <div>
+              <label className={label}>Poster title</label>
+              <input value={pTitle} onChange={(e) => setPTitle(e.target.value)} required className="inqfield" placeholder="e.g. Meryl Streep — A Life in Cinema" />
+            </div>
+            <div>
+              <label className={label}>Category</label>
+              <select value={pCategory} onChange={(e) => setPCategory(e.target.value)} className="inqfield bg-transparent">
+                {site.categories.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className={label}>Poster images — the first is the cover (up to 10)</label>
+            <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
+              {pImages.length ? `${pImages.length} selected · ${pImages[0].name}` : "Choose the poster pages…"}
+              <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setPImages([...(e.target.files ?? [])])} />
+            </label>
+            <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
+              Card shape follows the first image. Select pages in the order they should appear in the pop-up.
+            </p>
+          </div>
+
+          <div>
+            <label className={label}>Captions — one per line, shown in the pop-up (optional)</label>
+            <textarea
+              value={pCaptions}
+              onChange={(e) => setPCaptions(e.target.value)}
+              rows={6}
+              className="inqfield resize-y leading-[1.66] !py-[14px]"
+              placeholder={"One caption per line.\nSelf-captioned artwork needs none — leave empty."}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
+            <div>
+              <label className={label}>Hashtags (optional)</label>
+              <input value={pHashtags} onChange={(e) => setPHashtags(e.target.value)} className="inqfield" placeholder="#example #thehumanthread" />
+            </div>
+            <div>
+              <label className={label}>Closing note (optional)</label>
+              <input value={pNote} onChange={(e) => setPNote(e.target.value)} className="inqfield" placeholder="A one-line italic sign-off" />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
+            <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
+              Adding a poster commits it and goes live in about two minutes
+            </span>
+            <button
+              type="submit"
+              disabled={state === "busy"}
+              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+            >
+              {state === "busy" ? "Working…" : "Add poster"}
+            </button>
+          </div>
+          {state === "error" && (
+            <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
+          )}
+        </form>
       ) : (
         <form onSubmit={submit} className="flex flex-col gap-[clamp(24px,3vw,34px)]">
           <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">

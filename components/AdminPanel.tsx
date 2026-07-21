@@ -60,10 +60,14 @@ async function accentFromCover(file: File): Promise<string> {
 }
 
 type Summary = { slug: string; name: string; title: string; category: string; date: string; featured: boolean; hidden: boolean; cover: string };
+type PosterSummary = { slug: string; title: string; category: string; date: string; cover: string; count: number };
+type EditorialSummary = { slug: string; title: string; eyebrow: string; date: string; cover: string; count: number };
+
+type Tab = "add" | "manage" | "poster" | "manage-posters" | "editorial" | "manage-editorials";
 
 export default function AdminPanel() {
   const [password, setPassword] = useState("");
-  const [tab, setTab] = useState<"add" | "manage" | "poster" | "editorial">("add");
+  const [tab, setTab] = useState<Tab>("add");
 
   // form state (shared by add & edit)
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
@@ -86,19 +90,28 @@ export default function AdminPanel() {
   // manage state
   const [articles, setArticles] = useState<Summary[] | null>(null);
   const [manageMsg, setManageMsg] = useState("");
+  const [articleSearch, setArticleSearch] = useState("");
 
   // poster form state
+  const [editingPosterSlug, setEditingPosterSlug] = useState<string | null>(null);
   const [pTitle, setPTitle] = useState("");
   const [pCategory, setPCategory] = useState<string>(site.categories[0]);
   const [pImages, setPImages] = useState<File[]>([]);
   const [pCaptions, setPCaptions] = useState("");
   const [pHashtags, setPHashtags] = useState("");
   const [pNote, setPNote] = useState("");
+  const [posters, setPosters] = useState<PosterSummary[] | null>(null);
+  const [postersMsg, setPostersMsg] = useState("");
+  const [posterSearch, setPosterSearch] = useState("");
 
   // editorial form state
+  const [editingEditorialSlug, setEditingEditorialSlug] = useState<string | null>(null);
   const [eTitle, setETitle] = useState("");
   const [eEyebrow, setEEyebrow] = useState("");
   const [eImages, setEImages] = useState<File[]>([]);
+  const [editorials, setEditorials] = useState<EditorialSummary[] | null>(null);
+  const [editorialsMsg, setEditorialsMsg] = useState("");
+  const [editorialSearch, setEditorialSearch] = useState("");
 
   const authHeaders = { "x-admin-password": password };
 
@@ -109,9 +122,11 @@ export default function AdminPanel() {
 
   const friendlyError = (error?: string, slug?: string) =>
     error === "unauthorized" ? "Wrong password."
-    : error === "slug_exists" ? `An article for this author already exists (${slug}).`
+    : error === "slug_exists" ? `Something with this name already exists (${slug}).`
     : error === "missing_fields" ? "Please fill every required field."
-    : error === "not_found" ? "That article no longer exists."
+    : error === "bad_category" ? "Please choose a valid category."
+    : error === "too_many_images" ? "Too many images — please choose fewer."
+    : error === "not_found" ? "That item no longer exists."
     : "Something went wrong — please try again.";
 
   const loadArticles = async () => {
@@ -219,32 +234,77 @@ export default function AdminPanel() {
   };
 
   const resetPoster = () => {
-    setPTitle(""); setPCategory(site.categories[0]); setPImages([]); setPCaptions(""); setPHashtags(""); setPNote("");
+    setEditingPosterSlug(null); setPTitle(""); setPCategory(site.categories[0]); setPImages([]);
+    setPCaptions(""); setPHashtags(""); setPNote("");
+  };
+
+  const loadPosters = async () => {
+    setPostersMsg("Loading…");
+    try {
+      const res = await fetch("/api/admin/posters", { headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setPostersMsg(friendlyError(data.error)); setPosters(null); return; }
+      setPosters(data.posters);
+      setPostersMsg("");
+    } catch {
+      setPostersMsg("Could not load posters.");
+    }
+  };
+
+  const startEditPoster = async (slug: string) => {
+    setPostersMsg("Opening…");
+    try {
+      const res = await fetch(`/api/admin/posters?slug=${encodeURIComponent(slug)}`, { headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setPostersMsg(friendlyError(data.error)); return; }
+      const p = data.poster;
+      setEditingPosterSlug(p.slug); setPTitle(p.title); setPCategory(p.category);
+      setPCaptions((p.captions ?? []).join("\n")); setPHashtags(p.hashtags ?? ""); setPNote(p.note ?? ""); setPImages([]);
+      setTab("poster"); setState("idle"); setMessage(""); setPostersMsg("");
+    } catch {
+      setPostersMsg("Could not open the poster.");
+    }
+  };
+
+  const removePoster = async (slug: string, title: string) => {
+    if (!window.confirm(`Remove "${title}" permanently? The poster and its images will be deleted from the site.`)) return;
+    setPostersMsg("Removing…");
+    try {
+      const res = await fetch(`/api/admin/posters?slug=${encodeURIComponent(slug)}`, { method: "DELETE", headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setPostersMsg(friendlyError(data.error)); return; }
+      setPostersMsg(data.demo ? "Dry run — GitHub not connected, nothing deleted." : "Removed. The site is rebuilding.");
+      setPosters((list) => (list ?? []).filter((p) => p.slug !== slug));
+    } catch {
+      setPostersMsg("Could not remove the poster.");
+    }
   };
 
   const submitPoster = async (e: React.FormEvent) => {
     e.preventDefault();
     if (state === "busy") return;
-    if (!pImages.length) { setState("error"); setMessage("Please attach at least one poster image."); return; }
+    if (!editingPosterSlug && !pImages.length) { setState("error"); setMessage("Please attach at least one poster image."); return; }
     setState("busy");
     setMessage("");
     try {
       const fd = new FormData();
+      if (editingPosterSlug) fd.set("slug", editingPosterSlug);
       fd.set("title", pTitle);
       fd.set("category", pCategory);
       fd.set("captions", pCaptions);
       fd.set("hashtags", pHashtags);
       fd.set("note", pNote);
-      fd.set("aspectRatio", await aspectFromImage(pImages[0]));
+      if (pImages.length) fd.set("aspectRatio", await aspectFromImage(pImages[0]));
       for (const img of pImages.slice(0, 10)) fd.append("images", await resizeImage(img), img.name);
 
-      const res = await fetch("/api/admin/posters", { method: "POST", headers: authHeaders, body: fd });
+      const res = await fetch("/api/admin/posters", { method: editingPosterSlug ? "PUT" : "POST", headers: authHeaders, body: fd });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; demo?: boolean; slug?: string; error?: string };
       if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
       setDoneSlug(data.slug ?? "");
-      setDoneVerb("Added");
+      setDoneVerb(editingPosterSlug ? "Updated" : "Added");
       setDoneKind("poster");
       setState(data.demo ? "demo" : "done");
+      setPosters(null);
     } catch {
       setState("error");
       setMessage("Something went wrong — please try again.");
@@ -252,28 +312,71 @@ export default function AdminPanel() {
   };
 
   const resetEditorial = () => {
-    setETitle(""); setEEyebrow(""); setEImages([]);
+    setEditingEditorialSlug(null); setETitle(""); setEEyebrow(""); setEImages([]);
+  };
+
+  const loadEditorials = async () => {
+    setEditorialsMsg("Loading…");
+    try {
+      const res = await fetch("/api/admin/editorials", { headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditorialsMsg(friendlyError(data.error)); setEditorials(null); return; }
+      setEditorials(data.editorials);
+      setEditorialsMsg("");
+    } catch {
+      setEditorialsMsg("Could not load editorials.");
+    }
+  };
+
+  const startEditEditorial = async (slug: string) => {
+    setEditorialsMsg("Opening…");
+    try {
+      const res = await fetch(`/api/admin/editorials?slug=${encodeURIComponent(slug)}`, { headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditorialsMsg(friendlyError(data.error)); return; }
+      const ed = data.editorial;
+      setEditingEditorialSlug(ed.slug); setETitle(ed.title); setEEyebrow(ed.eyebrow ?? ""); setEImages([]);
+      setTab("editorial"); setState("idle"); setMessage(""); setEditorialsMsg("");
+    } catch {
+      setEditorialsMsg("Could not open the editorial.");
+    }
+  };
+
+  const removeEditorial = async (slug: string, title: string) => {
+    if (!window.confirm(`Remove "${title}" permanently? The editorial and its images will be deleted from the site.`)) return;
+    setEditorialsMsg("Removing…");
+    try {
+      const res = await fetch(`/api/admin/editorials?slug=${encodeURIComponent(slug)}`, { method: "DELETE", headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditorialsMsg(friendlyError(data.error)); return; }
+      setEditorialsMsg(data.demo ? "Dry run — GitHub not connected, nothing deleted." : "Removed. The site is rebuilding.");
+      setEditorials((list) => (list ?? []).filter((ed) => ed.slug !== slug));
+    } catch {
+      setEditorialsMsg("Could not remove the editorial.");
+    }
   };
 
   const submitEditorial = async (e: React.FormEvent) => {
     e.preventDefault();
     if (state === "busy") return;
-    if (!eImages.length) { setState("error"); setMessage("Please attach at least one carousel image."); return; }
+    if (!editingEditorialSlug && !eImages.length) { setState("error"); setMessage("Please attach at least one carousel image."); return; }
     setState("busy");
     setMessage("");
     try {
       const fd = new FormData();
+      if (editingEditorialSlug) fd.set("slug", editingEditorialSlug);
       fd.set("title", eTitle);
       fd.set("eyebrow", eEyebrow);
       for (const img of eImages.slice(0, 12)) fd.append("images", await resizeImage(img), img.name);
 
-      const res = await fetch("/api/admin/editorials", { method: "POST", headers: authHeaders, body: fd });
+      const res = await fetch("/api/admin/editorials", { method: editingEditorialSlug ? "PUT" : "POST", headers: authHeaders, body: fd });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; demo?: boolean; slug?: string; error?: string };
       if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
       setDoneSlug(data.slug ?? "");
-      setDoneVerb("Added");
+      setDoneVerb(editingEditorialSlug ? "Updated" : "Added");
       setDoneKind("editorial");
       setState(data.demo ? "demo" : "done");
+      setEditorials(null);
     } catch {
       setState("error");
       setMessage("Something went wrong — please try again.");
@@ -322,7 +425,7 @@ export default function AdminPanel() {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="inqfield" placeholder="••••••••" />
       </div>
 
-      <div className="flex gap-[9px] mb-[clamp(24px,3vw,36px)]">
+      <div className="flex flex-wrap gap-[9px] mb-[clamp(24px,3vw,36px)]">
         <button type="button" className={tabBtn(tab === "add")} onClick={() => setTab("add")}>
           {editingSlug ? `Editing: ${editingSlug}` : "Add article"}
         </button>
@@ -330,22 +433,31 @@ export default function AdminPanel() {
           Manage articles
         </button>
         <button type="button" className={tabBtn(tab === "poster")} onClick={() => { setTab("poster"); setState("idle"); setMessage(""); }}>
-          Add poster
+          {editingPosterSlug ? `Editing: ${editingPosterSlug}` : "Add poster"}
+        </button>
+        <button type="button" className={tabBtn(tab === "manage-posters")} onClick={() => { setTab("manage-posters"); if (!posters) loadPosters(); }}>
+          Manage posters
         </button>
         <button type="button" className={tabBtn(tab === "editorial")} onClick={() => { setTab("editorial"); setState("idle"); setMessage(""); }}>
-          Add editorial
+          {editingEditorialSlug ? `Editing: ${editingEditorialSlug}` : "Add editorial"}
         </button>
-        {editingSlug && (
-          <button type="button" className={tabBtn(false)} onClick={resetForm}>
-            Cancel edit
-          </button>
-        )}
+        <button type="button" className={tabBtn(tab === "manage-editorials")} onClick={() => { setTab("manage-editorials"); if (!editorials) loadEditorials(); }}>
+          Manage editorials
+        </button>
       </div>
 
       {tab === "manage" ? (
         <div>
+          <input
+            value={articleSearch}
+            onChange={(e) => setArticleSearch(e.target.value)}
+            className="inqfield mb-5"
+            placeholder="Search articles by title, author, or category…"
+          />
           {manageMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{manageMsg}</p>}
-          {articles?.map((a) => (
+          {articles
+            ?.filter((a) => `${a.title} ${a.name} ${a.category}`.toLowerCase().includes(articleSearch.trim().toLowerCase()))
+            .map((a) => (
             <div key={a.slug} className="flex items-center gap-4 py-[14px] border-b border-hairline">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -389,6 +501,98 @@ export default function AdminPanel() {
             <p className="font-playfair italic text-[15px] text-muted-2">No articles found.</p>
           )}
         </div>
+      ) : tab === "manage-posters" ? (
+        <div>
+          <input
+            value={posterSearch}
+            onChange={(e) => setPosterSearch(e.target.value)}
+            className="inqfield mb-5"
+            placeholder="Search posters by title or category…"
+          />
+          {postersMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{postersMsg}</p>}
+          {posters
+            ?.filter((p) => `${p.title} ${p.category}`.toLowerCase().includes(posterSearch.trim().toLowerCase()))
+            .map((p) => (
+            <div key={p.slug} className="flex items-center gap-4 py-[14px] border-b border-hairline">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={p.cover}
+                alt=""
+                className="w-[52px] h-[68px] flex-none object-cover rounded-[2px] bg-soft border border-hairline"
+                loading="lazy"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{p.title}</div>
+                <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
+                  {p.category} · {p.date} · {p.count === 1 ? "1 image" : `${p.count} images`}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => startEditPoster(p.slug)}
+                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => removePoster(p.slug, p.title)}
+                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          {posters && posters.length === 0 && (
+            <p className="font-playfair italic text-[15px] text-muted-2">No posters yet.</p>
+          )}
+        </div>
+      ) : tab === "manage-editorials" ? (
+        <div>
+          <input
+            value={editorialSearch}
+            onChange={(e) => setEditorialSearch(e.target.value)}
+            className="inqfield mb-5"
+            placeholder="Search editorials by title or eyebrow…"
+          />
+          {editorialsMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{editorialsMsg}</p>}
+          {editorials
+            ?.filter((ed) => `${ed.title} ${ed.eyebrow}`.toLowerCase().includes(editorialSearch.trim().toLowerCase()))
+            .map((ed) => (
+            <div key={ed.slug} className="flex items-center gap-4 py-[14px] border-b border-hairline">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={ed.cover}
+                alt=""
+                className="w-[52px] h-[68px] flex-none object-cover rounded-[2px] bg-soft border border-hairline"
+                loading="lazy"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{ed.title}</div>
+                <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
+                  {ed.eyebrow ? `${ed.eyebrow} · ` : ""}{ed.date} · {ed.count === 1 ? "1 page" : `${ed.count} pages`}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => startEditEditorial(ed.slug)}
+                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => removeEditorial(ed.slug, ed.title)}
+                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          {editorials && editorials.length === 0 && (
+            <p className="font-playfair italic text-[15px] text-muted-2">No editorials yet.</p>
+          )}
+        </div>
       ) : tab === "poster" ? (
         <form onSubmit={submitPoster} className="flex flex-col gap-[clamp(24px,3vw,34px)]">
           <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
@@ -407,13 +611,17 @@ export default function AdminPanel() {
           </div>
 
           <div>
-            <label className={label}>Poster images — the first is the cover (up to 10)</label>
+            <label className={label}>
+              {editingPosterSlug ? "Replace images — the first is the cover (optional)" : "Poster images — the first is the cover (up to 10)"}
+            </label>
             <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
-              {pImages.length ? `${pImages.length} selected · ${pImages[0].name}` : "Choose the poster pages…"}
+              {pImages.length ? `${pImages.length} selected · ${pImages[0].name}` : editingPosterSlug ? "Keep current images…" : "Choose the poster pages…"}
               <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setPImages([...(e.target.files ?? [])])} />
             </label>
             <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
-              Card shape follows the first image. Select pages in the order they should appear in the pop-up.
+              {editingPosterSlug
+                ? "Leave empty to keep the current images. Choosing new ones replaces the whole set."
+                : "Card shape follows the first image. Select pages in the order they should appear in the pop-up."}
             </p>
           </div>
 
@@ -441,15 +649,22 @@ export default function AdminPanel() {
 
           <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
             <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
-              Adding a poster commits it and goes live in about two minutes
+              {editingPosterSlug ? "Saving updates the live poster in about two minutes" : "Adding a poster commits it and goes live in about two minutes"}
             </span>
-            <button
-              type="submit"
-              disabled={state === "busy"}
-              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
-            >
-              {state === "busy" ? "Working…" : "Add poster"}
-            </button>
+            <div className="flex items-center gap-3">
+              {editingPosterSlug && (
+                <button type="button" onClick={resetPoster} className={tabBtn(false)}>
+                  Cancel edit
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={state === "busy"}
+                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              >
+                {state === "busy" ? "Working…" : editingPosterSlug ? "Save changes" : "Add poster"}
+              </button>
+            </div>
           </div>
           {state === "error" && (
             <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
@@ -469,27 +684,38 @@ export default function AdminPanel() {
           </div>
 
           <div>
-            <label className={label}>Carousel images — the first is the cover (up to 12)</label>
+            <label className={label}>
+              {editingEditorialSlug ? "Replace images — the first is the cover (optional)" : "Carousel images — the first is the cover (up to 12)"}
+            </label>
             <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
-              {eImages.length ? `${eImages.length} selected · ${eImages[0].name}` : "Choose the carousel images…"}
+              {eImages.length ? `${eImages.length} selected · ${eImages[0].name}` : editingEditorialSlug ? "Keep current images…" : "Choose the carousel images…"}
               <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setEImages([...(e.target.files ?? [])])} />
             </label>
             <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
-              This becomes a card in the editorials band; the first image is the cover. Select images in the order they should appear in the pop-up carousel.
+              {editingEditorialSlug
+                ? "Leave empty to keep the current images. Choosing new ones replaces the whole set."
+                : "This becomes a card in the editorials band; the first image is the cover. Select images in the order they should appear in the pop-up carousel."}
             </p>
           </div>
 
           <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
             <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
-              Adding an editorial commits it and goes live in about two minutes
+              {editingEditorialSlug ? "Saving updates the live editorial in about two minutes" : "Adding an editorial commits it and goes live in about two minutes"}
             </span>
-            <button
-              type="submit"
-              disabled={state === "busy"}
-              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
-            >
-              {state === "busy" ? "Working…" : "Add editorial"}
-            </button>
+            <div className="flex items-center gap-3">
+              {editingEditorialSlug && (
+                <button type="button" onClick={resetEditorial} className={tabBtn(false)}>
+                  Cancel edit
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={state === "busy"}
+                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              >
+                {state === "busy" ? "Working…" : editingEditorialSlug ? "Save changes" : "Add editorial"}
+              </button>
+            </div>
           </div>
           {state === "error" && (
             <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>

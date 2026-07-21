@@ -34,6 +34,13 @@ const sections = [
     ],
   },
   {
+    h: "Remembering where you left off",
+    ps: [
+      "So you can pick up a story where you stopped, your browser remembers which article you were reading and how far you had scrolled. This is kept on your own device using your browser's local storage — it is never sent to us, used to identify you, or shared with anyone.",
+      "You can clear it at any time by clearing your browser's site data, and it simply forgets positions you haven't returned to in a month.",
+    ],
+  },
+  {
     h: "Retention",
     ps: [
       "We keep submission and meeting correspondence for as long as needed to work together on a story. You can ask us to delete your information at any time.",

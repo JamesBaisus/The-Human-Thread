@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { site } from "@/content/site";
 import { getArticle, getArticles, getRelated } from "@/lib/content";
 import SimpleAmp from "@/components/SimpleAmp";
+import ReadingProgress from "@/components/ReadingProgress";
 
 export async function generateStaticParams() {
   return (await getArticles()).map((a) => ({ slug: a.slug }));
@@ -58,6 +59,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="pg relative">
+      <ReadingProgress slug={article.slug} title={article.title} category={article.category} />
       <section className="max-w-[1280px] mx-auto pt-[clamp(20px,3vw,36px)] px-[clamp(18px,4vw,54px)]">
         <div className="flex items-center justify-between gap-4 flex-wrap border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
           <Link

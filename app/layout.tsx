@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/content/site";
 import { getCategorySections, catAnchor } from "@/lib/content";
 import Header from "@/components/Header";
+import ContinueReading from "@/components/ContinueReading";
 import Footer from "@/components/Footer";
 import Effects from "@/components/Effects";
 import { Analytics } from "@vercel/analytics/next";
@@ -54,6 +55,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <Effects />
           <div className="scrollbar" />
           <Header drawerGroups={drawerGroups} socials={[...site.socials]} />
+          <ContinueReading />
           <main className="flex-1 w-full relative">{children}</main>
           <Footer />
         </div>

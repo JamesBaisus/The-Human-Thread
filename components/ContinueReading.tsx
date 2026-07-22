@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SimpleAmp from "@/components/SimpleAmp";
 import { getLastRead, type LastRead } from "@/lib/reading";
+import { CONSENT_EVENT } from "@/lib/consent";
 
 const DISMISS_KEY = "tht:continue-dismissed";
 
@@ -19,18 +20,24 @@ export default function ContinueReading() {
   const pathname = usePathname();
   const [last, setLast] = useState<LastRead | null>(null);
 
-  // Re-check on every navigation, since "last read" updates as they read.
+  // Re-check on every navigation (since "last read" updates as they read) and
+  // whenever the consent choice changes (declining hides the bar right away).
   useEffect(() => {
-    const entry = getLastRead();
-    if (!entry) return setLast(null);
-    if (pathname === `/article/${entry.slug}`) return setLast(null);
-    let dismissed: string | null = null;
-    try {
-      dismissed = sessionStorage.getItem(DISMISS_KEY);
-    } catch {
-      /* sessionStorage unavailable — just show it */
-    }
-    setLast(dismissed === entry.slug ? null : entry);
+    const update = () => {
+      const entry = getLastRead();
+      if (!entry) return setLast(null);
+      if (pathname === `/article/${entry.slug}`) return setLast(null);
+      let dismissed: string | null = null;
+      try {
+        dismissed = sessionStorage.getItem(DISMISS_KEY);
+      } catch {
+        /* sessionStorage unavailable — just show it */
+      }
+      setLast(dismissed === entry.slug ? null : entry);
+    };
+    update();
+    window.addEventListener(CONSENT_EVENT, update);
+    return () => window.removeEventListener(CONSENT_EVENT, update);
   }, [pathname]);
 
   if (!last) return null;

@@ -34,9 +34,16 @@ const sections = [
     ],
   },
   {
+    h: "Cookies & consent",
+    ps: [
+      "This site sets no advertising or tracking cookies. Our visit statistics are cookieless and anonymous — they cannot identify you.",
+      "The banner on your first visit asks one thing: whether the site may remember your reading position (below). Accept and it works; decline and nothing is stored beyond the choice itself, and our visit statistics are switched off for you too.",
+    ],
+  },
+  {
     h: "Remembering where you left off",
     ps: [
-      "So you can pick up a story where you stopped, your browser remembers which article you were reading and how far you had scrolled. This is kept on your own device using your browser's local storage — it is never sent to us, used to identify you, or shared with anyone.",
+      "If you accept on the consent banner, your browser remembers which article you were reading and how far you had scrolled, so you can pick a story up where you stopped. This is kept on your own device using your browser's local storage — it is never sent to us, used to identify you, or shared with anyone.",
       "You can clear it at any time by clearing your browser's site data, and it simply forgets positions you haven't returned to in a month.",
     ],
   },

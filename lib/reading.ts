@@ -11,8 +11,11 @@
  *   - overall: the most recent unfinished article, for the homepage prompt.
  */
 
+import { readingAllowed } from "./consent";
+
 const LAST_KEY = "tht:last-read";
-const posKey = (slug: string) => `tht:pos:${slug}`;
+const POS_PREFIX = "tht:pos:";
+const posKey = (slug: string) => `${POS_PREFIX}${slug}`;
 
 /** Below this, treat it as "barely started" — not worth resuming. */
 const RESUME_MIN = 0.05;
@@ -51,6 +54,7 @@ function remove(key: string) {
 
 /** Record progress as the reader scrolls. `pct` is 0–1 of the page scrolled. */
 export function saveProgress(slug: string, title: string, category: string, pct: number) {
+  if (!readingAllowed()) return;
   const at = Date.now();
   write(LAST_KEY, { slug, title, category, pct, at } satisfies LastRead);
   if (pct >= FINISHED) remove(posKey(slug));
@@ -59,6 +63,7 @@ export function saveProgress(slug: string, title: string, category: string, pct:
 
 /** The saved scroll fraction for this article, or null if there's nothing worth resuming to. */
 export function getResume(slug: string): number | null {
+  if (!readingAllowed()) return null;
   const pos = read<Pos>(posKey(slug));
   if (!pos) return null;
   if (Date.now() - pos.at > MAX_AGE_MS) return null;
@@ -71,8 +76,23 @@ export function clearResume(slug: string) {
   remove(posKey(slug));
 }
 
-/** The most recent unfinished article, for the homepage "continue" prompt. */
+/** Wipe every stored reading position — called when the visitor declines consent. */
+export function clearAllReading() {
+  try {
+    const gone: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && (k === LAST_KEY || k.startsWith(POS_PREFIX))) gone.push(k);
+    }
+    gone.forEach((k) => localStorage.removeItem(k));
+  } catch {
+    /* no-op */
+  }
+}
+
+/** The most recent unfinished article, for the site-wide "continue" bar. */
 export function getLastRead(): LastRead | null {
+  if (!readingAllowed()) return null;
   const last = read<LastRead>(LAST_KEY);
   if (!last) return null;
   if (Date.now() - last.at > MAX_AGE_MS) return null;

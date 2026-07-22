@@ -7,7 +7,8 @@ import Header from "@/components/Header";
 import ContinueReading from "@/components/ContinueReading";
 import Footer from "@/components/Footer";
 import Effects from "@/components/Effects";
-import { Analytics } from "@vercel/analytics/next";
+import CookieConsent from "@/components/CookieConsent";
+import AnalyticsGate from "@/components/AnalyticsGate";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -59,7 +60,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <main className="flex-1 w-full relative">{children}</main>
           <Footer />
         </div>
-        <Analytics />
+        <CookieConsent />
+        <AnalyticsGate />
       </body>
     </html>
   );

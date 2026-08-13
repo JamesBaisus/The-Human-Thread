@@ -16,7 +16,7 @@ export const site = {
   ],
 
   /** Exactly one article drives the hero. */
-  featuredSlug: "sylvia-salaita",
+  featuredSlug: "alberto-gianfreda",
 
   /** The dark "Read the feature" band near the footer. */
   coverBand: { slug: "bts", kicker: "The Cover Story" },

@@ -13,22 +13,31 @@ const EDITORIALS_FILE = path.join(ROOT, "content", "editorials", "editorials.jso
 /**
  * Optional layout hint, written after the caption in the MDX alt text:
  * `![A caption|right](/articles/x/01.jpg)`.
- * Solo images: wide (full-bleed breakout) | right | left (offset two-thirds) | inset (centered, quiet).
- * Paired images: flip reverses the diptych (large column on the right).
+ * Solo media: wide (full-bleed breakout) | right | left (offset two-thirds) | inset (centered, quiet).
+ * Paired media: flip reverses the diptych (large column on the right).
+ * Three-up: triptych lays the set out as one staggered row of equal plates.
  * Without a hint, layouts rotate automatically, seeded per article.
  */
-export type ImageLayout = "wide" | "right" | "left" | "inset" | "flip";
+export type ImageLayout = "wide" | "right" | "left" | "inset" | "flip" | "triptych";
 
-const IMAGE_LAYOUTS: ImageLayout[] = ["wide", "right", "left", "inset", "flip"];
+const IMAGE_LAYOUTS: ImageLayout[] = ["wide", "right", "left", "inset", "flip", "triptych"];
 
 export type SectionImage = {
   src: string;
   /** Alt text in the MDX doubles as the printed caption. */
   caption: string;
   layout?: ImageLayout;
+  /** Frame dimensions — for a video these come from its poster still. */
   width: number;
   height: number;
   blur: string;
+  /**
+   * Set when `src` is an `.mp4`: the still shown before playback, which lives
+   * beside the clip under the same basename (`clip-01.mp4` -> `clip-01.jpg`).
+   */
+  poster?: string;
+  /** True when the clip carries an audio track worth offering a sound toggle for. */
+  sound?: boolean;
 };
 
 export type ArticleSection = {
@@ -161,12 +170,43 @@ async function enrichSections(sections: RawSection[]): Promise<ArticleSection[]>
       ...s,
       images: await Promise.all(
         s.images.map(async (im) => {
-          const dims = imageDims(im.src);
-          return { ...im, width: dims.width, height: dims.height, blur: await blurFor(im.src) };
+          // A video borrows its frame and blur-up from the poster still beside it.
+          const isVideo = /\.mp4$/i.test(im.src);
+          const still = isVideo ? im.src.replace(/\.mp4$/i, ".jpg") : im.src;
+          const dims = imageDims(still);
+          return {
+            ...im,
+            width: dims.width,
+            height: dims.height,
+            blur: await blurFor(still),
+            ...(isVideo ? { poster: still, sound: hasAudio(im.src) } : {}),
+          };
         })
       ),
     }))
   );
+}
+
+/**
+ * Cheap MP4 probe: true when a track handler box declares sound. Clips are
+ * written with `+faststart`, so the moov atom sits in the first few KB.
+ */
+function hasAudio(publicPath: string): boolean {
+  let fd: number | undefined;
+  try {
+    fd = fs.openSync(path.join(ROOT, "public", publicPath), "r");
+    const buf = Buffer.alloc(64 * 1024);
+    const head = buf.subarray(0, fs.readSync(fd, buf, 0, buf.length, 0));
+    // hdlr box: size(4) "hdlr"(4) version+flags(4) pre_defined(4) handler_type(4)
+    for (let i = head.indexOf("hdlr", 0, "latin1"); i >= 0; i = head.indexOf("hdlr", i + 4, "latin1")) {
+      if (head.toString("latin1", i + 12, i + 16) === "soun") return true;
+    }
+    return false;
+  } catch {
+    return false;
+  } finally {
+    if (fd !== undefined) fs.closeSync(fd);
+  }
 }
 
 function imageDims(publicPath: string): { width: number; height: number } {

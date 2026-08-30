@@ -244,6 +244,48 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   .igstage { height: 46vh !important; }
 }
 
+/* films in the reader */
+.film video::-webkit-media-controls { display: none !important; }
+.filmbtn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #1c1a17;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.35s, transform 0.35s, background 0.3s;
+  padding: 0;
+}
+.film:hover .filmbtn,
+.film:focus-within .filmbtn { opacity: 1; transform: none; }
+.filmbtn:hover { background: #fff; }
+.filmcue {
+  border: none;
+  background: transparent;
+  padding: 0;
+  transition: opacity 0.5s ease;
+}
+.filmcue-dot {
+  color: #1c1a17;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding-left: 3px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.3s;
+}
+.filmcue:hover .filmcue-dot { transform: scale(1.08); background: #fff; }
+/* Touch has no hover — keep the controls visible there. */
+@media (hover: none) {
+  .filmbtn { opacity: 1; transform: none; }
+}
+
 /* forms */
 .inqfield {
   background: transparent;

@@ -3,9 +3,52 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { site } from "@/content/site";
-import { getArticle, getArticles, getRelated } from "@/lib/content";
+import { getArticle, getArticles, getRelated, type SectionImage } from "@/lib/content";
 import SimpleAmp from "@/components/SimpleAmp";
 import ReadingProgress from "@/components/ReadingProgress";
+import ArticleFilm from "@/components/ArticleFilm";
+
+/** One piece of section media — a still, or a clip when the MDX points at an `.mp4`. */
+function Frame({
+  media,
+  alt,
+  sizes,
+  accent,
+}: {
+  media: SectionImage;
+  alt: string;
+  sizes: string;
+  accent: string;
+}) {
+  if (media.poster) {
+    return (
+      <ArticleFilm
+        src={media.src}
+        poster={media.poster}
+        posterBlur={media.blur}
+        width={media.width}
+        height={media.height}
+        caption={media.caption || alt}
+        accent={accent}
+        sound={media.sound}
+      />
+    );
+  }
+  return (
+    <div className="overflow-hidden rounded-[2px] bg-ph">
+      <Image
+        src={media.src}
+        alt={media.caption || alt}
+        width={media.width}
+        height={media.height}
+        placeholder="blur"
+        blurDataURL={media.blur}
+        sizes={sizes}
+        className="block w-full h-auto"
+      />
+    </div>
+  );
+}
 
 export async function generateStaticParams() {
   return (await getArticles()).map((a) => ({ slug: a.slug }));
@@ -39,15 +82,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     figCount += sec.images.length;
     let soloLayout: (typeof SOLO_LAYOUTS)[number] | null = null;
     let flip = false;
+    // Three plates from one series read best as an even row rather than a diptych.
+    const triptych = sec.images.length === 3 && sec.images.some((im) => im.layout === "triptych");
     if (sec.images.length === 1) {
       const hint = sec.images[0].layout;
-      soloLayout = hint && hint !== "flip" ? hint : SOLO_LAYOUTS[(seed + soloCount) % SOLO_LAYOUTS.length];
+      soloLayout =
+        hint && hint !== "flip" && hint !== "triptych"
+          ? hint
+          : SOLO_LAYOUTS[(seed + soloCount) % SOLO_LAYOUTS.length];
       soloCount++;
-    } else if (sec.images.length > 1) {
+    } else if (sec.images.length > 1 && !triptych) {
       flip = sec.images.some((im) => im.layout === "flip") || (seed + pairCount) % 2 === 1;
       pairCount++;
     }
-    return { ...sec, figStart, soloLayout, flip };
+    return { ...sec, figStart, soloLayout, flip, triptych };
   });
   const figNo = (n: number) => String(n + 1).padStart(2, "0");
   const soloClass = {
@@ -55,6 +103,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     right: "min-[700px]:w-[66%] min-[700px]:ml-auto",
     left: "min-[700px]:w-[66%] min-[700px]:mr-auto",
     inset: "min-[700px]:max-w-[78%] mx-auto",
+  } as const;
+  // Clips are shot on a phone: held to a column so they stay sharp instead of
+  // being stretched across the measure like a full-resolution still.
+  const filmClass = {
+    wide: "min-[700px]:max-w-[430px] mx-auto",
+    right: "min-[700px]:max-w-[430px] min-[700px]:ml-auto",
+    left: "min-[700px]:max-w-[430px] min-[700px]:mr-auto",
+    inset: "min-[700px]:max-w-[430px] mx-auto",
   } as const;
 
   return (
@@ -120,19 +176,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     </p>
                   ))}
                   {sec.images.length === 1 && sec.soloLayout && (
-                    <figure data-reveal="scale" className={`my-[clamp(28px,5vw,56px)] ${soloClass[sec.soloLayout]}`}>
-                      <div className="overflow-hidden rounded-[2px] bg-ph">
-                        <Image
-                          src={sec.images[0].src}
-                          alt={sec.images[0].caption || article.name}
-                          width={sec.images[0].width}
-                          height={sec.images[0].height}
-                          placeholder="blur"
-                          blurDataURL={sec.images[0].blur}
-                          sizes="(max-width: 780px) 100vw, 980px"
-                          className="block w-full h-auto"
-                        />
-                      </div>
+                    <figure
+                      data-reveal="scale"
+                      className={`my-[clamp(28px,5vw,56px)] ${
+                        (sec.images[0].poster ? filmClass : soloClass)[sec.soloLayout]
+                      }`}
+                    >
+                      <Frame
+                        media={sec.images[0]}
+                        alt={article.name}
+                        accent={article.accent}
+                        sizes="(max-width: 780px) 100vw, 980px"
+                      />
                       <figcaption className="flex items-center gap-4 mt-[14px]">
                         <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
                           No. {figNo(sec.figStart)}
@@ -144,7 +199,37 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       </figcaption>
                     </figure>
                   )}
-                  {sec.images.length > 1 && (
+                  {sec.triptych && (
+                    <div className="my-[clamp(30px,5.5vw,60px)] min-[900px]:-mx-[7%] grid grid-cols-3 max-[620px]:grid-cols-1 gap-[clamp(12px,2.2vw,26px)] items-start">
+                      {sec.images.map((im, k) => (
+                        <figure
+                          key={im.src}
+                          data-reveal="scale"
+                          data-reveal-delay={k ? String(k * 130) : undefined}
+                          className={k === 1 ? "min-[621px]:mt-[clamp(26px,5.5vw,72px)]" : ""}
+                        >
+                          <Frame
+                            media={im}
+                            alt={article.name}
+                            accent={article.accent}
+                            sizes="(max-width: 620px) 100vw, 340px"
+                          />
+                          <figcaption className="mt-3">
+                            <div className="flex items-center gap-3 mb-[6px]">
+                              <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
+                                No. {figNo(sec.figStart + k)}
+                              </span>
+                              <span className="flex-1 h-px bg-hairline" />
+                            </div>
+                            <span className="font-playfair italic text-[12.5px] leading-[1.5] text-muted">
+                              <SimpleAmp text={im.caption} />
+                            </span>
+                          </figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                  )}
+                  {sec.images.length > 1 && !sec.triptych && (
                     <div
                       className={`my-[clamp(28px,5vw,56px)] grid ${
                         sec.flip ? "grid-cols-[5fr_7fr]" : "grid-cols-[7fr_5fr]"
@@ -159,18 +244,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                           data-reveal-delay={offset ? "140" : undefined}
                           className={offset ? "min-[621px]:mt-[clamp(36px,9vw,110px)]" : ""}
                         >
-                          <div className="overflow-hidden rounded-[2px] bg-ph">
-                            <Image
-                              src={im.src}
-                              alt={im.caption || article.name}
-                              width={im.width}
-                              height={im.height}
-                              placeholder="blur"
-                              blurDataURL={im.blur}
-                              sizes="(max-width: 620px) 100vw, (max-width: 780px) 58vw, 500px"
-                              className="block w-full h-auto"
-                            />
-                          </div>
+                          <Frame
+                            media={im}
+                            alt={article.name}
+                            accent={article.accent}
+                            sizes="(max-width: 620px) 100vw, (max-width: 780px) 58vw, 500px"
+                          />
                           <figcaption className="mt-3">
                             <div className="flex items-center gap-3 mb-[6px]">
                               <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">

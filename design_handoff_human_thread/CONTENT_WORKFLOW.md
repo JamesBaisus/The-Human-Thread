@@ -54,8 +54,20 @@ Body paragraph…
 > A pull quote goes here.          # blockquote → styled pull quote
 
 ![alt](/articles/caroline-labouchere/01.jpg)   # optional inline image
+![alt|right](/articles/x/clip-01.mp4)          # optional inline film (see below)
 ```
 - Body is a series of **sections**: an `h2` heading followed by paragraphs, with optional images and blockquotes (pull quotes). Match the reader layout in README §4.
+- **Layout hints** — append `|hint` to the alt text to override the rotating default:
+  `wide` (full-bleed breakout), `right` / `left` (offset two-thirds), `inset` (centred),
+  `flip` (reverses a diptych), `triptych` (three plates from one series as one
+  staggered row — put the hint on all three).
+- **Films** — point the same `![caption](…)` syntax at an `.mp4` under
+  `public/articles/<slug>/`, with a poster still beside it under the same basename
+  (`clip-01.mp4` + `clip-01.jpg`); the poster supplies the frame size and blur-up.
+  Clips play muted and loop while on screen, pause when scrolled away, and get a
+  sound toggle automatically when the file carries an audio track. Encode with
+  `ffmpeg -c:v libx264 -crf 26 -pix_fmt yuv420p -movflags +faststart`, and hold them
+  to a phone-sized column rather than blowing them up across the measure.
 - **Category ordering & "Latest":** within each category, articles are shown newest-first (by `date`, or an explicit order list in `site` config). The first/newest article in each category automatically gets the **"Latest"** chip. Don't hard-code the flag — derive it.
 
 ### Poster — `content/posters/posters.json` (array) or per-file

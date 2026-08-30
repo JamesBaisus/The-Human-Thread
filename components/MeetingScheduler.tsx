@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BOOKING_WINDOW_DAYS, SLOTS, isoDate } from "@/lib/booking";
+import { BOOKING_WINDOW_DAYS, MEETING_TIMEZONE, SLOTS, isoDate } from "@/lib/booking";
 
 const dayLabel = (d: Date) => d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
 const timeLabel = (t: string) => {
@@ -14,7 +14,7 @@ export default function MeetingScheduler() {
   // Rendered only after mount: the calendar depends on "today", which must not
   // be baked into the prerendered HTML (hydration mismatch).
   const [today, setToday] = useState<Date | null>(null);
-  const [tz, setTz] = useState("GMT"); // London time label: GMT in winter, BST in summer
+  const [tz, setTz] = useState("GMT+4"); // UAE time label (Asia/Dubai, no daylight saving)
   const [monthOffset, setMonthOffset] = useState(0);
   const [selDate, setSelDate] = useState<Date | null>(null);
   const [selTime, setSelTime] = useState<string | null>(null);
@@ -31,7 +31,7 @@ export default function MeetingScheduler() {
   useEffect(() => {
     const now = new Date();
     setToday(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
-    const zone = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", timeZoneName: "short" })
+    const zone = new Intl.DateTimeFormat("en-GB", { timeZone: MEETING_TIMEZONE, timeZoneName: "short" })
       .formatToParts(now)
       .find((p) => p.type === "timeZoneName")?.value;
     if (zone) setTz(zone);
@@ -139,7 +139,7 @@ export default function MeetingScheduler() {
               <span className="w-[6px] h-[6px] rounded-full bg-accent" /> Google Meet video call
             </li>
             <li className="flex items-center gap-[10px]">
-              <span className="w-[6px] h-[6px] rounded-full bg-accent" /> London time · {tz}
+              <span className="w-[6px] h-[6px] rounded-full bg-accent" /> UAE time · {tz}
             </li>
           </ul>
           <p className="font-playfair italic text-[15px] leading-[1.6] text-muted mt-6 max-w-[30ch]">

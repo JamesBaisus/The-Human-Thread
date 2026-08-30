@@ -1,12 +1,12 @@
 // Shared booking rules — imported by both the scheduler UI and the API routes
 // so the client and server always agree on what a valid booking is.
 
-/** Editors' availability: 10:00 AM – 1:00 PM London time (last 30-min slot starts 12:30). */
+/** Editors' availability: 10:00 AM – 1:00 PM UAE time / Gulf Standard Time (last 30-min slot starts 12:30). */
 export const SLOTS = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30"];
 
 export const BOOKING_WINDOW_DAYS = 60;
 export const MEETING_MINUTES = 30;
-export const MEETING_TIMEZONE = "Europe/London";
+export const MEETING_TIMEZONE = "Asia/Dubai";
 
 export const isoDate = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;

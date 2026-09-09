@@ -31,7 +31,7 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "The Human Thread — Magazine · AE",
+  title: "The Human Thread Magazine · AE",
   description:
     "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
 };

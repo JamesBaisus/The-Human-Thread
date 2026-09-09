@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) return {};
-  return { title: `${article.title} — The Human Thread`, description: article.deck };
+  return { title: `${article.title} · The Human Thread`, description: article.deck };
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -284,7 +284,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               data-reveal=""
               className="mt-[clamp(12px,2vw,22px)] pt-[22px] border-t border-hairline font-hanken text-[11px] tracking-[.24em] uppercase text-muted-2"
             >
-              End of feature · The Human Thread — AE
+              End of feature · The Human Thread · AE
             </div>
 
             <div className="mt-[clamp(34px,5vw,60px)]">

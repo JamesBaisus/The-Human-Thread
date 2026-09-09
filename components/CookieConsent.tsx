@@ -42,7 +42,7 @@ export default function CookieConsent() {
           Your data, plainly
         </div>
         <p className="font-playfair text-[15.5px] leading-[1.55] text-[rgba(245,245,245,.92)]">
-          No tracking cookies here. Accept, and the site may remember where you left off in a story —
+          No tracking cookies here. Accept, and the site may remember where you left off in a story,
           kept in your browser, never sent to us. Our visit stats are cookieless and anonymous.
         </p>
         <div className="flex items-center gap-3 flex-wrap mt-[18px]">

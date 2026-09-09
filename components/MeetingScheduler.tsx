@@ -63,7 +63,7 @@ export default function MeetingScheduler() {
         )}
         {demo && (
           <p className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2 mb-4">
-            Demo mode — calendar connection not configured yet, nothing was scheduled
+            Demo mode: calendar connection not configured yet, nothing was scheduled
           </p>
         )}
         <Link
@@ -107,14 +107,14 @@ export default function MeetingScheduler() {
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; meetLink?: string; demo?: boolean };
       if (!res.ok || !data.ok) {
-        setError("We could not arrange the meeting just now — please try again in a moment.");
+        setError("We could not arrange the meeting just now. Please try again in a moment.");
         return;
       }
       setMeetLink(data.meetLink ?? null);
       setDemo(Boolean(data.demo));
       setSent(true);
     } catch {
-      setError("We could not arrange the meeting just now — please try again in a moment.");
+      setError("We could not arrange the meeting just now. Please try again in a moment.");
     } finally {
       setSubmitting(false);
     }
@@ -143,7 +143,7 @@ export default function MeetingScheduler() {
             </li>
           </ul>
           <p className="font-playfair italic text-[15px] leading-[1.6] text-muted mt-6 max-w-[30ch]">
-            Bring your story, your images, or simply an idea — we listen first.
+            Bring your story, your images, or simply an idea. We listen first.
           </p>
           {selDate && (
             <div className="mt-7 pt-5 border-t border-hairline">
@@ -295,7 +295,7 @@ export default function MeetingScheduler() {
             <textarea
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              placeholder="A story, a collaboration, a feature — a few lines are enough…"
+              placeholder="A story, a collaboration, a feature, a few lines are enough…"
               rows={4}
               className="inqfield resize-y leading-[1.66] !py-[14px]"
             />

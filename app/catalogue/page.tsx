@@ -5,8 +5,8 @@ import { getCatalogue, isLatestInCategory } from "@/lib/content";
 import CatalogueClient from "@/components/CatalogueClient";
 
 export const metadata: Metadata = {
-  title: "Articles — The Human Thread",
-  description: "Every story in the issue — portraits, essays and conversations.",
+  title: "Articles · The Human Thread",
+  description: "Every story in the issue: portraits, essays and conversations.",
 };
 
 export default async function CataloguePage() {
@@ -38,7 +38,7 @@ export default async function CataloguePage() {
             </h1>
           </div>
           <p className="max-w-[34ch] text-[16px] leading-[1.6] text-body-1">
-            Every story in the issue — portraits, essays and conversations. Choose a thread to follow.
+            Every story in the issue: portraits, essays and conversations. Choose a thread to follow.
           </p>
         </div>
       </section>

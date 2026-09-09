@@ -49,7 +49,7 @@ export const site = {
   carousel: {
     eyebrow: "The Editorials",
     title: "Inside the Issue",
-    sub: "Photo stories from the issue — open one to turn through the full spread.",
+    sub: "Photo stories from the issue. Open one to turn through the full spread.",
   },
 
   /** "Featured in this issue" marquee names. */
@@ -66,16 +66,16 @@ export const site = {
   aboutBody: [
     "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
     "Created in the UAE with a global editorial vision, the magazine explores the people, places, brands, artists, and ideas that carry meaning beyond the surface. Through thoughtful features and refined visual storytelling, we look at fashion, art, culture, and community as reflections of something deeper: who we are, what we value, and how we are remembered.",
-    "At The Human Thread_AE, every story begins with a person. We are drawn to journeys of resilience, creativity, ambition, heritage, reinvention, and purpose — the moments that shape a life, a vision, or a legacy.",
+    "At The Human Thread_AE, every story begins with a person. We are drawn to journeys of resilience, creativity, ambition, heritage, reinvention, and purpose: the moments that shape a life, a vision, or a legacy.",
     "Our editorial voice is intimate yet elevated, emotional yet timeless. We do not chase noise. We follow substance.",
-    "From Dubai to the world, The Human Thread_AE exists to document the threads that connect us — the stories behind the faces, the meaning behind the work, and the humanity behind every expression.",
+    "From Dubai to the world, The Human Thread_AE exists to document the threads that connect us: the stories behind the faces, the meaning behind the work, and the humanity behind every expression.",
   ],
 
   values: [
     { title: "Human first", text: "Every story starts with a person, never a product." },
     { title: "Slow media", text: "Fewer, longer, better. We would rather be right than first." },
     { title: "Regional pride", text: "Local voices, told with the depth the world reserves for others." },
-    { title: "Beauty with meaning", text: "Aesthetics are welcome — emptiness is not." },
+    { title: "Beauty with meaning", text: "Aesthetics are welcome, emptiness is not." },
   ],
 } as const;
 

@@ -47,7 +47,7 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
         <SimpleAmp text={card.title} />
       </h3>
       <p className="font-playfair italic text-[14px] text-ink mb-2">
-        {card.name} — <SimpleAmp text={card.role} />
+        {card.name}, <SimpleAmp text={card.role} />
       </p>
       <p className="text-[14px] leading-[1.55] text-muted [text-wrap:pretty]">{card.deck}</p>
     </Link>

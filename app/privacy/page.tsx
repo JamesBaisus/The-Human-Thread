@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalDoc from "@/components/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — The Human Thread",
+  title: "Privacy Policy · The Human Thread",
   description: "Privacy Policy for The Human Thread_AE.",
 };
 
@@ -24,7 +24,7 @@ const sections = [
   {
     h: "Images & submitted material",
     ps: [
-      "Material you submit stays private while it is under review. If a story is selected for publication, our editors will agree the details with you — including how you are credited — before anything is published.",
+      "Material you submit stays private while it is under review. If a story is selected for publication, our editors will agree the details with you, including how you are credited, before anything is published.",
     ],
   },
   {
@@ -36,14 +36,14 @@ const sections = [
   {
     h: "Cookies & consent",
     ps: [
-      "This site sets no advertising or tracking cookies. Our visit statistics are cookieless and anonymous — they cannot identify you.",
+      "This site sets no advertising or tracking cookies. Our visit statistics are cookieless and anonymous, so they cannot identify you.",
       "The banner on your first visit asks one thing: whether the site may remember your reading position (below). Accept and it works; decline and nothing is stored beyond the choice itself, and our visit statistics are switched off for you too.",
     ],
   },
   {
     h: "Remembering where you left off",
     ps: [
-      "If you accept on the consent banner, your browser remembers which article you were reading and how far you had scrolled, so you can pick a story up where you stopped. This is kept on your own device using your browser's local storage — it is never sent to us, used to identify you, or shared with anyone.",
+      "If you accept on the consent banner, your browser remembers which article you were reading and how far you had scrolled, so you can pick a story up where you stopped. This is kept on your own device using your browser's local storage. It is never sent to us, used to identify you, or shared with anyone.",
       "You can clear it at any time by clearing your browser's site data, and it simply forgets positions you haven't returned to in a month.",
     ],
   },
@@ -56,7 +56,7 @@ const sections = [
   {
     h: "Your choices",
     ps: [
-      "You may ask us at any time what information we hold about you, ask us to correct it, or ask us to delete it — via the Inquire page or through our Instagram, @thehumanthread_ae.",
+      "You may ask us at any time what information we hold about you, ask us to correct it, or ask us to delete it, via the Inquire page or through our Instagram, @thehumanthread_ae.",
     ],
   },
   {

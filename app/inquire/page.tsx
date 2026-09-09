@@ -3,7 +3,7 @@ import Link from "next/link";
 import MeetingScheduler from "@/components/MeetingScheduler";
 
 export const metadata: Metadata = {
-  title: "Inquire — The Human Thread",
+  title: "Inquire · The Human Thread",
   description: "Arrange an online meeting with the editors of The Human Thread.",
 };
 
@@ -21,7 +21,7 @@ export default function InquirePage() {
           Inquire
         </h1>
         <p className="font-playfair italic text-[clamp(19px,2.2vw,27px)] leading-[1.4] text-body-1 mt-[22px] max-w-[46ch]">
-          Book a time with the editors — a thirty-minute online conversation about your story, a collaboration, or a
+          Book a time with the editors: a thirty-minute online conversation about your story, a collaboration, or a
           feature in the issue.
         </p>
       </section>

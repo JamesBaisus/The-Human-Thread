@@ -58,7 +58,7 @@ export type BookingRequest = {
 export async function createMeetingEvent(req: BookingRequest): Promise<{ meetLink?: string; eventLink?: string }> {
   const token = await accessToken();
   const event = {
-    summary: `The Human Thread — Editorial meeting with ${req.name}`,
+    summary: `The Human Thread · Editorial meeting with ${req.name}`,
     description:
       `Booked via thehumanthread inquire page.\n\n` +
       `Name: ${req.name}\nEmail: ${req.email}\n\n` +

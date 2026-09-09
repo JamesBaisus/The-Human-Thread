@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalDoc from "@/components/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — The Human Thread",
+  title: "Terms & Conditions · The Human Thread",
   description: "Terms & Conditions for The Human Thread_AE.",
 };
 

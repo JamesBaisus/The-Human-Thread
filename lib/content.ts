@@ -81,6 +81,13 @@ export type EditItem = {
   slug: string;
   /** Position in the deck, lowest first. */
   order: number;
+  /**
+   * True while the piece is dealt into the fanned deck on the landing page.
+   * Turning it off moves it down to the THT Edit section, which is how the
+   * deck stays a small hand as the archive grows. Named `inDeck` because
+   * `deck` is already the standfirst on every piece.
+   */
+  inDeck: boolean;
   /** Small label above the title, free text rather than a site category. */
   kicker: string;
   title: string;
@@ -358,6 +365,8 @@ async function loadEditItems(): Promise<EditItem[]> {
       return {
         slug: data.slug ?? file.replace(/\.mdx?$/, ""),
         order: Number(data.order),
+        // absent means "in the deck" — a piece just added belongs at the top
+        inDeck: data.inDeck === undefined ? true : Boolean(data.inDeck),
         kicker: String(data.kicker),
         title: String(data.title),
         deck: String(data.deck),
@@ -387,6 +396,16 @@ export function getEditItems(): Promise<EditItem[]> {
 
 export async function getEditItem(slug: string): Promise<EditItem | undefined> {
   return (await getEditItems()).find((i) => i.slug === slug);
+}
+
+/** The pieces dealt into the fanned deck. */
+export async function getDeckEditItems(): Promise<EditItem[]> {
+  return (await getEditItems()).filter((i) => i.inDeck);
+}
+
+/** The pieces that have moved out of the deck into the THT Edit section. */
+export async function getShelfEditItems(): Promise<EditItem[]> {
+  return (await getEditItems()).filter((i) => !i.inDeck);
 }
 
 /** The other pieces in the deck, for the foot of an Edit page. */

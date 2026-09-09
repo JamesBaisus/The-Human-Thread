@@ -62,8 +62,12 @@ async function accentFromCover(file: File): Promise<string> {
 type Summary = { slug: string; name: string; title: string; category: string; date: string; featured: boolean; hidden: boolean; cover: string };
 type PosterSummary = { slug: string; title: string; category: string; date: string; cover: string; count: number };
 type EditorialSummary = { slug: string; title: string; eyebrow: string; date: string; cover: string; count: number };
+type EditSummary = { slug: string; title: string; kicker: string; date: string; cover: string; order: number; inDeck: boolean };
 
-type Tab = "add" | "manage" | "poster" | "manage-posters" | "editorial" | "manage-editorials";
+type Tab = "add" | "manage" | "poster" | "manage-posters" | "editorial" | "manage-editorials" | "edit" | "manage-edits";
+
+const BODY_HINT =
+  "Leave a blank line between paragraphs.\n\n## A heading, if the piece needs one\n\n> A pull quote on its own line";
 
 export default function AdminPanel() {
   const [password, setPassword] = useState("");
@@ -85,7 +89,7 @@ export default function AdminPanel() {
   const [message, setMessage] = useState("");
   const [doneSlug, setDoneSlug] = useState("");
   const [doneVerb, setDoneVerb] = useState("Published");
-  const [doneKind, setDoneKind] = useState<"article" | "poster" | "editorial">("article");
+  const [doneKind, setDoneKind] = useState<"article" | "poster" | "editorial" | "edit">("article");
 
   // manage state
   const [articles, setArticles] = useState<Summary[] | null>(null);
@@ -112,6 +116,19 @@ export default function AdminPanel() {
   const [editorials, setEditorials] = useState<EditorialSummary[] | null>(null);
   const [editorialsMsg, setEditorialsMsg] = useState("");
   const [editorialSearch, setEditorialSearch] = useState("");
+
+  // THT Edit form state
+  const [editingEditSlug, setEditingEditSlug] = useState<string | null>(null);
+  const [xTitle, setXTitle] = useState("");
+  const [xKicker, setXKicker] = useState("Culture");
+  const [xDeck, setXDeck] = useState("");
+  const [xInDeck, setXInDeck] = useState(true);
+  const [xCover, setXCover] = useState<File | null>(null);
+  const [xPhotos, setXPhotos] = useState<File[]>([]);
+  const [xContent, setXContent] = useState("");
+  const [edits, setEdits] = useState<EditSummary[] | null>(null);
+  const [editsMsg, setEditsMsg] = useState("");
+  const [editSearch, setEditSearch] = useState("");
 
   const authHeaders = { "x-admin-password": password };
 
@@ -311,6 +328,116 @@ export default function AdminPanel() {
     }
   };
 
+  const resetEdit = () => {
+    setEditingEditSlug(null); setXTitle(""); setXKicker("Culture"); setXDeck("");
+    setXInDeck(true); setXCover(null); setXPhotos([]); setXContent("");
+  };
+
+  const loadEdits = async () => {
+    setEditsMsg("Loading…");
+    try {
+      const res = await fetch("/api/admin/edit", { headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditsMsg(friendlyError(data.error)); setEdits(null); return; }
+      setEdits(data.edits);
+      setEditsMsg("");
+    } catch {
+      setEditsMsg("Could not load the Edit pieces.");
+    }
+  };
+
+  const startEditEdit = async (slug: string) => {
+    setEditsMsg("Opening…");
+    try {
+      const res = await fetch(`/api/admin/edit?slug=${encodeURIComponent(slug)}`, { headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditsMsg(friendlyError(data.error)); return; }
+      const x = data.edit;
+      setEditingEditSlug(x.slug); setXTitle(x.title); setXKicker(x.kicker || "Culture");
+      setXDeck(x.deck ?? ""); setXInDeck(x.inDeck); setXCover(null); setXPhotos([]);
+      // strip the generated figure lines and section breaks back to plain text
+      setXContent(
+        String(x.body ?? "")
+          .replace(/^!\[.*$/gm, "")      // generated figure lines
+          .replace(/^-{3,}$/gm, "")      // generated section breaks
+          .replace(/\n{3,}/g, "\n\n")    // the gaps they left behind
+          .trim()
+      );
+      setTab("edit"); setState("idle"); setMessage(""); setEditsMsg("");
+    } catch {
+      setEditsMsg("Could not open the piece.");
+    }
+  };
+
+  /** Moves a piece between the fanned deck and the THT Edit section. */
+  const toggleInDeck = async (slug: string, inDeck: boolean) => {
+    setEditsMsg(inDeck ? "Dealing into the deck…" : "Moving to the section…");
+    try {
+      const res = await fetch("/api/admin/edit", {
+        method: "PATCH",
+        headers: { ...authHeaders, "content-type": "application/json" },
+        body: JSON.stringify({ slug, inDeck }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditsMsg(friendlyError(data.error)); return; }
+      setEdits((list) => (list ?? []).map((x) => (x.slug === slug ? { ...x, inDeck } : x)));
+      setEditsMsg(
+        data.demo
+          ? "Dry run — GitHub not connected, nothing changed."
+          : inDeck
+            ? "Back in the deck. The site is rebuilding."
+            : "Moved to the THT Edit section. The site is rebuilding."
+      );
+    } catch {
+      setEditsMsg("Could not move the piece.");
+    }
+  };
+
+  const removeEdit = async (slug: string, title: string) => {
+    if (!window.confirm(`Remove "${title}" permanently? The piece and its images will be deleted from the site.`)) return;
+    setEditsMsg("Removing…");
+    try {
+      const res = await fetch(`/api/admin/edit?slug=${encodeURIComponent(slug)}`, { method: "DELETE", headers: authHeaders });
+      const data = await res.json();
+      if (!res.ok || !data.ok) { setEditsMsg(friendlyError(data.error)); return; }
+      setEditsMsg(data.demo ? "Dry run — GitHub not connected, nothing deleted." : "Removed. The site is rebuilding.");
+      setEdits((list) => (list ?? []).filter((x) => x.slug !== slug));
+    } catch {
+      setEditsMsg("Could not remove the piece.");
+    }
+  };
+
+  const submitEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setState("busy"); setMessage("");
+    try {
+      const fd = new FormData();
+      fd.set("title", xTitle);
+      fd.set("kicker", xKicker);
+      fd.set("deck", xDeck);
+      fd.set("inDeck", String(xInDeck));
+      fd.set("content", xContent);
+      // same as an article: the accent is sampled from the cover it is given
+      if (xCover) {
+        fd.set("accent", await accentFromCover(xCover));
+        fd.set("cover", xCover);
+      }
+      for (const p of xPhotos) fd.append("photos", p);
+      const url = editingEditSlug ? `/api/admin/edit?slug=${encodeURIComponent(editingEditSlug)}` : "/api/admin/edit";
+      const res = await fetch(url, { method: editingEditSlug ? "PUT" : "POST", headers: authHeaders, body: fd });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; demo?: boolean; slug?: string; error?: string };
+      if (!res.ok || !data.ok) { setState("error"); setMessage(friendlyError(data.error, data.slug)); return; }
+      setDoneSlug(data.slug ?? "");
+      setDoneVerb(editingEditSlug ? "Updated" : "Added");
+      setDoneKind("edit");
+      setState(data.demo ? "demo" : "done");
+      setEdits(null);
+    } catch {
+      setState("error");
+      setMessage("Something went wrong — please try again.");
+    }
+  };
+
   const resetEditorial = () => {
     setEditingEditorialSlug(null); setETitle(""); setEEyebrow(""); setEImages([]);
   };
@@ -443,6 +570,12 @@ export default function AdminPanel() {
         </button>
         <button type="button" className={tabBtn(tab === "manage-editorials")} onClick={() => { setTab("manage-editorials"); if (!editorials) loadEditorials(); }}>
           Manage editorials
+        </button>
+        <button type="button" className={tabBtn(tab === "edit")} onClick={() => { setTab("edit"); setState("idle"); setMessage(""); }}>
+          {editingEditSlug ? `Editing: ${editingEditSlug}` : "Add THT Edit"}
+        </button>
+        <button type="button" className={tabBtn(tab === "manage-edits")} onClick={() => { setTab("manage-edits"); if (!edits) loadEdits(); }}>
+          Manage THT Edit
         </button>
       </div>
 
@@ -593,6 +726,152 @@ export default function AdminPanel() {
             <p className="font-display italic text-[15px] text-muted-2">No editorials yet.</p>
           )}
         </div>
+      ) : tab === "manage-edits" ? (
+        <div>
+          <input
+            value={editSearch}
+            onChange={(e) => setEditSearch(e.target.value)}
+            className="inqfield mb-5"
+            placeholder="Search THT Edit by title or kicker."
+          />
+          <p className="font-ui text-[10px] tracking-[.12em] uppercase text-muted-2 mb-4">
+            Pieces in the deck fan across the landing page. Move one to the section and it drops into the
+            THT Edit row further down, which is how the deck stays a small hand.
+          </p>
+          {editsMsg && <p className="font-ui text-[11px] tracking-[.08em] text-muted mb-4">{editsMsg}</p>}
+          {edits
+            ?.filter((x) => `${x.title} ${x.kicker}`.toLowerCase().includes(editSearch.trim().toLowerCase()))
+            .map((x) => (
+            <div key={x.slug} className="flex items-center gap-4 py-[14px] border-b border-hairline">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={x.cover}
+                alt=""
+                className={`w-[52px] h-[68px] flex-none object-cover rounded-[2px] bg-soft border border-hairline ${x.inDeck ? "" : "opacity-55"}`}
+                loading="lazy"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">
+                  {x.title}
+                  {!x.inDeck && (
+                    <span className="ml-2 font-ui text-[9px] tracking-[.14em] uppercase border border-hairline text-muted rounded-[2px] px-[6px] py-[2px]">
+                      Section
+                    </span>
+                  )}
+                </div>
+                <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
+                  {x.kicker} &middot; {x.date}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => toggleInDeck(x.slug, !x.inDeck)}
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+              >
+                {x.inDeck ? "Move to section" : "Deal into deck"}
+              </button>
+              <button
+                type="button"
+                onClick={() => startEditEdit(x.slug)}
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => removeEdit(x.slug, x.title)}
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          {edits && edits.length === 0 && (
+            <p className="font-display italic text-[15px] text-muted-2">No THT Edit pieces yet.</p>
+          )}
+        </div>
+      ) : tab === "edit" ? (
+        <form onSubmit={submitEdit} className="flex flex-col gap-[clamp(24px,3vw,34px)]">
+          <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
+            <div>
+              <label className={label}>Title</label>
+              <input value={xTitle} onChange={(e) => setXTitle(e.target.value)} required className="inqfield" placeholder="e.g. When Beauty Gets Bolder" />
+            </div>
+            <div>
+              <label className={label}>Kicker</label>
+              <input value={xKicker} onChange={(e) => setXKicker(e.target.value)} className="inqfield" placeholder="e.g. Fashion, Culture, Beauty, Science" />
+            </div>
+          </div>
+
+          <div>
+            <label className={label}>Standfirst (optional)</label>
+            <input value={xDeck} onChange={(e) => setXDeck(e.target.value)} className="inqfield" placeholder="One line under the cover. Left empty, the first sentence is used." />
+          </div>
+
+          <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
+            <div>
+              <label className={label}>{editingEditSlug ? "Replace cover (optional)" : "Cover"}</label>
+              <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-display italic text-[15px] px-4 text-center">
+                {xCover ? xCover.name : editingEditSlug ? "Keep current cover" : "Choose the cover"}
+                <input type="file" accept="image/*" className="hidden" onChange={(e) => setXCover(e.target.files?.[0] ?? null)} />
+              </label>
+            </div>
+            <div>
+              <label className={label}>Pictures (optional, up to 6)</label>
+              <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-display italic text-[15px] px-4 text-center">
+                {xPhotos.length ? `${xPhotos.length} selected` : "Choose pictures"}
+                <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setXPhotos([...(e.target.files ?? [])])} />
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className={label}>Text</label>
+            <textarea
+              value={xContent}
+              onChange={(e) => setXContent(e.target.value)}
+              required
+              rows={12}
+              className="inqfield resize-y"
+              placeholder={BODY_HINT}
+            />
+            <p className="font-ui text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
+              Pictures are spread evenly between the paragraphs. Short pieces are set larger and more open,
+              so a hundred words still fills the page.
+            </p>
+          </div>
+
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" checked={xInDeck} onChange={(e) => setXInDeck(e.target.checked)} className="w-4 h-4 accent-[#1c1a17]" />
+            <span className="font-ui text-[11px] tracking-[.14em] uppercase text-ink">Deal into the deck</span>
+            <span className="font-ui text-[10px] tracking-[.1em] uppercase text-muted-2">
+              Off puts it straight into the THT Edit section
+            </span>
+          </label>
+
+          <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
+            <span className="font-ui text-[10px] tracking-[.14em] uppercase text-muted-2">
+              {editingEditSlug ? "Saving updates the live piece in about two minutes" : "Adding commits it and goes live in about two minutes"}
+            </span>
+            <div className="flex items-center gap-3">
+              {editingEditSlug && (
+                <button type="button" onClick={resetEdit} className={tabBtn(false)}>
+                  Cancel edit
+                </button>
+              )}
+              <button
+                type="submit"
+                disabled={state === "busy"}
+                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              >
+                {state === "busy" ? "Working" : editingEditSlug ? "Save changes" : "Add to THT Edit"}
+              </button>
+            </div>
+          </div>
+          {state === "error" && (
+            <p className="font-ui text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
+          )}
+        </form>
       ) : tab === "poster" ? (
         <form onSubmit={submitPoster} className="flex flex-col gap-[clamp(24px,3vw,34px)]">
           <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">

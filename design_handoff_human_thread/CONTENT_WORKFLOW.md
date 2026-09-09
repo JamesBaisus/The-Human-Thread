@@ -70,6 +70,32 @@ Body paragraph…
   to a phone-sized column rather than blowing them up across the measure.
 - **Category ordering & "Latest":** within each category, articles are shown newest-first (by `date`, or an explicit order list in `site` config). The first/newest article in each category automatically gets the **"Latest"** chip. Don't hard-code the flag — derive it.
 
+### THT Edit — `content/edit/<slug>.mdx`
+Short-form pieces, deliberately outside the article catalogue, the category rows
+and the hero rotation. They open at `/edit/<slug>` in a slim centred reader whose
+type scale is chosen from the piece's own length.
+```yaml
+---
+slug: elie-saab-hm
+order: 1                 # position in the deck, lowest first
+inDeck: true             # true = fanned on the landing page; false = THT Edit section
+kicker: Fashion          # free text, not a site category
+title: Glamour, Without the Distance
+deck: "One line under the cover."
+readTime: 2 min read
+accent: "#8f4b58"
+cover: /edit/elie-saab-hm/cover.jpg
+date: 2026-09-09
+---
+```
+- Body uses the same conventions as an article, including the bare `---` section
+  break, which short pieces need to keep figures between paragraphs.
+- `inDeck` is how the deck stays a small hand: turn it off and the piece drops
+  into the THT Edit row further down the landing page. The admin panel's
+  **Manage THT Edit** tab toggles it.
+- Add, edit, move and remove from the panel's **Add THT Edit** tab; images land
+  in `public/edit/<slug>/`.
+
 ### Poster — `content/posters/posters.json` (array) or per-file
 ```json
 {

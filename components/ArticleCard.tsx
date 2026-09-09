@@ -5,8 +5,11 @@ import SimpleAmp from "@/components/SimpleAmp";
 export type ArticleCardData = {
   slug: string;
   category: string;
+  /** Byline. Left empty by THT Edit pieces, which are about a subject, not a person. */
   name: string;
   role: string;
+  /** Defaults to the article reader; Edit pieces point at their own route. */
+  href?: string;
   title: string;
   deck: string;
   cover: string;
@@ -16,11 +19,11 @@ export type ArticleCardData = {
 
 export default function ArticleCard({ card, large = false }: { card: ArticleCardData; large?: boolean }) {
   return (
-    <Link href={`/article/${card.slug}`} data-reveal="scale" className="card cursor-pointer block">
+    <Link href={card.href ?? `/article/${card.slug}`} data-reveal="scale" className="card cursor-pointer block">
       <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-ph">
         <Image
           src={card.cover}
-          alt={card.name}
+          alt={card.name || card.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           placeholder="blur"
@@ -46,9 +49,11 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
       >
         <SimpleAmp text={card.title} />
       </h3>
-      <p className="font-display italic text-[14px] text-ink mb-2">
-        {card.name}, <SimpleAmp text={card.role} />
-      </p>
+      {card.name && (
+        <p className="font-display italic text-[14px] text-ink mb-2">
+          {card.name}, <SimpleAmp text={card.role} />
+        </p>
+      )}
       <p className="text-[14px] leading-[1.55] text-muted [text-wrap:pretty]">{card.deck}</p>
     </Link>
   );

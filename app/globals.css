@@ -5,6 +5,8 @@
   --font-display: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
   --font-body: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
   --font-ui: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
+  /* the masthead only — the rest of the magazine is the sans above */
+  --font-logo: var(--font-pf), "Playfair Display", Georgia, serif;
 
   --color-ink: #1c1a17;
   --color-ink-2: #231f1b;

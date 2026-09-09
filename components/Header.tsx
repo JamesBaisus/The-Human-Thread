@@ -30,7 +30,7 @@ export default function Header({
               <span className="block h-[1.6px] w-6 bg-ink" />
             </button>
             <Link href="/#top" className="block leading-[.86]">
-              <div className="font-display font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-ink">
+              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-ink">
                 THE HUMAN THREAD
               </div>
               <div className="font-ui text-[8.5px] font-black tracking-[.44em] text-muted mt-1 pl-[2px]">
@@ -66,7 +66,7 @@ export default function Header({
           >
             <div className="flex items-start justify-between mb-[clamp(26px,3.4vw,40px)]">
               <div className="leading-[.86]">
-                <div className="font-display font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
+                <div className="font-logo font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
                 <div className="font-ui text-[8px] font-black tracking-[.4em] text-muted-2 mt-1">
                   MAGAZINE · AE
                 </div>

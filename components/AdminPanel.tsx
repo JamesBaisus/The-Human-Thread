@@ -383,16 +383,16 @@ export default function AdminPanel() {
     }
   };
 
-  const label = "block font-hanken text-[10.5px] font-semibold tracking-[.2em] uppercase text-body-2 mb-3";
+  const label = "block font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-body-2 mb-3";
   const tabBtn = (active: boolean) =>
-    `cursor-pointer font-hanken text-[10.5px] font-semibold tracking-[.16em] uppercase py-[9px] px-[15px] rounded-[2px] border transition-colors ${
+    `cursor-pointer font-ui text-[10.5px] font-black tracking-[.16em] uppercase py-[9px] px-[15px] rounded-[2px] border transition-colors ${
       active ? "bg-ink text-ondark border-ink" : "bg-transparent text-body-2 border-hairline hover:border-ink"
     }`;
 
   if (state === "done" || state === "demo") {
     return (
       <div className="border-t border-hairline py-[clamp(40px,6vw,72px)] text-center">
-        <div className="font-playfair italic text-[clamp(28px,3.6vw,44px)] leading-[1.16] text-ink mb-[18px]">
+        <div className="font-display italic text-[clamp(28px,3.6vw,44px)] leading-[1.16] text-ink mb-[18px]">
           {state === "done"
             ? doneKind === "poster" ? `${doneVerb} — the poster is on its way.`
               : doneKind === "editorial" ? `${doneVerb} — the editorial is on its way.`
@@ -410,7 +410,7 @@ export default function AdminPanel() {
         </p>
         <button
           onClick={() => { doneKind === "poster" ? resetPoster() : doneKind === "editorial" ? resetEditorial() : resetForm(); setState("idle"); }}
-          className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[13px] px-[26px] rounded-[2px]"
+          className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[13px] px-[26px] rounded-[2px]"
         >
           Back to the editor
         </button>
@@ -454,7 +454,7 @@ export default function AdminPanel() {
             className="inqfield mb-5"
             placeholder="Search articles by title, author, or category…"
           />
-          {manageMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{manageMsg}</p>}
+          {manageMsg && <p className="font-ui text-[11px] tracking-[.08em] text-muted mb-4">{manageMsg}</p>}
           {articles
             ?.filter((a) => `${a.title} ${a.name} ${a.category}`.toLowerCase().includes(articleSearch.trim().toLowerCase()))
             .map((a) => (
@@ -467,8 +467,8 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className={`flex-1 min-w-0 ${a.hidden ? "opacity-45" : ""}`}>
-                <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{a.title}</div>
-                <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
+                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{a.title}</div>
+                <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {a.name} · {a.category} · {a.date}
                   {a.featured && <span className="ml-2 bg-ink text-ondark rounded-[2px] px-[6px] py-[2px]">Featured</span>}
                   {a.hidden && <span className="ml-2 border border-hairline text-muted rounded-[2px] px-[6px] py-[2px]">Hidden</span>}
@@ -477,28 +477,28 @@ export default function AdminPanel() {
               <button
                 type="button"
                 onClick={() => startEdit(a.slug)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
               >
                 Edit
               </button>
               <button
                 type="button"
                 onClick={() => toggleHidden(a.slug, !a.hidden)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
               >
                 {a.hidden ? "Unhide" : "Hide"}
               </button>
               <button
                 type="button"
                 onClick={() => removeArticle(a.slug, a.title)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
               >
                 Remove
               </button>
             </div>
           ))}
           {articles && articles.length === 0 && (
-            <p className="font-playfair italic text-[15px] text-muted-2">No articles found.</p>
+            <p className="font-display italic text-[15px] text-muted-2">No articles found.</p>
           )}
         </div>
       ) : tab === "manage-posters" ? (
@@ -509,7 +509,7 @@ export default function AdminPanel() {
             className="inqfield mb-5"
             placeholder="Search posters by title or category…"
           />
-          {postersMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{postersMsg}</p>}
+          {postersMsg && <p className="font-ui text-[11px] tracking-[.08em] text-muted mb-4">{postersMsg}</p>}
           {posters
             ?.filter((p) => `${p.title} ${p.category}`.toLowerCase().includes(posterSearch.trim().toLowerCase()))
             .map((p) => (
@@ -522,29 +522,29 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{p.title}</div>
-                <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
+                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{p.title}</div>
+                <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {p.category} · {p.date} · {p.count === 1 ? "1 image" : `${p.count} images`}
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => startEditPoster(p.slug)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
               >
                 Edit
               </button>
               <button
                 type="button"
                 onClick={() => removePoster(p.slug, p.title)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
               >
                 Remove
               </button>
             </div>
           ))}
           {posters && posters.length === 0 && (
-            <p className="font-playfair italic text-[15px] text-muted-2">No posters yet.</p>
+            <p className="font-display italic text-[15px] text-muted-2">No posters yet.</p>
           )}
         </div>
       ) : tab === "manage-editorials" ? (
@@ -555,7 +555,7 @@ export default function AdminPanel() {
             className="inqfield mb-5"
             placeholder="Search editorials by title or eyebrow…"
           />
-          {editorialsMsg && <p className="font-hanken text-[11px] tracking-[.08em] text-muted mb-4">{editorialsMsg}</p>}
+          {editorialsMsg && <p className="font-ui text-[11px] tracking-[.08em] text-muted mb-4">{editorialsMsg}</p>}
           {editorials
             ?.filter((ed) => `${ed.title} ${ed.eyebrow}`.toLowerCase().includes(editorialSearch.trim().toLowerCase()))
             .map((ed) => (
@@ -568,29 +568,29 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <div className="font-playfair font-medium text-[17px] text-ink leading-[1.2]">{ed.title}</div>
-                <div className="font-hanken text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
+                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{ed.title}</div>
+                <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {ed.eyebrow ? `${ed.eyebrow} · ` : ""}{ed.date} · {ed.count === 1 ? "1 page" : `${ed.count} pages`}
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => startEditEditorial(ed.slug)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
               >
                 Edit
               </button>
               <button
                 type="button"
                 onClick={() => removeEditorial(ed.slug, ed.title)}
-                className="cursor-pointer font-hanken text-[10px] font-semibold tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
+                className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-[#a33] border border-hairline hover:border-[#a33] rounded-[2px] py-2 px-3 transition-colors"
               >
                 Remove
               </button>
             </div>
           ))}
           {editorials && editorials.length === 0 && (
-            <p className="font-playfair italic text-[15px] text-muted-2">No editorials yet.</p>
+            <p className="font-display italic text-[15px] text-muted-2">No editorials yet.</p>
           )}
         </div>
       ) : tab === "poster" ? (
@@ -614,11 +614,11 @@ export default function AdminPanel() {
             <label className={label}>
               {editingPosterSlug ? "Replace images — the first is the cover (optional)" : "Poster images — the first is the cover (up to 10)"}
             </label>
-            <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
+            <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-display italic text-[15px] px-4 text-center">
               {pImages.length ? `${pImages.length} selected · ${pImages[0].name}` : editingPosterSlug ? "Keep current images…" : "Choose the poster pages…"}
               <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setPImages([...(e.target.files ?? [])])} />
             </label>
-            <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
+            <p className="font-ui text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
               {editingPosterSlug
                 ? "Leave empty to keep the current images. Choosing new ones replaces the whole set."
                 : "Card shape follows the first image. Select pages in the order they should appear in the pop-up."}
@@ -648,7 +648,7 @@ export default function AdminPanel() {
           </div>
 
           <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
-            <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
+            <span className="font-ui text-[10px] tracking-[.14em] uppercase text-muted-2">
               {editingPosterSlug ? "Saving updates the live poster in about two minutes" : "Adding a poster commits it and goes live in about two minutes"}
             </span>
             <div className="flex items-center gap-3">
@@ -660,14 +660,14 @@ export default function AdminPanel() {
               <button
                 type="submit"
                 disabled={state === "busy"}
-                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
               >
                 {state === "busy" ? "Working…" : editingPosterSlug ? "Save changes" : "Add poster"}
               </button>
             </div>
           </div>
           {state === "error" && (
-            <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
+            <p className="font-ui text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
           )}
         </form>
       ) : tab === "editorial" ? (
@@ -687,11 +687,11 @@ export default function AdminPanel() {
             <label className={label}>
               {editingEditorialSlug ? "Replace images — the first is the cover (optional)" : "Carousel images — the first is the cover (up to 12)"}
             </label>
-            <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
+            <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-display italic text-[15px] px-4 text-center">
               {eImages.length ? `${eImages.length} selected · ${eImages[0].name}` : editingEditorialSlug ? "Keep current images…" : "Choose the carousel images…"}
               <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setEImages([...(e.target.files ?? [])])} />
             </label>
-            <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
+            <p className="font-ui text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
               {editingEditorialSlug
                 ? "Leave empty to keep the current images. Choosing new ones replaces the whole set."
                 : "This becomes a card in the editorials band; the first image is the cover. Select images in the order they should appear in the pop-up carousel."}
@@ -699,7 +699,7 @@ export default function AdminPanel() {
           </div>
 
           <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
-            <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
+            <span className="font-ui text-[10px] tracking-[.14em] uppercase text-muted-2">
               {editingEditorialSlug ? "Saving updates the live editorial in about two minutes" : "Adding an editorial commits it and goes live in about two minutes"}
             </span>
             <div className="flex items-center gap-3">
@@ -711,14 +711,14 @@ export default function AdminPanel() {
               <button
                 type="submit"
                 disabled={state === "busy"}
-                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
               >
                 {state === "busy" ? "Working…" : editingEditorialSlug ? "Save changes" : "Add editorial"}
               </button>
             </div>
           </div>
           {state === "error" && (
-            <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
+            <p className="font-ui text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
           )}
         </form>
       ) : (
@@ -757,14 +757,14 @@ export default function AdminPanel() {
           <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)]">
             <div>
               <label className={label}>{editingSlug ? "Replace cover (optional)" : "Cover image"}</label>
-              <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
+              <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-display italic text-[15px] px-4 text-center">
                 {cover ? cover.name : editingSlug ? "Keep current cover…" : "Choose the cover…"}
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => setCover(e.target.files?.[0] ?? null)} />
               </label>
             </div>
             <div>
               <label className={label}>{editingSlug ? "Add pictures (optional)" : "Article pictures (up to 6, optional)"}</label>
-              <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-playfair italic text-[15px] px-4 text-center">
+              <label className="drop cursor-pointer flex items-center justify-center bg-soft rounded-[2px] h-[92px] text-muted font-display italic text-[15px] px-4 text-center">
                 {photos.length ? `${photos.length} selected` : "Choose pictures…"}
                 <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setPhotos([...(e.target.files ?? [])])} />
               </label>
@@ -782,7 +782,7 @@ export default function AdminPanel() {
               placeholder={"Paragraphs separated by blank lines.\n\nOptional: start a line with '## ' for a section heading, or '> ' for a pull quote.\n\nPictures are placed between sections automatically."}
             />
             {editingSlug && (
-              <p className="font-hanken text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
+              <p className="font-ui text-[9.5px] tracking-[.1em] uppercase text-muted-2 mt-2">
                 Lines like ![](/articles/{editingSlug}/01.jpg) are the article&apos;s pictures — move or delete them freely; newly added pictures are appended at the end.
               </p>
             )}
@@ -790,25 +790,25 @@ export default function AdminPanel() {
 
           <label className="flex items-center gap-3 cursor-pointer select-none">
             <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="w-4 h-4 accent-[#1c1a17]" />
-            <span className="font-hanken text-[10.5px] font-semibold tracking-[.2em] uppercase text-ink">
+            <span className="font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-ink">
               Featured — this article takes over the homepage hero
             </span>
           </label>
 
           <div className="flex items-center justify-between gap-4 flex-wrap border-t border-hairline pt-[clamp(20px,2.6vw,28px)]">
-            <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
+            <span className="font-ui text-[10px] tracking-[.14em] uppercase text-muted-2">
               {editingSlug ? "Saving updates the live article in about two minutes" : "Publishing commits to the site and goes live in about two minutes"}
             </span>
             <button
               type="submit"
               disabled={state === "busy"}
-              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
             >
               {state === "busy" ? "Working…" : editingSlug ? "Save changes" : "Publish article"}
             </button>
           </div>
           {state === "error" && (
-            <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
+            <p className="font-ui text-[11px] tracking-[.08em] text-[#a33] text-right -mt-3" role="alert">{message}</p>
           )}
         </form>
       )}

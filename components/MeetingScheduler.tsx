@@ -42,10 +42,10 @@ export default function MeetingScheduler() {
   if (sent && selDate && selTime) {
     return (
       <div className="border-t border-hairline py-[clamp(40px,6vw,72px)] text-center">
-        <div className="font-playfair italic text-[clamp(30px,4vw,52px)] leading-[1.16] text-ink mb-[18px] [text-wrap:balance]">
+        <div className="font-display italic text-[clamp(30px,4vw,52px)] leading-[1.16] text-ink mb-[18px] [text-wrap:balance]">
           Your thread is on the calendar.
         </div>
-        <p className="font-hanken text-[11px] font-semibold tracking-[.2em] uppercase text-ink mb-[18px]">
+        <p className="font-ui text-[11px] font-black tracking-[.2em] uppercase text-ink mb-[18px]">
           {dayLabel(selDate)} · {timeLabel(selTime)} {tz} · Online video call
         </p>
         {meetLink ? (
@@ -62,13 +62,13 @@ export default function MeetingScheduler() {
           </p>
         )}
         {demo && (
-          <p className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2 mb-4">
+          <p className="font-ui text-[10px] tracking-[.14em] uppercase text-muted-2 mb-4">
             Demo mode: calendar connection not configured yet, nothing was scheduled
           </p>
         )}
         <Link
           href="/#top"
-          className="pillbtn inline-block cursor-pointer bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[14px] px-[30px] rounded-[2px] mt-3"
+          className="pillbtn inline-block cursor-pointer bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[14px] px-[30px] rounded-[2px] mt-3"
         >
           Back to the issue
         </Link>
@@ -125,13 +125,13 @@ export default function MeetingScheduler() {
       <div className="grid grid-cols-[minmax(220px,280px)_1fr_minmax(180px,220px)] max-[900px]:grid-cols-1 gap-[clamp(26px,4vw,54px)]">
         {/* meeting info */}
         <div data-reveal="">
-          <div className="font-hanken text-[10px] font-bold tracking-[.28em] uppercase text-ink mb-[14px]">
+          <div className="font-ui text-[10px] font-black tracking-[.28em] uppercase text-ink mb-[14px]">
             Editorial meetings
           </div>
-          <h2 className="font-playfair font-medium text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-ink mb-5">
+          <h2 className="font-display font-black text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-ink mb-5">
             A conversation with the editors
           </h2>
-          <ul className="flex flex-col gap-[10px] font-hanken text-[11px] font-semibold tracking-[.16em] uppercase text-body-2">
+          <ul className="flex flex-col gap-[10px] font-ui text-[11px] font-black tracking-[.16em] uppercase text-body-2">
             <li className="flex items-center gap-[10px]">
               <span className="w-[6px] h-[6px] rounded-full bg-accent" /> 30 minutes
             </li>
@@ -142,15 +142,15 @@ export default function MeetingScheduler() {
               <span className="w-[6px] h-[6px] rounded-full bg-accent" /> UAE time · {tz}
             </li>
           </ul>
-          <p className="font-playfair italic text-[15px] leading-[1.6] text-muted mt-6 max-w-[30ch]">
+          <p className="font-display italic text-[15px] leading-[1.6] text-muted mt-6 max-w-[30ch]">
             Bring your story, your images, or simply an idea. We listen first.
           </p>
           {selDate && (
             <div className="mt-7 pt-5 border-t border-hairline">
-              <div className="font-hanken text-[9px] font-bold tracking-[.22em] uppercase text-muted-2 mb-2">
+              <div className="font-ui text-[9px] font-black tracking-[.22em] uppercase text-muted-2 mb-2">
                 Selected
               </div>
-              <div className="font-playfair font-medium text-[18px] leading-[1.3] text-ink">
+              <div className="font-display font-black text-[18px] leading-[1.3] text-ink">
                 {dayLabel(selDate)}
                 {selTime && <span> · {timeLabel(selTime)}</span>}
               </div>
@@ -161,7 +161,7 @@ export default function MeetingScheduler() {
         {/* calendar */}
         <div data-reveal="" data-reveal-delay="70">
           <div className="flex items-center justify-between mb-5">
-            <div className="font-playfair font-medium text-[20px] text-ink">{monthLabel}</div>
+            <div className="font-display font-black text-[20px] text-ink">{monthLabel}</div>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -185,7 +185,7 @@ export default function MeetingScheduler() {
           </div>
           <div className="grid grid-cols-7 gap-[6px] mb-2">
             {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
-              <div key={d} className="text-center font-hanken text-[9px] font-bold tracking-[.18em] uppercase text-muted-2 py-1">
+              <div key={d} className="text-center font-ui text-[9px] font-black tracking-[.18em] uppercase text-muted-2 py-1">
                 {d}
               </div>
             ))}
@@ -206,12 +206,12 @@ export default function MeetingScheduler() {
                   data-day={i + 1}
                   disabled={disabled}
                   onClick={() => pickDate(date)}
-                  className={`aspect-square rounded-[2px] font-hanken text-[13px] transition-colors cursor-pointer ${
+                  className={`aspect-square rounded-[2px] font-ui text-[13px] transition-colors cursor-pointer ${
                     selected
-                      ? "bg-ink text-ondark font-bold"
+                      ? "bg-ink text-ondark font-black"
                       : disabled
                         ? "text-[#c9c5bd] cursor-default"
-                        : "bg-soft text-ink font-semibold hover:bg-hairline"
+                        : "bg-soft text-ink font-black hover:bg-hairline"
                   }`}
                 >
                   {i + 1}
@@ -223,7 +223,7 @@ export default function MeetingScheduler() {
 
         {/* time slots */}
         <div data-reveal="" data-reveal-delay="140">
-          <div className="font-hanken text-[10px] font-bold tracking-[.22em] uppercase text-body-2 mb-4 min-h-[1em]">
+          <div className="font-ui text-[10px] font-black tracking-[.22em] uppercase text-body-2 mb-4 min-h-[1em]">
             {selDate ? dayLabel(selDate) : "Time"}
           </div>
           {selDate ? (
@@ -237,7 +237,7 @@ export default function MeetingScheduler() {
                     data-slot={t}
                     disabled={busy}
                     onClick={() => setSelTime(t)}
-                    className={`rounded-[2px] py-3 px-4 font-hanken text-[12px] font-semibold tracking-[.12em] transition-colors text-center max-[900px]:flex-none ${
+                    className={`rounded-[2px] py-3 px-4 font-ui text-[12px] font-black tracking-[.12em] transition-colors text-center max-[900px]:flex-none ${
                       busy
                         ? "bg-soft text-muted-2 line-through cursor-default"
                         : selTime === t
@@ -251,7 +251,7 @@ export default function MeetingScheduler() {
               })}
             </div>
           ) : (
-            <p className="font-playfair italic text-[15px] leading-[1.6] text-muted-2">
+            <p className="font-display italic text-[15px] leading-[1.6] text-muted-2">
               Select a day to see the available times.
             </p>
           )}
@@ -263,7 +263,7 @@ export default function MeetingScheduler() {
         <form onSubmit={confirm} className="mt-[clamp(30px,4vw,48px)] border-t border-hairline pt-[clamp(26px,3.4vw,40px)]">
           <div className="grid grid-cols-2 max-[620px]:grid-cols-1 gap-[clamp(22px,3vw,36px)] mb-[clamp(22px,3vw,32px)]">
             <div>
-              <label className="block font-hanken text-[10.5px] font-semibold tracking-[.2em] uppercase text-body-2 mb-3">
+              <label className="block font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-body-2 mb-3">
                 Your name
               </label>
               <input
@@ -275,7 +275,7 @@ export default function MeetingScheduler() {
               />
             </div>
             <div>
-              <label className="block font-hanken text-[10.5px] font-semibold tracking-[.2em] uppercase text-body-2 mb-3">
+              <label className="block font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-body-2 mb-3">
                 Email
               </label>
               <input
@@ -289,7 +289,7 @@ export default function MeetingScheduler() {
             </div>
           </div>
           <div>
-            <label className="block font-hanken text-[10.5px] font-semibold tracking-[.2em] uppercase text-body-2 mb-3">
+            <label className="block font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-body-2 mb-3">
               What would you like to talk about?
             </label>
             <textarea
@@ -301,19 +301,19 @@ export default function MeetingScheduler() {
             />
           </div>
           <div className="flex items-center justify-between gap-4 flex-wrap mt-[clamp(26px,3.4vw,40px)] border-t border-hairline pt-[clamp(22px,2.8vw,32px)]">
-            <span className="font-hanken text-[10px] tracking-[.14em] uppercase text-muted-2">
+            <span className="font-ui text-[10px] tracking-[.14em] uppercase text-muted-2">
               {dayLabel(selDate)} · {timeLabel(selTime)} {tz} · 30 min · Google Meet
             </span>
             <button
               type="submit"
               disabled={submitting}
-              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-hanken text-[11px] font-semibold tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
             >
               {submitting ? "Arranging…" : "Confirm meeting"}
             </button>
           </div>
           {error && (
-            <p className="font-hanken text-[11px] tracking-[.08em] text-[#a33] mt-4 text-right" role="alert">
+            <p className="font-ui text-[11px] tracking-[.08em] text-[#a33] mt-4 text-right" role="alert">
               {error}
             </p>
           )}

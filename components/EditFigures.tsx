@@ -83,12 +83,12 @@ function Caption({ no, text, stacked }: { no: string; text: string; stacked?: bo
     return (
       <figcaption className="mt-[10px]">
         <span className="flex items-center gap-2 mb-[6px]">
-          <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
+          <span className="font-ui text-[9px] font-black tracking-[.26em] uppercase whitespace-nowrap text-ink">
             No. {no}
           </span>
           <span className="flex-1 h-px bg-hairline" />
         </span>
-        <span className="block font-playfair italic text-[12.5px] leading-[1.5] text-muted">
+        <span className="block font-display italic text-[12.5px] leading-[1.5] text-muted">
           <SimpleAmp text={text} />
         </span>
       </figcaption>
@@ -96,11 +96,11 @@ function Caption({ no, text, stacked }: { no: string; text: string; stacked?: bo
   }
   return (
     <figcaption className="flex items-center gap-3 mt-[12px]">
-      <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
+      <span className="font-ui text-[9px] font-black tracking-[.26em] uppercase whitespace-nowrap text-ink">
         No. {no}
       </span>
       <span className="flex-1 h-px bg-hairline" />
-      <span className="font-playfair italic text-[12.5px] leading-[1.5] text-muted text-right max-w-[42ch]">
+      <span className="font-display italic text-[12.5px] leading-[1.5] text-muted text-right max-w-[42ch]">
         <SimpleAmp text={text} />
       </span>
     </figcaption>
@@ -133,7 +133,7 @@ export default function EditFigures({
           <section key={i} data-reveal="rise" className={i > 0 ? "pt-[clamp(10px,2vw,20px)]" : ""}>
             {sec.heading && (
               <h2
-                className="font-hanken font-bold text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-ink mb-4 pt-[clamp(12px,2vw,20px)] inline-block border-t-2"
+                className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-ink mb-4 pt-[clamp(12px,2vw,20px)] inline-block border-t-2"
                 style={{ borderTopColor: accent }}
               >
                 {sec.heading}
@@ -206,7 +206,7 @@ export default function EditFigures({
                 className="mt-[clamp(18px,2.8vw,30px)] mb-[clamp(20px,3vw,32px)] pl-[24px] border-l-2"
                 style={{ borderLeftColor: accent }}
               >
-                <span className={`font-playfair italic ${t.quote} leading-[1.16] text-ink`}>
+                <span className={`font-display italic ${t.quote} leading-[1.16] text-ink`}>
                   <SimpleAmp text={sec.pullQuote} />
                 </span>
               </blockquote>

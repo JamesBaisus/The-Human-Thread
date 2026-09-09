@@ -6,12 +6,12 @@ export default function Footer() {
     <footer className="border-t border-hairline py-[clamp(34px,4vw,54px)] px-[clamp(18px,4vw,54px)]">
       <div className="max-w-[1280px] mx-auto flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <div className="font-playfair font-black text-[clamp(22px,2.4vw,30px)] tracking-[.005em] text-ink">
+          <div className="font-display font-black text-[clamp(22px,2.4vw,30px)] tracking-[.005em] text-ink">
             THE HUMAN THREAD
           </div>
-          <div className="font-hanken text-[9px] font-semibold tracking-[.4em] text-muted mt-[6px]">MAGAZINE · AE</div>
+          <div className="font-ui text-[9px] font-black tracking-[.4em] text-muted mt-[6px]">MAGAZINE · AE</div>
         </div>
-        <div className="flex gap-6 items-center font-hanken text-[10.5px] tracking-[.2em] uppercase text-muted">
+        <div className="flex gap-6 items-center font-ui text-[10.5px] tracking-[.2em] uppercase text-muted">
           <Link href="/#top" className="navlink cursor-pointer">
             Home
           </Link>

@@ -29,11 +29,11 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
         <div className="flex items-center justify-between gap-4 flex-wrap border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
           <Link
             href="/#tht-edit"
-            className="navlink cursor-pointer font-hanken text-[11px] tracking-[.2em] uppercase text-muted"
+            className="navlink cursor-pointer font-ui text-[11px] tracking-[.2em] uppercase text-muted"
           >
             ← THT Edit
           </Link>
-          <div className="font-hanken text-[10.5px] font-semibold tracking-[.22em] uppercase text-ink">
+          <div className="font-ui text-[10.5px] font-black tracking-[.22em] uppercase text-ink">
             {item.kicker} · The Human Thread
           </div>
         </div>
@@ -42,17 +42,17 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
       <article className="max-w-[820px] mx-auto pt-[clamp(26px,4vw,46px)] pb-[clamp(40px,6vw,80px)] px-[clamp(18px,5vw,40px)]">
         <div
           data-reveal=""
-          className="flex items-center gap-3 font-hanken text-[10px] font-bold tracking-[.24em] uppercase mb-[14px]"
+          className="flex items-center gap-3 font-ui text-[10px] font-black tracking-[.24em] uppercase mb-[14px]"
           style={{ color: item.accent }}
         >
-          <span>{item.rank} of Spades</span>
+          <span>No. {String(item.order).padStart(2, "0")}</span>
           <span className="w-8 h-px" style={{ background: item.accent }} />
           <span className="text-muted-2">{item.readTime}</span>
         </div>
 
         <h1
           data-reveal=""
-          className="font-playfair font-normal text-[clamp(32px,4.2vw,52px)] leading-[1.04] tracking-[-.01em] mb-[clamp(18px,2.6vw,28px)] [text-wrap:balance]"
+          className="font-display font-black text-[clamp(32px,4.2vw,52px)] leading-[1.04] tracking-[-.01em] mb-[clamp(18px,2.6vw,28px)] [text-wrap:balance]"
         >
           <SimpleAmp text={item.title} />
         </h1>
@@ -73,7 +73,7 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
 
         <p
           data-reveal=""
-          className="font-news italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(24px,3.4vw,38px)] max-w-[58ch] text-ink"
+          className="font-body italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(24px,3.4vw,38px)] max-w-[58ch] text-ink"
         >
           <SimpleAmp text={item.deck} />
         </p>
@@ -82,14 +82,14 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
 
         <div
           data-reveal=""
-          className="mt-[clamp(18px,3vw,30px)] pt-[20px] border-t border-hairline font-hanken text-[11px] tracking-[.24em] uppercase text-muted-2"
+          className="mt-[clamp(18px,3vw,30px)] pt-[20px] border-t border-hairline font-ui text-[11px] tracking-[.24em] uppercase text-muted-2"
         >
           THT Edit · The Human Thread AE
         </div>
 
         {others.length > 0 && (
           <div className="mt-[clamp(30px,4.5vw,54px)]">
-            <div className="font-hanken text-[11px] font-semibold tracking-[.28em] uppercase text-muted mb-1">
+            <div className="font-ui text-[11px] font-black tracking-[.28em] uppercase text-muted mb-1">
               More from the Edit
             </div>
             {others.map((o) => (
@@ -98,18 +98,18 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
                 href={`/edit/${o.slug}`}
                 className="rellink flex items-center gap-[clamp(14px,2.6vw,24px)] py-[clamp(16px,2.4vw,24px)] border-t border-hairline cursor-pointer"
               >
-                <div className="flex-none font-playfair italic text-[clamp(19px,2.2vw,27px)] text-ink min-w-[2ch] leading-none">
-                  {o.rank}
+                <div className="flex-none font-display font-black text-[clamp(18px,2vw,24px)] text-ink min-w-[2.2ch] leading-none tabular-nums">
+                  {String(o.order).padStart(2, "0")}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-hanken text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">
+                  <div className="font-ui text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">
                     {o.kicker}
                   </div>
-                  <div className="font-playfair font-medium text-[clamp(18px,2.2vw,26px)] leading-[1.12] text-ink">
+                  <div className="font-display font-black text-[clamp(18px,2.2vw,26px)] leading-[1.12] text-ink">
                     <SimpleAmp text={o.title} />
                   </div>
                 </div>
-                <div className="relarrow flex-none font-hanken text-[16px] text-ink">→</div>
+                <div className="relarrow flex-none font-ui text-[16px] text-ink">→</div>
               </Link>
             ))}
           </div>

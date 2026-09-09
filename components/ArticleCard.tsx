@@ -30,23 +30,23 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
       </div>
       <div className={`flex items-center gap-[10px] ${large ? "mt-4" : "mt-[15px]"} mb-[9px]`}>
         {card.latest && (
-          <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-ondark bg-ink rounded-[2px] py-1 px-2">
+          <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-ondark bg-ink rounded-[2px] py-1 px-2">
             Latest
           </span>
         )}
-        <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
+        <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
           {card.category}
         </span>
         <span className="revealline w-[22px] h-px bg-accent" />
       </div>
       <h3
-        className={`font-playfair font-medium ${
+        className={`font-display font-black ${
           large ? "text-[clamp(23px,2.4vw,30px)] leading-[1.05]" : "text-[clamp(22px,2.3vw,28px)] leading-[1.06]"
         } mb-2 text-ink`}
       >
         <SimpleAmp text={card.title} />
       </h3>
-      <p className="font-playfair italic text-[14px] text-ink mb-2">
+      <p className="font-display italic text-[14px] text-ink mb-2">
         {card.name}, <SimpleAmp text={card.role} />
       </p>
       <p className="text-[14px] leading-[1.55] text-muted [text-wrap:pretty]">{card.deck}</p>

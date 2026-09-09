@@ -120,11 +120,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <div className="flex items-center justify-between gap-4 flex-wrap border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
           <Link
             href="/catalogue"
-            className="navlink cursor-pointer font-hanken text-[11px] tracking-[.2em] uppercase text-muted"
+            className="navlink cursor-pointer font-ui text-[11px] tracking-[.2em] uppercase text-muted"
           >
             ← All articles
           </Link>
-          <div className="font-hanken text-[10.5px] font-semibold tracking-[.22em] uppercase text-ink">
+          <div className="font-ui text-[10.5px] font-black tracking-[.22em] uppercase text-ink">
             {article.category} · The Human Thread
           </div>
         </div>
@@ -135,7 +135,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <article>
             <h1
               data-reveal=""
-              className="font-playfair font-normal text-[clamp(34px,4.4vw,58px)] leading-[1.02] tracking-[-.01em] mb-[clamp(22px,3vw,34px)] [text-wrap:balance]"
+              className="font-display font-black text-[clamp(34px,4.4vw,58px)] leading-[1.02] tracking-[-.01em] mb-[clamp(22px,3vw,34px)] [text-wrap:balance]"
             >
               <SimpleAmp text={article.title} />
             </h1>
@@ -154,7 +154,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
             <p
               data-reveal=""
-              className="font-news italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(22px,3vw,32px)] max-w-[60ch] text-ink"
+              className="font-body italic text-[13.5px] leading-[1.5] mt-[14px] mb-[clamp(22px,3vw,32px)] max-w-[60ch] text-ink"
             >
               <SimpleAmp text={article.deck} />
             </p>
@@ -164,7 +164,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <section key={i} data-reveal="rise" className="py-[clamp(14px,2.4vw,26px)]">
                   {sec.heading && (
                     <h3
-                      className="font-hanken font-bold text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-ink mb-4 pt-[clamp(14px,2vw,20px)] inline-block border-t-2"
+                      className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-ink mb-4 pt-[clamp(14px,2vw,20px)] inline-block border-t-2"
                       style={{ borderTopColor: article.accent }}
                     >
                       {sec.heading}
@@ -189,11 +189,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         sizes="(max-width: 780px) 100vw, 980px"
                       />
                       <figcaption className="flex items-center gap-4 mt-[14px]">
-                        <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
+                        <span className="font-ui text-[9px] font-black tracking-[.26em] uppercase whitespace-nowrap text-ink">
                           No. {figNo(sec.figStart)}
                         </span>
                         <span className="flex-1 h-px bg-hairline" />
-                        <span className="font-playfair italic text-[13.5px] leading-[1.5] text-muted text-right max-w-[46ch]">
+                        <span className="font-display italic text-[13.5px] leading-[1.5] text-muted text-right max-w-[46ch]">
                           <SimpleAmp text={sec.images[0].caption} />
                         </span>
                       </figcaption>
@@ -216,12 +216,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                           />
                           <figcaption className="mt-3">
                             <div className="flex items-center gap-3 mb-[6px]">
-                              <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
+                              <span className="font-ui text-[9px] font-black tracking-[.26em] uppercase whitespace-nowrap text-ink">
                                 No. {figNo(sec.figStart + k)}
                               </span>
                               <span className="flex-1 h-px bg-hairline" />
                             </div>
-                            <span className="font-playfair italic text-[12.5px] leading-[1.5] text-muted">
+                            <span className="font-display italic text-[12.5px] leading-[1.5] text-muted">
                               <SimpleAmp text={im.caption} />
                             </span>
                           </figcaption>
@@ -252,12 +252,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                           />
                           <figcaption className="mt-3">
                             <div className="flex items-center gap-3 mb-[6px]">
-                              <span className="font-hanken text-[9px] font-bold tracking-[.26em] uppercase whitespace-nowrap text-ink">
+                              <span className="font-ui text-[9px] font-black tracking-[.26em] uppercase whitespace-nowrap text-ink">
                                 No. {figNo(sec.figStart + k)}
                               </span>
                               <span className="flex-1 h-px bg-hairline" />
                             </div>
-                            <span className="font-playfair italic text-[13px] leading-[1.5] text-muted">
+                            <span className="font-display italic text-[13px] leading-[1.5] text-muted">
                               <SimpleAmp text={im.caption} />
                             </span>
                           </figcaption>
@@ -271,7 +271,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       className="mt-[clamp(20px,3vw,34px)] mb-[6px] pl-[26px] border-l-2"
                       style={{ borderLeftColor: article.accent }}
                     >
-                      <span className="font-playfair italic text-[clamp(24px,3vw,38px)] leading-[1.16] text-ink">
+                      <span className="font-display italic text-[clamp(24px,3vw,38px)] leading-[1.16] text-ink">
                         <SimpleAmp text={sec.pullQuote} />
                       </span>
                     </blockquote>
@@ -282,13 +282,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             <div
               data-reveal=""
-              className="mt-[clamp(12px,2vw,22px)] pt-[22px] border-t border-hairline font-hanken text-[11px] tracking-[.24em] uppercase text-muted-2"
+              className="mt-[clamp(12px,2vw,22px)] pt-[22px] border-t border-hairline font-ui text-[11px] tracking-[.24em] uppercase text-muted-2"
             >
               End of feature · The Human Thread · AE
             </div>
 
             <div className="mt-[clamp(34px,5vw,60px)]">
-              <div className="font-hanken text-[11px] font-semibold tracking-[.28em] uppercase text-muted mb-1">
+              <div className="font-ui text-[11px] font-black tracking-[.28em] uppercase text-muted mb-1">
                 More from the issue
               </div>
               {related.map((r) => (
@@ -297,18 +297,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   href={`/article/${r.article.slug}`}
                   className="rellink flex items-center gap-[clamp(16px,3vw,28px)] py-[clamp(18px,2.6vw,26px)] border-t border-hairline cursor-pointer"
                 >
-                  <div className="flex-none font-playfair italic text-[clamp(20px,2.4vw,30px)] text-ink min-w-[2.2ch] leading-none">
+                  <div className="flex-none font-display italic text-[clamp(20px,2.4vw,30px)] text-ink min-w-[2.2ch] leading-none">
                     {r.no}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-hanken text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">
+                    <div className="font-ui text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">
                       {r.article.category}
                     </div>
-                    <div className="font-playfair font-medium text-[clamp(20px,2.4vw,29px)] leading-[1.1] text-ink">
+                    <div className="font-display font-black text-[clamp(20px,2.4vw,29px)] leading-[1.1] text-ink">
                       <SimpleAmp text={r.article.title} />
                     </div>
                   </div>
-                  <div className="relarrow flex-none font-hanken text-[16px] text-ink">→</div>
+                  <div className="relarrow flex-none font-ui text-[16px] text-ink">→</div>
                 </Link>
               ))}
             </div>
@@ -316,7 +316,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
           <aside className="sticky top-[132px] max-[780px]:static">
             <div className="mb-[30px]">
-              <h4 className="font-playfair font-medium text-[24px] mb-[14px] text-ink">Follow Us</h4>
+              <h4 className="font-display font-black text-[24px] mb-[14px] text-ink">Follow Us</h4>
               <div className="bg-soft rounded-[2px] px-4 py-5 grid grid-cols-2 gap-x-4 gap-y-3">
                 {site.socials.map((s) => (
                   <a
@@ -324,14 +324,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inqbtn cursor-pointer text-center font-hanken text-[10px] font-bold tracking-[.18em] uppercase text-ink"
+                    className="inqbtn cursor-pointer text-center font-ui text-[10px] font-black tracking-[.18em] uppercase text-ink"
                   >
                     {s.label}
                   </a>
                 ))}
               </div>
             </div>
-            <h4 className="font-playfair font-medium text-[24px] mb-4 text-ink">The Latest</h4>
+            <h4 className="font-display font-black text-[24px] mb-4 text-ink">The Latest</h4>
             {sidebar.map((a) => (
               <Link
                 key={a.slug}
@@ -350,13 +350,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
+                  <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
                     {a.category}
                   </span>
-                  <h3 className="font-playfair font-medium text-[19px] leading-[1.14] mt-2 mb-[3px] text-ink">
+                  <h3 className="font-display font-black text-[19px] leading-[1.14] mt-2 mb-[3px] text-ink">
                     <SimpleAmp text={a.title} />
                   </h3>
-                  <p className="font-news text-[12.5px] leading-[1.4] text-muted">
+                  <p className="font-body text-[12.5px] leading-[1.4] text-muted">
                     <SimpleAmp text={a.role} />
                   </p>
                 </div>

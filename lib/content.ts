@@ -73,14 +73,14 @@ export type Article = {
 };
 
 /**
- * A THT Edit card. Short-form pieces that live only in the Edit deck on the
+ * A THT Edit piece. Short-form entries that live only in the Edit deck on the
  * landing page and at /edit/<slug>: deliberately outside the article
  * catalogue, the category rows and the hero rotation.
  */
 export type EditItem = {
   slug: string;
-  /** Playing-card rank printed on the cover card (A, K, Q, J, 10, 9, 8). */
-  rank: string;
+  /** Position in the deck, lowest first. */
+  order: number;
   /** Small label above the title, free text rather than a site category. */
   kicker: string;
   title: string;
@@ -344,9 +344,6 @@ export async function getRelated(slug: string, count = 3): Promise<{ no: string;
   });
 }
 
-/** Deck order: the rank printed on each card, highest first. */
-const RANK_ORDER = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"];
-
 async function loadEditItems(): Promise<EditItem[]> {
   if (!fs.existsSync(EDIT_DIR)) return [];
   const files = fs.readdirSync(EDIT_DIR).filter((f) => /\.mdx?$/.test(f));
@@ -354,17 +351,13 @@ async function loadEditItems(): Promise<EditItem[]> {
     files.map(async (file) => {
       const raw = fs.readFileSync(path.join(EDIT_DIR, file), "utf8");
       const { data, content } = matter(raw);
-      for (const field of ["rank", "kicker", "title", "deck", "readTime", "accent", "cover", "date"]) {
-        if (!data[field]) throw new Error(`content/edit/${file}: missing frontmatter field "${field}"`);
-      }
-      const rank = String(data.rank);
-      if (!RANK_ORDER.includes(rank)) {
-        throw new Error(`content/edit/${file}: unknown card rank "${rank}"`);
+      for (const field of ["order", "kicker", "title", "deck", "readTime", "accent", "cover", "date"]) {
+        if (data[field] === undefined) throw new Error(`content/edit/${file}: missing frontmatter field "${field}"`);
       }
       const dims = imageDims(data.cover);
       return {
         slug: data.slug ?? file.replace(/\.mdx?$/, ""),
-        rank,
+        order: Number(data.order),
         kicker: String(data.kicker),
         title: String(data.title),
         deck: String(data.deck),
@@ -381,7 +374,7 @@ async function loadEditItems(): Promise<EditItem[]> {
     })
   );
   const visible = items.filter((i) => !i.hidden);
-  visible.sort((a, b) => RANK_ORDER.indexOf(a.rank) - RANK_ORDER.indexOf(b.rank));
+  visible.sort((a, b) => a.order - b.order);
   return visible;
 }
 
@@ -396,7 +389,7 @@ export async function getEditItem(slug: string): Promise<EditItem | undefined> {
   return (await getEditItems()).find((i) => i.slug === slug);
 }
 
-/** The other cards in the deck, for the foot of an Edit page. */
+/** The other pieces in the deck, for the foot of an Edit page. */
 export async function getOtherEditItems(slug: string, count = 3): Promise<EditItem[]> {
   const all = await getEditItems();
   const idx = Math.max(0, all.findIndex((i) => i.slug === slug));

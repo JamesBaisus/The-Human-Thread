@@ -69,16 +69,16 @@ export default function ReadingProgress({
     <div className="fixed inset-x-0 bottom-[clamp(16px,3vw,30px)] z-50 flex justify-center px-4 pointer-events-none">
       <div className="pointer-events-auto flex items-center gap-3 max-w-[92vw] bg-ink text-ondark rounded-[3px] shadow-[0_12px_44px_rgba(0,0,0,.28)] pl-5 pr-3 py-[11px] animate-[modup_0.5s_cubic-bezier(0.16,0.8,0.3,1)_both]">
         <div className="min-w-0">
-          <div className="font-hanken text-[9px] font-bold tracking-[.24em] uppercase text-[rgba(245,245,245,.55)]">
+          <div className="font-ui text-[9px] font-black tracking-[.24em] uppercase text-[rgba(245,245,245,.55)]">
             Continue reading
           </div>
-          <div className="font-playfair text-[15px] leading-tight truncate max-w-[46vw]">
+          <div className="font-display text-[15px] leading-tight truncate max-w-[46vw]">
             You left off {Math.round(resumePct * 100)}% through
           </div>
         </div>
         <button
           onClick={resume}
-          className="flex-none font-hanken text-[10px] font-bold tracking-[.16em] uppercase bg-ondark text-ink rounded-[2px] py-[9px] px-4 cursor-pointer transition-transform hover:-translate-y-px"
+          className="flex-none font-ui text-[10px] font-black tracking-[.16em] uppercase bg-ondark text-ink rounded-[2px] py-[9px] px-4 cursor-pointer transition-transform hover:-translate-y-px"
         >
           Resume →
         </button>

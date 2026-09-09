@@ -28,7 +28,7 @@ export default function CatalogueClient({
               <button
                 key={c}
                 onClick={() => setFilter(c)}
-                className="chip cursor-pointer font-hanken text-[10.5px] font-semibold tracking-[.16em] uppercase py-[9px] px-[15px] rounded-[2px] border"
+                className="chip cursor-pointer font-ui text-[10.5px] font-black tracking-[.16em] uppercase py-[9px] px-[15px] rounded-[2px] border"
                 style={{
                   borderColor: active ? "#1c1a17" : "#e3e3e3",
                   background: active ? "#1c1a17" : "transparent",
@@ -39,7 +39,7 @@ export default function CatalogueClient({
               </button>
             );
           })}
-          <span className="ml-auto font-hanken text-[10.5px] tracking-[.2em] uppercase text-muted">
+          <span className="ml-auto font-ui text-[10.5px] tracking-[.2em] uppercase text-muted">
             {visible.length} {visible.length === 1 ? "story" : "stories"}
           </span>
         </div>

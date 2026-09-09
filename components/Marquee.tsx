@@ -18,7 +18,7 @@ export default function Marquee() {
   return (
     <>
       <div className="max-w-[1280px] mx-auto px-[clamp(18px,4vw,54px)]">
-        <div className="border-t border-hairline pt-[clamp(14px,2vw,22px)] text-center font-hanken text-[10px] font-semibold tracking-[.32em] uppercase text-muted-2 mb-[clamp(10px,1.4vw,18px)]">
+        <div className="border-t border-hairline pt-[clamp(14px,2vw,22px)] text-center font-ui text-[10px] font-black tracking-[.32em] uppercase text-muted-2 mb-[clamp(10px,1.4vw,18px)]">
           Featured in this issue
         </div>
       </div>

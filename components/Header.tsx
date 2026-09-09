@@ -30,10 +30,10 @@ export default function Header({
               <span className="block h-[1.6px] w-6 bg-ink" />
             </button>
             <Link href="/#top" className="block leading-[.86]">
-              <div className="font-playfair font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-ink">
+              <div className="font-display font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-ink">
                 THE HUMAN THREAD
               </div>
-              <div className="font-hanken text-[8.5px] font-semibold tracking-[.44em] text-muted mt-1 pl-[2px]">
+              <div className="font-ui text-[8.5px] font-black tracking-[.44em] text-muted mt-1 pl-[2px]">
                 MAGAZINE · AE
               </div>
             </Link>
@@ -47,7 +47,7 @@ export default function Header({
             </Link>
             <Link
               href="/inquire"
-              className="inqbtn cursor-pointer text-ink font-hanken text-[10.5px] font-semibold tracking-[.16em] uppercase py-2 px-1"
+              className="inqbtn cursor-pointer text-ink font-ui text-[10.5px] font-black tracking-[.16em] uppercase py-2 px-1"
             >
               Inquire
             </Link>
@@ -66,8 +66,8 @@ export default function Header({
           >
             <div className="flex items-start justify-between mb-[clamp(26px,3.4vw,40px)]">
               <div className="leading-[.86]">
-                <div className="font-playfair font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
-                <div className="font-hanken text-[8px] font-semibold tracking-[.4em] text-muted-2 mt-1">
+                <div className="font-display font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
+                <div className="font-ui text-[8px] font-black tracking-[.4em] text-muted-2 mt-1">
                   MAGAZINE · AE
                 </div>
               </div>
@@ -83,7 +83,7 @@ export default function Header({
               {drawerGroups.map((g, gi) => (
                 <div key={gi}>
                   {g.header && (
-                    <div className="font-hanken text-[9px] font-bold tracking-[.3em] uppercase text-muted-2 pt-[clamp(20px,2.6vw,30px)] pb-[6px]">
+                    <div className="font-ui text-[9px] font-black tracking-[.3em] uppercase text-muted-2 pt-[clamp(20px,2.6vw,30px)] pb-[6px]">
                       {g.header}
                     </div>
                   )}
@@ -92,7 +92,7 @@ export default function Header({
                       key={d.label}
                       href={d.href}
                       onClick={() => setOpen(false)}
-                      className="drawerlink cursor-pointer block font-playfair font-medium text-[24px] leading-none text-ink py-[clamp(10px,1.3vw,14px)] border-b border-ph"
+                      className="drawerlink cursor-pointer block font-display font-black text-[24px] leading-none text-ink py-[clamp(10px,1.3vw,14px)] border-b border-ph"
                     >
                       {d.label}
                     </Link>
@@ -106,14 +106,14 @@ export default function Header({
                 <Link
                   href="/terms"
                   onClick={() => setOpen(false)}
-                  className="font-hanken text-[9.5px] font-semibold tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
+                  className="font-ui text-[9.5px] font-black tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
                 >
                   Terms & Conditions
                 </Link>
                 <Link
                   href="/privacy"
                   onClick={() => setOpen(false)}
-                  className="font-hanken text-[9.5px] font-semibold tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
+                  className="font-ui text-[9.5px] font-black tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
                 >
                   Privacy Policy
                 </Link>
@@ -125,7 +125,7 @@ export default function Header({
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-hanken text-[10px] font-bold tracking-[.18em] uppercase text-body-2 transition-colors hover:text-accent"
+                    className="font-ui text-[10px] font-black tracking-[.18em] uppercase text-body-2 transition-colors hover:text-accent"
                   >
                     {s.label}
                   </a>

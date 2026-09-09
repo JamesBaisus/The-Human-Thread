@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --font-playfair: var(--font-pf), "Playfair Display", Georgia, serif;
-  --font-news: var(--font-nr), "Newsreader", Georgia, serif;
-  --font-hanken: var(--font-hg), "Hanken Grotesk", Arial, sans-serif;
+  /* One family, three roles: display, running text, and interface labels. */
+  --font-display: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
+  --font-body: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
+  --font-ui: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
 
   --color-ink: #1c1a17;
   --color-ink-2: #231f1b;
@@ -33,7 +34,7 @@ body {
   background: #ffffff;
   min-height: 100vh;
   color: #1c1a17;
-  font-family: var(--font-news);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -175,7 +176,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 .marquee:hover .marquee-track { animation-play-state: paused; }
 .mq {
   display: inline-block;
-  font-family: var(--font-playfair);
+  font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(20px, 2.4vw, 30px);
   color: #4a463f;
@@ -244,90 +245,73 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   .igstage { height: 46vh !important; }
 }
 
-/* THT Edit — the fanned cover deck */
-.editcard {
-  display: block;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 2.5 / 3.5;
-  border-radius: 9px;
-  padding: 25px 13px 28px;
-  /* centre the mounted photo so a landscape cover is not all cream underneath */
-  display: flex;
-  align-items: center;
-  background:
-    radial-gradient(120% 90% at 22% 8%, #fdfaf3 0%, #f4eee1 46%, #e9e0cd 100%);
-  box-shadow:
-    0 0 0 1px rgba(28, 26, 23, 0.16),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-    0 18px 34px -18px rgba(28, 26, 23, 0.55);
-  overflow: hidden;
+/* Large dark panels. A deep, cool black with a soft specular sweep across it,
+   so the surface reads as lacquer rather than flat matte. Only for full-width
+   panels — buttons and chips keep the plain `bg-ink`. */
+.glossblack {
+  background-color: #08080a;
+  background-image:
+    radial-gradient(128% 78% at 16% -22%, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.022) 40%, rgba(255, 255, 255, 0) 68%),
+    radial-gradient(88% 62% at 88% 118%, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(163deg, #17171c 0%, #101014 34%, #0a0a0d 68%, #060608 100%);
 }
-/* faint speckle so the stock reads as aged paper rather than flat cream */
-.editcard::after {
+/* a hairline of light along the top edge, the way polished black catches a room */
+.glossblack::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16) 22%, rgba(255, 255, 255, 0.16) 74%, transparent);
   pointer-events: none;
-  background-image:
-    radial-gradient(circle at 18% 30%, rgba(120, 100, 70, 0.05) 0 1px, transparent 1px),
-    radial-gradient(circle at 72% 66%, rgba(120, 100, 70, 0.045) 0 1px, transparent 1px),
-    radial-gradient(circle at 44% 86%, rgba(120, 100, 70, 0.04) 0 1px, transparent 1px);
-  background-size: 47px 53px, 61px 43px, 39px 67px;
 }
-.editcard-window {
+
+/* THT Edit — the fanned cover deck */
+.editcover {
   display: block;
   position: relative;
-  width: 100%;
-  max-height: 100%;
+  height: 100%;
   overflow: hidden;
-  background: #ddd6c6;
-  box-shadow: 0 0 0 1px rgba(28, 26, 23, 0.55), 0 6px 14px -8px rgba(28, 26, 23, 0.6);
+  border-radius: 3px;
+  background: var(--color-ph);
+  box-shadow:
+    0 0 0 1px rgba(28, 26, 23, 0.09),
+    0 18px 34px -18px rgba(28, 26, 23, 0.5);
+  transition: box-shadow 0.4s;
 }
-.editcard-rank {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-  line-height: 1;
-  color: #1c1a17;
-  font-family: var(--font-playfair);
-  font-size: 13px;
-  font-weight: 600;
-  z-index: 2;
-}
-.editcard-rank-tl { top: 8px; left: 9px; }
-.editcard-rank-br { bottom: 8px; right: 9px; transform: rotate(180deg); }
+
+/* in the fan the cover is height-led; in the mobile rail it is width-led */
+.editcover-img { display: block; width: 100%; height: auto; }
+.editfan .editcover-img { width: auto; height: 100%; }
+.editfan .editcover { width: auto; }
 
 .editfan { perspective: 1200px; }
 .editfan-slot {
   position: absolute;
   left: 50%;
-  bottom: 4%;
-  width: clamp(150px, 14.5vw, 202px);
-  margin-left: calc(clamp(150px, 14.5vw, 202px) / -2);
-  /* pivot well below the deck so a small angle still separates the cards */
+  bottom: 6%;
+  /* covers vary in proportion, so hold them to a common height and let the
+     widths differ — the arc stays even and no headline gets cropped */
+  height: clamp(206px, 20.5vw, 286px);
+  /* pivot well below the deck so a small angle still separates the covers */
   transform-origin: 50% 215%;
-  transform: rotate(var(--a));
-  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.4s;
+  transform: translateX(-50%) rotate(var(--a));
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
   cursor: pointer;
   will-change: transform;
 }
 .editfan-slot:hover,
 .editfan-slot:focus-visible {
-  transform: rotate(calc(var(--a) * 0.4)) translateY(-34px) scale(1.07);
+  transform: translateX(-50%) rotate(calc(var(--a) * 0.4)) translateY(-34px) scale(1.07);
   outline: none;
 }
-.editfan-slot:hover .editcard,
-.editfan-slot:focus-visible .editcard {
+.editfan-slot:hover .editcover,
+.editfan-slot:focus-visible .editcover {
   box-shadow:
-    0 0 0 1px rgba(28, 26, 23, 0.22),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
-    0 34px 54px -22px rgba(28, 26, 23, 0.62);
+    0 0 0 1px rgba(28, 26, 23, 0.12),
+    0 34px 54px -22px rgba(28, 26, 23, 0.58);
 }
-/* the hovered card's title, swapped in on the left */
-.editcard-readout { animation: fadeUp 0.42s ease both; }
+/* the hovered cover's title, swapped in on the left */
+.editcover-readout { animation: fadeUp 0.42s ease both; }
 
 .editrail {
   gap: 18px;
@@ -349,8 +333,8 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 
 @media (prefers-reduced-motion: reduce) {
   .editfan-slot { transition: none; }
-  .editfan-slot:hover, .editfan-slot:focus-visible { transform: rotate(var(--a)) translateY(-14px); }
-  .editcard-readout { animation: none; }
+  .editfan-slot:hover, .editfan-slot:focus-visible { transform: translateX(-50%) rotate(var(--a)) translateY(-14px); }
+  .editcover-readout { animation: none; }
 }
 
 /* films in the reader */
@@ -401,7 +385,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   border: none;
   border-bottom: 1px solid #d6d6d6;
   padding: 11px 2px;
-  font-family: var(--font-news);
+  font-family: var(--font-body);
   font-size: 16px;
   color: #1c1a17;
   outline: none;

@@ -56,17 +56,17 @@ export default function Carousel({ features }: { features: CarouselFeature[] }) 
       <div className="max-w-[1280px] mx-auto px-[clamp(18px,4vw,54px)]">
         <div className="flex items-end justify-between gap-6 flex-wrap mb-[clamp(28px,3.6vw,46px)]">
           <div data-reveal="left" className="max-w-[38ch]">
-            <div className="font-hanken text-[10px] font-bold tracking-[.32em] uppercase text-ink mb-[14px]">
+            <div className="font-ui text-[10px] font-black tracking-[.32em] uppercase text-ink mb-[14px]">
               {site.carousel.eyebrow}
             </div>
-            <h2 className="font-playfair font-normal text-[clamp(32px,4.6vw,60px)] leading-[.98] tracking-[-.01em] text-ink">
+            <h2 className="font-display font-black text-[clamp(32px,4.6vw,60px)] leading-[.98] tracking-[-.01em] text-ink">
               {site.carousel.title}
             </h2>
-            <p className="font-playfair italic text-[clamp(16px,1.7vw,21px)] leading-[1.4] text-muted mt-3">
+            <p className="font-display italic text-[clamp(16px,1.7vw,21px)] leading-[1.4] text-muted mt-3">
               {site.carousel.sub}
             </p>
           </div>
-          <span className="font-hanken text-[11px] tracking-[.18em] uppercase text-muted-2">
+          <span className="font-ui text-[11px] tracking-[.18em] uppercase text-muted-2">
             {pad(features.length)} {features.length === 1 ? "editorial" : "editorials"}
           </span>
         </div>
@@ -95,28 +95,28 @@ export default function Carousel({ features }: { features: CarouselFeature[] }) 
                   className="media object-cover transition-transform duration-[850ms] ease-[cubic-bezier(.2,.7,.2,1)] group-hover:scale-[1.06]"
                 />
                 {f.slides.length > 1 && (
-                  <span className="absolute top-[10px] right-[10px] z-[2] font-hanken text-[9px] font-bold tracking-[.12em] uppercase text-white bg-[rgba(0,0,0,.42)] backdrop-blur-[2px] rounded-full py-[4px] px-[10px]">
+                  <span className="absolute top-[10px] right-[10px] z-[2] font-ui text-[9px] font-black tracking-[.12em] uppercase text-white bg-[rgba(0,0,0,.42)] backdrop-blur-[2px] rounded-full py-[4px] px-[10px]">
                     {f.slides.length} pages
                   </span>
                 )}
                 <div className="absolute inset-0 z-[1] flex items-end bg-gradient-to-t from-[rgba(12,10,9,.72)] via-[rgba(12,10,9,.12)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <div className="p-[16px]">
                     {f.eyebrow && (
-                      <div className="font-hanken text-[8.5px] font-bold tracking-[.18em] uppercase text-[rgba(255,255,255,.72)] mb-[6px]">
+                      <div className="font-ui text-[8.5px] font-black tracking-[.18em] uppercase text-[rgba(255,255,255,.72)] mb-[6px]">
                         {f.eyebrow}
                       </div>
                     )}
-                    <span className="inline-flex items-center gap-2 font-hanken text-[10px] font-semibold tracking-[.18em] uppercase text-white">
+                    <span className="inline-flex items-center gap-2 font-ui text-[10px] font-black tracking-[.18em] uppercase text-white">
                       View the spread <span aria-hidden>⤢</span>
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="font-playfair font-medium text-[clamp(17px,1.7vw,20px)] leading-[1.16] text-ink mt-[13px] group-hover:text-[color:var(--accent)] transition-colors">
+              <div className="font-display font-black text-[clamp(17px,1.7vw,20px)] leading-[1.16] text-ink mt-[13px] group-hover:text-[color:var(--accent)] transition-colors">
                 <SimpleAmp text={f.title} />
               </div>
               {f.eyebrow && (
-                <div className="font-hanken text-[9px] font-semibold tracking-[.18em] uppercase text-muted-2 mt-[6px]">
+                <div className="font-ui text-[9px] font-black tracking-[.18em] uppercase text-muted-2 mt-[6px]">
                   {f.eyebrow}
                 </div>
               )}
@@ -149,16 +149,16 @@ export default function Carousel({ features }: { features: CarouselFeature[] }) 
             <div className="modcard w-full max-w-[1180px] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
               <div className="flex flex-col items-center gap-[6px] mb-[clamp(16px,2.4vw,30px)] text-center">
                 {cur.eyebrow && (
-                  <span className="font-hanken text-[9.5px] font-bold tracking-[.32em] uppercase text-[rgba(255,255,255,.6)]">
+                  <span className="font-ui text-[9.5px] font-black tracking-[.32em] uppercase text-[rgba(255,255,255,.6)]">
                     {cur.eyebrow}
                   </span>
                 )}
                 <div className="flex items-center gap-4">
-                  <span className="font-playfair italic text-[clamp(18px,2vw,26px)] text-white">
+                  <span className="font-display italic text-[clamp(18px,2vw,26px)] text-white">
                     <SimpleAmp text={cur.title} />
                   </span>
                   {n > 1 && (
-                    <span className="font-hanken text-[11px] tracking-[.14em] text-[rgba(255,255,255,.5)]">
+                    <span className="font-ui text-[11px] tracking-[.14em] text-[rgba(255,255,255,.5)]">
                       {pad(active + 1)} / {pad(n)}
                     </span>
                   )}
@@ -228,7 +228,7 @@ export default function Carousel({ features }: { features: CarouselFeature[] }) 
               </div>
 
               <div className="flex flex-col items-center gap-[clamp(14px,2vw,20px)] mt-[clamp(16px,2.4vw,28px)]">
-                <div className="font-playfair italic text-[clamp(17px,1.8vw,23px)] text-white tracking-[.01em] text-center min-h-[1.4em]">
+                <div className="font-display italic text-[clamp(17px,1.8vw,23px)] text-white tracking-[.01em] text-center min-h-[1.4em]">
                   {cur.slides[active].label}
                 </div>
                 {n > 1 && (

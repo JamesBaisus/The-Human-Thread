@@ -58,17 +58,17 @@ export default function ContinueReading() {
           href={`/article/${last.slug}`}
           className="rellink group flex-1 min-w-0 flex items-center gap-[clamp(10px,2vw,20px)] cursor-pointer -mx-2 px-2 py-1 rounded-[2px]"
         >
-          <span className="flex-none font-hanken text-[9px] font-bold tracking-[.24em] uppercase text-muted">
+          <span className="flex-none font-ui text-[9px] font-black tracking-[.24em] uppercase text-muted">
             Continue reading
           </span>
           <span className="flex-none h-4 w-px bg-hairline max-[560px]:hidden" />
-          <span className="flex-none font-hanken text-[8.5px] font-bold tracking-[.18em] uppercase text-muted-2 max-[560px]:hidden">
+          <span className="flex-none font-ui text-[8.5px] font-black tracking-[.18em] uppercase text-muted-2 max-[560px]:hidden">
             {last.category} · {Math.round(last.pct * 100)}%
           </span>
-          <span className="flex-1 min-w-0 font-playfair font-medium text-[clamp(14px,1.6vw,17px)] leading-tight text-ink truncate">
+          <span className="flex-1 min-w-0 font-display font-black text-[clamp(14px,1.6vw,17px)] leading-tight text-ink truncate">
             <SimpleAmp text={last.title} />
           </span>
-          <span className="relarrow flex-none font-hanken text-[14px] text-ink">→</span>
+          <span className="relarrow flex-none font-ui text-[14px] text-ink">→</span>
         </Link>
         <button
           onClick={dismiss}

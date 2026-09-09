@@ -49,10 +49,10 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
       <section id="posters" className="scroll-mt-20 max-w-[1360px] mx-auto px-[clamp(18px,4vw,54px)] pt-[clamp(44px,6vw,88px)] pb-[clamp(20px,3vw,34px)]">
         <div className="flex items-end justify-between gap-6 flex-wrap border-b border-hairline pb-[clamp(16px,2vw,26px)]">
           <div data-reveal="left">
-            <div className="font-hanken text-[11px] font-semibold tracking-[.3em] uppercase text-muted mb-4">
+            <div className="font-ui text-[11px] font-black tracking-[.3em] uppercase text-muted mb-4">
               The cover gallery
             </div>
-            <h2 className="font-playfair font-normal text-[clamp(40px,7vw,92px)] leading-[.9] tracking-[-.015em]">
+            <h2 className="font-display font-black text-[clamp(40px,7vw,92px)] leading-[.9] tracking-[-.015em]">
               Posters
             </h2>
           </div>
@@ -78,10 +78,10 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
               </div>
               <div className="gover">
                 <div>
-                  <span className="inline-block font-hanken text-[8.5px] font-bold tracking-[.16em] uppercase text-ink bg-[rgba(255,255,255,.9)] rounded-[2px] py-1 px-2">
+                  <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-ink bg-[rgba(255,255,255,.9)] rounded-[2px] py-1 px-2">
                     {p.category}
                   </span>
-                  <div className="font-playfair font-medium text-[21px] leading-[1.08] text-white mt-[10px]">
+                  <div className="font-display font-black text-[21px] leading-[1.08] text-white mt-[10px]">
                     <SimpleAmp text={p.title} />
                   </div>
                 </div>
@@ -122,7 +122,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                   <button onClick={() => step(1)} aria-label="Next" className="igarrow right-[14px]">
                     ›
                   </button>
-                  <div className="absolute top-[14px] right-[14px] z-[2] font-hanken text-[10px] font-semibold tracking-[.08em] text-white bg-[rgba(0,0,0,.55)] rounded-[20px] py-[5px] px-[11px]">
+                  <div className="absolute top-[14px] right-[14px] z-[2] font-ui text-[10px] font-black tracking-[.08em] text-white bg-[rgba(0,0,0,.55)] rounded-[20px] py-[5px] px-[11px]">
                     {slide + 1} / {cur.images.length}
                   </div>
                 </>
@@ -130,7 +130,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
             </div>
             <div className="igpanel bg-[#141414] text-[#ededed] flex flex-col max-h-[90vh]">
               <div className="flex items-center gap-3 py-4 px-[18px] border-b border-[rgba(255,255,255,.1)]">
-                <div className="flex-none w-[38px] h-[38px] rounded-full bg-ink flex items-center justify-center font-playfair font-black text-[14px] text-white">
+                <div className="flex-none w-[38px] h-[38px] rounded-full bg-ink flex items-center justify-center font-display font-black text-[14px] text-white">
                   T
                 </div>
                 <div className="flex-1 min-w-0">
@@ -138,11 +138,11 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                     href={site.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-hanken text-[12.5px] font-bold text-white hover:underline"
+                    className="font-ui text-[12.5px] font-black text-white hover:underline"
                   >
                     {cur.handle}
                   </a>
-                  <div className="font-hanken text-[10px] tracking-[.1em] uppercase text-[#9a9a9a]">{cur.category}</div>
+                  <div className="font-ui text-[10px] tracking-[.1em] uppercase text-[#9a9a9a]">{cur.category}</div>
                 </div>
                 <button onClick={close} aria-label="Close" className="modclose cursor-pointer text-[#c2c2c2] leading-none p-1">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -152,19 +152,19 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto py-5 px-[18px]">
-                <div className="font-playfair font-medium text-[24px] leading-[1.08] text-white mb-4">
+                <div className="font-display font-black text-[24px] leading-[1.08] text-white mb-4">
                   <SimpleAmp text={cur.title} />
                 </div>
                 {cur.captions.map((cp, k) => (
-                  <p key={k} className="font-news text-[14px] leading-[1.62] text-[#d6d6d6] mb-[14px]">
+                  <p key={k} className="font-body text-[14px] leading-[1.62] text-[#d6d6d6] mb-[14px]">
                     {cp}
                   </p>
                 ))}
                 {cur.hashtags && (
-                  <p className="font-hanken text-[13.5px] text-[#7fb0e6] mt-[2px] mb-4">{cur.hashtags}</p>
+                  <p className="font-ui text-[13.5px] text-[#7fb0e6] mt-[2px] mb-4">{cur.hashtags}</p>
                 )}
                 {cur.note && (
-                  <p className="font-news italic text-[14px] text-[#cfcfcf]">
+                  <p className="font-body italic text-[14px] text-[#cfcfcf]">
                     <SimpleAmp text={cur.note} />
                   </p>
                 )}
@@ -174,7 +174,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                   href={site.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cursor-pointer inline-flex items-center gap-2 font-hanken text-[11px] font-semibold tracking-[.16em] uppercase text-white hover:opacity-70 transition-opacity"
+                  className="cursor-pointer inline-flex items-center gap-2 font-ui text-[11px] font-black tracking-[.16em] uppercase text-white hover:opacity-70 transition-opacity"
                 >
                   The Human Thread_AE ↗
                 </a>

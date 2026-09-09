@@ -30,10 +30,10 @@ export default async function CataloguePage() {
       <section className="max-w-[1280px] mx-auto pt-[clamp(40px,6vw,86px)] pb-[clamp(20px,3vw,34px)] px-[clamp(18px,4vw,54px)]">
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <div>
-            <div className="font-hanken text-[11px] font-semibold tracking-[.3em] uppercase text-muted mb-4">
+            <div className="font-ui text-[11px] font-black tracking-[.3em] uppercase text-muted mb-4">
               The catalogue
             </div>
-            <h1 className="font-playfair font-normal text-[clamp(48px,9vw,120px)] leading-[.9] tracking-[-.015em]">
+            <h1 className="font-display font-black text-[clamp(48px,9vw,120px)] leading-[.9] tracking-[-.015em]">
               Articles
             </h1>
           </div>

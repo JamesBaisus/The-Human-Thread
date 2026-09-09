@@ -1,19 +1,13 @@
 /**
- * Serif ampersands (especially Playfair's italic Et-ligature swash) read as
- * decorative. Wherever content renders, this swaps every "&" for the plain
- * upright sans-serif form. Safe in both server and client components.
+ * Ampersands used to need special handling: Playfair's italic Et-ligature
+ * swash read as decorative, so every "&" was forced upright and into the sans
+ * face. The magazine is now set in one sans family whose "&" is plain in both
+ * styles, so the text passes through untouched — forcing it upright would only
+ * break the ampersand out of an italic deck or pull quote.
+ *
+ * Kept as a component so the call sites stay put and a future display face can
+ * reintroduce the fix in one place. Safe in both server and client components.
  */
 export default function SimpleAmp({ text }: { text: string }) {
-  if (!text.includes("&")) return text;
-  const parts = text.split("&");
-  return (
-    <>
-      {parts.map((part, i) => (
-        <span key={i}>
-          {i > 0 && <span className="not-italic font-hanken">&</span>}
-          {part}
-        </span>
-      ))}
-    </>
-  );
+  return text;
 }

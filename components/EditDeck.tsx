@@ -28,7 +28,7 @@ function Cover({ item, eager }: { item: EditItem; eager?: boolean }) {
   );
 }
 
-export default function EditDeck({ items }: { items: EditItem[] }) {
+export default function EditDeck({ items, total }: { items: EditItem[]; total: number }) {
   const front = items.length - 1;
   const [active, setActive] = useState(front);
   if (items.length === 0) return null;
@@ -55,6 +55,15 @@ export default function EditDeck({ items }: { items: EditItem[] }) {
           <p className="font-body text-[clamp(14.5px,1.2vw,16px)] leading-[1.6] text-body-1 mt-[14px] max-w-[46ch]">
             The shorter read. Fashion, culture and the moments worth stopping for.
           </p>
+
+          {total > items.length && (
+            <Link
+              href="#cat-tht-edit"
+              className="viewall cursor-pointer inline-flex items-center gap-2 font-ui text-[10px] font-black tracking-[.2em] uppercase text-muted mt-[clamp(16px,2.2vw,22px)]"
+            >
+              See all {total} <span className="arr">→</span>
+            </Link>
+          )}
 
           {/* Reads out the cover under the cursor; holds its height so nothing jumps. */}
           <div className="mt-[clamp(20px,3vw,32px)] pt-[18px] border-t border-hairline min-h-[112px] max-[900px]:hidden">

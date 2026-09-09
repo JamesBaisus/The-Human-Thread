@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site } from "@/content/site";
-import { getCarouselFeatures, getCategorySections, getDeckEditItems, getFeatured, getLatest, getPosters, getShelfEditItems } from "@/lib/content";
+import { getCarouselFeatures, getCategorySections, getDeckEditItems, getEditItems, getFeatured, getLatest, getPosters } from "@/lib/content";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import EditDeck from "@/components/EditDeck";
@@ -10,21 +10,21 @@ import PostersGallery from "@/components/PostersGallery";
 import ArticleCard from "@/components/ArticleCard";
 
 export default async function Home() {
-  const [featured, latest, sections, posters, features, deckItems, shelfItems] = await Promise.all([
+  const [featured, latest, sections, posters, features, deckItems, allEdits] = await Promise.all([
     getFeatured(),
     getLatest(5),
     getCategorySections(),
     getPosters(),
     getCarouselFeatures(),
     getDeckEditItems(),
-    getShelfEditItems(),
+    getEditItems(),
   ]);
 
   return (
     <div className="pg relative">
       <Hero featured={featured} latest={latest} />
 
-      <EditDeck items={deckItems} />
+      <EditDeck items={deckItems} total={allEdits.length} />
 
       <Carousel features={features} />
 
@@ -73,7 +73,7 @@ export default async function Home() {
         </section>
       ))}
 
-      {shelfItems.length > 0 && (
+      {allEdits.length > 0 && (
         <section
           id="cat-tht-edit"
           className="scroll-mt-20 max-w-[1280px] mx-auto py-[clamp(30px,4vw,52px)] px-[clamp(18px,4vw,54px)]"
@@ -82,18 +82,12 @@ export default async function Home() {
             <div data-reveal="left" className="flex items-baseline gap-4">
               <h2 className="font-display font-black text-[clamp(30px,4vw,54px)] leading-none">THT Edit</h2>
               <span className="font-ui text-[11px] tracking-[.14em] text-muted-2">
-                {shelfItems.length === 1 ? "1 piece" : `${shelfItems.length} pieces`}
+                {allEdits.length === 1 ? "1 piece" : `${allEdits.length} pieces`}
               </span>
             </div>
-            <Link
-              href="/#tht-edit"
-              className="viewall cursor-pointer inline-flex items-center gap-2 font-ui text-[10px] font-black tracking-[.2em] uppercase text-muted"
-            >
-              The deck <span className="arr">→</span>
-            </Link>
           </div>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(min(258px,100%),1fr))] gap-[clamp(20px,2.2vw,34px)]">
-            {shelfItems.map((e) => (
+            {allEdits.map((e) => (
               <ArticleCard
                 key={e.slug}
                 card={{

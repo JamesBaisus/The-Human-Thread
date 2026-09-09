@@ -18,6 +18,10 @@ export const site = {
   /** Exactly one article drives the hero. */
   featuredSlug: "alberto-gianfreda",
 
+  /** How many Edit pieces are dealt into the fanned deck; the rest wait in the
+   *  THT Edit section, which always holds the full set. */
+  editDeckSize: 5,
+
   /**
    * The letter near the footer, read by scrolling it sideways. Each entry is
    * one panel; `lines` are set as separate lines rather than a paragraph, and

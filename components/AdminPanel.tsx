@@ -371,7 +371,7 @@ export default function AdminPanel() {
 
   /** Moves a piece between the fanned deck and the THT Edit section. */
   const toggleInDeck = async (slug: string, inDeck: boolean) => {
-    setEditsMsg(inDeck ? "Dealing into the deck…" : "Moving to the section…");
+    setEditsMsg(inDeck ? "Adding to the deck…" : "Taking out of the deck…");
     try {
       const res = await fetch("/api/admin/edit", {
         method: "PATCH",
@@ -386,7 +386,7 @@ export default function AdminPanel() {
           ? "Dry run — GitHub not connected, nothing changed."
           : inDeck
             ? "Back in the deck. The site is rebuilding."
-            : "Moved to the THT Edit section. The site is rebuilding."
+            : "Out of the deck. It stays in the THT Edit section. The site is rebuilding."
       );
     } catch {
       setEditsMsg("Could not move the piece.");
@@ -735,8 +735,9 @@ export default function AdminPanel() {
             placeholder="Search THT Edit by title or kicker."
           />
           <p className="font-ui text-[10px] tracking-[.12em] uppercase text-muted-2 mb-4">
-            Pieces in the deck fan across the landing page. Move one to the section and it drops into the
-            THT Edit row further down, which is how the deck stays a small hand.
+            The THT Edit section lists every piece. The deck at the top of the landing page fans only the
+            newest {site.editDeckSize}, so anything past that waits in the section on its own. Take a piece out of the
+            deck to keep it out of the fan entirely.
           </p>
           {editsMsg && <p className="font-ui text-[11px] tracking-[.08em] text-muted mb-4">{editsMsg}</p>}
           {edits
@@ -755,7 +756,7 @@ export default function AdminPanel() {
                   {x.title}
                   {!x.inDeck && (
                     <span className="ml-2 font-ui text-[9px] tracking-[.14em] uppercase border border-hairline text-muted rounded-[2px] px-[6px] py-[2px]">
-                      Section
+                      Not in deck
                     </span>
                   )}
                 </div>
@@ -768,7 +769,7 @@ export default function AdminPanel() {
                 onClick={() => toggleInDeck(x.slug, !x.inDeck)}
                 className="cursor-pointer font-ui text-[10px] font-black tracking-[.16em] uppercase text-ink border border-hairline hover:border-ink rounded-[2px] py-2 px-3 transition-colors"
               >
-                {x.inDeck ? "Move to section" : "Deal into deck"}
+                {x.inDeck ? "Remove from deck" : "Show in deck"}
               </button>
               <button
                 type="button"
@@ -843,9 +844,9 @@ export default function AdminPanel() {
 
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={xInDeck} onChange={(e) => setXInDeck(e.target.checked)} className="w-4 h-4 accent-[#1c1a17]" />
-            <span className="font-ui text-[11px] tracking-[.14em] uppercase text-ink">Deal into the deck</span>
+            <span className="font-ui text-[11px] tracking-[.14em] uppercase text-ink">Show in the deck</span>
             <span className="font-ui text-[10px] tracking-[.1em] uppercase text-muted-2">
-              Off puts it straight into the THT Edit section
+              It joins the THT Edit section either way
             </span>
           </label>
 

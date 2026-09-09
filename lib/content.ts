@@ -398,14 +398,13 @@ export async function getEditItem(slug: string): Promise<EditItem | undefined> {
   return (await getEditItems()).find((i) => i.slug === slug);
 }
 
-/** The pieces dealt into the fanned deck. */
+/**
+ * The hand dealt onto the landing page: the newest eligible pieces, capped so
+ * the fan stays readable however far the archive grows. Everything else waits
+ * in the THT Edit section, which always carries the full set.
+ */
 export async function getDeckEditItems(): Promise<EditItem[]> {
-  return (await getEditItems()).filter((i) => i.inDeck);
-}
-
-/** The pieces that have moved out of the deck into the THT Edit section. */
-export async function getShelfEditItems(): Promise<EditItem[]> {
-  return (await getEditItems()).filter((i) => !i.inDeck);
+  return (await getEditItems()).filter((i) => i.inDeck).slice(0, site.editDeckSize);
 }
 
 /** The other pieces in the deck, for the foot of an Edit page. */

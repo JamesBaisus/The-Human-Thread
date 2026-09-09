@@ -308,7 +308,6 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 .editcover {
   display: block;
   position: relative;
-  height: 100%;
   overflow: hidden;
   border-radius: 3px;
   background: var(--color-ph);
@@ -318,10 +317,10 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   transition: box-shadow 0.4s;
 }
 
-/* in the fan the cover is height-led; in the mobile rail it is width-led */
+/* in the fan the cover is height-led; in the rail it is width-led */
 .editcover-img { display: block; width: 100%; height: auto; }
 .editfan .editcover-img { width: auto; height: 100%; }
-.editfan .editcover { width: auto; }
+.editfan .editcover { width: auto; height: 100%; }
 
 .editfan { perspective: 1200px; }
 .editfan-slot {

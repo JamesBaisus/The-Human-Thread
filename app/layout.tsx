@@ -40,6 +40,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const withArticles = new Set((await getCategorySections()).map((s) => s.name));
   const hrefFor = (label: string) => {
     if (label === "Home") return "/#top";
+    if (label === "THT Edit") return "/#tht-edit";
     if (label === "Gallery") return "/#posters";
     if (label === "About") return "/#about";
     return withArticles.has(label) ? `/#${catAnchor(label)}` : `/catalogue?filter=${encodeURIComponent(label)}`;

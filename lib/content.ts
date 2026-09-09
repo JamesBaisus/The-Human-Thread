@@ -9,6 +9,7 @@ const ROOT = process.cwd();
 const ARTICLES_DIR = path.join(ROOT, "content", "articles");
 const POSTERS_FILE = path.join(ROOT, "content", "posters", "posters.json");
 const EDITORIALS_FILE = path.join(ROOT, "content", "editorials", "editorials.json");
+const EDIT_DIR = path.join(ROOT, "content", "edit");
 
 /**
  * Optional layout hint, written after the caption in the MDX alt text:
@@ -66,6 +67,30 @@ export type Article = {
   /** Tiny inline blur-up placeholder (data URL), generated at build time. */
   coverBlur: string;
   featured: boolean;
+  hidden: boolean;
+  date: string;
+  sections: ArticleSection[];
+};
+
+/**
+ * A THT Edit card. Short-form pieces that live only in the Edit deck on the
+ * landing page and at /edit/<slug>: deliberately outside the article
+ * catalogue, the category rows and the hero rotation.
+ */
+export type EditItem = {
+  slug: string;
+  /** Playing-card rank printed on the cover card (A, K, Q, J, 10, 9, 8). */
+  rank: string;
+  /** Small label above the title, free text rather than a site category. */
+  kicker: string;
+  title: string;
+  deck: string;
+  readTime: string;
+  accent: string;
+  cover: string;
+  coverWidth: number;
+  coverHeight: number;
+  coverBlur: string;
   hidden: boolean;
   date: string;
   sections: ArticleSection[];
@@ -132,6 +157,14 @@ function parseSections(body: string): RawSection[] {
     if (!line) continue;
     if (line.startsWith("## ")) {
       current = { heading: line.slice(3).trim(), paragraphs: [], images: [] };
+      sections.push(current);
+      continue;
+    }
+    // A bare `---` opens the next section without printing a heading. Short
+    // pieces need the break so their figures stay where they were written,
+    // since a section renders all of its paragraphs before its images.
+    if (/^-{3,}$/.test(line)) {
+      current = { heading: "", paragraphs: [], images: [] };
       sections.push(current);
       continue;
     }
@@ -309,6 +342,65 @@ export async function getRelated(slug: string, count = 3): Promise<{ no: string;
     const i = (idx + k + 1) % list.length;
     return { no: String(i + 1).padStart(2, "0"), article: list[i] };
   });
+}
+
+/** Deck order: the rank printed on each card, highest first. */
+const RANK_ORDER = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"];
+
+async function loadEditItems(): Promise<EditItem[]> {
+  if (!fs.existsSync(EDIT_DIR)) return [];
+  const files = fs.readdirSync(EDIT_DIR).filter((f) => /\.mdx?$/.test(f));
+  const items = await Promise.all(
+    files.map(async (file) => {
+      const raw = fs.readFileSync(path.join(EDIT_DIR, file), "utf8");
+      const { data, content } = matter(raw);
+      for (const field of ["rank", "kicker", "title", "deck", "readTime", "accent", "cover", "date"]) {
+        if (!data[field]) throw new Error(`content/edit/${file}: missing frontmatter field "${field}"`);
+      }
+      const rank = String(data.rank);
+      if (!RANK_ORDER.includes(rank)) {
+        throw new Error(`content/edit/${file}: unknown card rank "${rank}"`);
+      }
+      const dims = imageDims(data.cover);
+      return {
+        slug: data.slug ?? file.replace(/\.mdx?$/, ""),
+        rank,
+        kicker: String(data.kicker),
+        title: String(data.title),
+        deck: String(data.deck),
+        readTime: String(data.readTime),
+        accent: String(data.accent),
+        cover: String(data.cover),
+        coverWidth: dims.width,
+        coverHeight: dims.height,
+        coverBlur: await blurFor(String(data.cover)),
+        hidden: Boolean(data.hidden),
+        date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
+        sections: await enrichSections(parseSections(content)),
+      } satisfies EditItem;
+    })
+  );
+  const visible = items.filter((i) => !i.hidden);
+  visible.sort((a, b) => RANK_ORDER.indexOf(a.rank) - RANK_ORDER.indexOf(b.rank));
+  return visible;
+}
+
+let _edit: Promise<EditItem[]> | null = null;
+
+/** The THT Edit deck, in card order. */
+export function getEditItems(): Promise<EditItem[]> {
+  return (_edit ??= loadEditItems());
+}
+
+export async function getEditItem(slug: string): Promise<EditItem | undefined> {
+  return (await getEditItems()).find((i) => i.slug === slug);
+}
+
+/** The other cards in the deck, for the foot of an Edit page. */
+export async function getOtherEditItems(slug: string, count = 3): Promise<EditItem[]> {
+  const all = await getEditItems();
+  const idx = Math.max(0, all.findIndex((i) => i.slug === slug));
+  return Array.from({ length: Math.min(count, all.length - 1) }, (_, k) => all[(idx + k + 1) % all.length]);
 }
 
 async function loadPosters(): Promise<Poster[]> {

@@ -33,12 +33,12 @@ export const site = {
 
   /**
    * Nav drawer groups, in display order. A group may carry a small label
-   * header. "Home", "Gallery" and "About" are fixed anchors; any other item
+   * header. "Home", "THT Edit", "Gallery" and "About" are fixed anchors; any other item
    * must be a category name — it links to its section on the landing page,
    * or to the filtered catalogue if it has no articles yet.
    */
   nav: [
-    { header: null, items: ["Home"] },
+    { header: null, items: ["Home", "THT Edit"] },
     { header: "Articles", items: ["Human Stories", "Fashion", "Art", "Lifestyle"] },
     { header: "The Cover Gallery", items: ["Gallery"] },
     { header: null, items: ["About"] },

@@ -244,6 +244,115 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   .igstage { height: 46vh !important; }
 }
 
+/* THT Edit — the fanned cover deck */
+.editcard {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.5 / 3.5;
+  border-radius: 9px;
+  padding: 25px 13px 28px;
+  /* centre the mounted photo so a landscape cover is not all cream underneath */
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(120% 90% at 22% 8%, #fdfaf3 0%, #f4eee1 46%, #e9e0cd 100%);
+  box-shadow:
+    0 0 0 1px rgba(28, 26, 23, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    0 18px 34px -18px rgba(28, 26, 23, 0.55);
+  overflow: hidden;
+}
+/* faint speckle so the stock reads as aged paper rather than flat cream */
+.editcard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 18% 30%, rgba(120, 100, 70, 0.05) 0 1px, transparent 1px),
+    radial-gradient(circle at 72% 66%, rgba(120, 100, 70, 0.045) 0 1px, transparent 1px),
+    radial-gradient(circle at 44% 86%, rgba(120, 100, 70, 0.04) 0 1px, transparent 1px);
+  background-size: 47px 53px, 61px 43px, 39px 67px;
+}
+.editcard-window {
+  display: block;
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  background: #ddd6c6;
+  box-shadow: 0 0 0 1px rgba(28, 26, 23, 0.55), 0 6px 14px -8px rgba(28, 26, 23, 0.6);
+}
+.editcard-rank {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+  color: #1c1a17;
+  font-family: var(--font-playfair);
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 2;
+}
+.editcard-rank-tl { top: 8px; left: 9px; }
+.editcard-rank-br { bottom: 8px; right: 9px; transform: rotate(180deg); }
+
+.editfan { perspective: 1200px; }
+.editfan-slot {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: clamp(150px, 14.5vw, 202px);
+  margin-left: calc(clamp(150px, 14.5vw, 202px) / -2);
+  /* pivot well below the deck so a small angle still separates the cards */
+  transform-origin: 50% 215%;
+  transform: rotate(var(--a));
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.4s;
+  cursor: pointer;
+  will-change: transform;
+}
+.editfan-slot:hover,
+.editfan-slot:focus-visible {
+  transform: rotate(calc(var(--a) * 0.4)) translateY(-34px) scale(1.07);
+  outline: none;
+}
+.editfan-slot:hover .editcard,
+.editfan-slot:focus-visible .editcard {
+  box-shadow:
+    0 0 0 1px rgba(28, 26, 23, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 34px 54px -22px rgba(28, 26, 23, 0.62);
+}
+/* the hovered card's title, swapped in on the left */
+.editcard-readout { animation: fadeUp 0.42s ease both; }
+
+.editrail {
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+  margin: 0 calc(clamp(18px, 4vw, 54px) * -1);
+  padding-inline: clamp(18px, 4vw, 54px);
+  scrollbar-width: none;
+}
+.editrail::-webkit-scrollbar { display: none; }
+.editrail-item {
+  flex: 0 0 auto;
+  width: min(58vw, 250px);
+  scroll-snap-align: center;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editfan-slot { transition: none; }
+  .editfan-slot:hover, .editfan-slot:focus-visible { transform: rotate(var(--a)) translateY(-14px); }
+  .editcard-readout { animation: none; }
+}
+
 /* films in the reader */
 .film video::-webkit-media-controls { display: none !important; }
 .filmbtn {

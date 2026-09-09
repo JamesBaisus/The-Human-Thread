@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { site } from "@/content/site";
-import { getArticle, getCarouselFeatures, getCategorySections, getEditItems, getFeatured, getLatest, getPosters } from "@/lib/content";
+import { getCarouselFeatures, getCategorySections, getEditItems, getFeatured, getLatest, getPosters } from "@/lib/content";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import EditDeck from "@/components/EditDeck";
 import Marquee from "@/components/Marquee";
+import CoverLetter from "@/components/CoverLetter";
 import PostersGallery from "@/components/PostersGallery";
 import ArticleCard from "@/components/ArticleCard";
 
@@ -17,7 +18,6 @@ export default async function Home() {
     getCarouselFeatures(),
     getEditItems(),
   ]);
-  const coverBand = (await getArticle(site.coverBand.slug)) ?? featured;
 
   return (
     <div className="pg relative">
@@ -111,37 +111,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <Link
-        href={`/article/${coverBand.slug}`}
-        className="darkband glossblack block cursor-pointer relative py-[clamp(50px,8vw,110px)] px-[clamp(18px,4vw,54px)] text-ondark overflow-hidden mt-[clamp(20px,3vw,36px)]"
-      >
-        <div className="relative max-w-[1280px] mx-auto">
-          <div data-reveal="" className="font-ui text-[11px] font-black tracking-[.32em] uppercase text-ondark mb-5">
-            {site.coverBand.kicker} · {coverBand.category}
-          </div>
-          <h2
-            data-reveal=""
-            data-reveal-delay="90"
-            className="font-display font-black text-ondark text-[clamp(38px,6vw,88px)] leading-none tracking-[-.01em] max-w-[16ch]"
-          >
-            {coverBand.title}
-          </h2>
-          <p
-            data-reveal=""
-            data-reveal-delay="160"
-            className="font-display italic text-[clamp(18px,2vw,24px)] leading-[1.4] text-[rgba(245,245,245,.66)] mt-[22px] max-w-[44ch]"
-          >
-            {coverBand.deck}
-          </p>
-          <div
-            data-reveal=""
-            data-reveal-delay="230"
-            className="bandbtn viewall inline-flex items-center gap-3 mt-8 text-ondark font-ui text-[11px] font-black tracking-[.22em] uppercase py-[13px] px-[22px] rounded-[2px]"
-          >
-            Read the feature <span className="arr">→</span>
-          </div>
-        </div>
-      </Link>
+      <CoverLetter />
     </div>
   );
 }

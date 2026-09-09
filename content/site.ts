@@ -18,8 +18,67 @@ export const site = {
   /** Exactly one article drives the hero. */
   featuredSlug: "alberto-gianfreda",
 
-  /** The dark "Read the feature" band near the footer. */
-  coverBand: { slug: "bts", kicker: "The Cover Story" },
+  /**
+   * The letter near the footer, read by scrolling it sideways. Each entry is
+   * one panel; `lines` are set as separate lines rather than a paragraph, and
+   * `emphasis` sets the panel as the statement it builds to.
+   */
+  letter: {
+    eyebrow: "A Letter to Our Readers",
+    title: "Why We Exist",
+    panels: [
+      {
+        lines: [
+          "The Human Thread_AE began with a simple belief.",
+          "Behind every face, every creation, every success and every name,",
+          "there is a human story worth knowing.",
+        ],
+      },
+      {
+        lines: [
+          "We live in a world that moves quickly.",
+          "We see the finished image, the achievement, the beautiful moment.",
+          "But rarely do we stop to ask what came before it.",
+        ],
+      },
+      {
+        lines: ["The courage.", "The doubt.", "The work.", "The loss.", "The becoming."],
+        tail: "That is where we want to look.",
+      },
+      {
+        lines: [
+          "We exist to tell stories with depth, curiosity and humanity.",
+          "To celebrate creativity, culture, fashion and art, while never forgetting",
+          "the person behind them.",
+        ],
+      },
+      {
+        lines: [
+          "Some of the people we feature are known around the world.",
+          "Others are still building their names. To us, both stories can matter equally.",
+          "Because visibility should not only belong to those who already have it.",
+        ],
+      },
+      {
+        lines: [
+          "The Human Thread_AE is still growing, still learning and still becoming.",
+          "But our purpose remains clear.",
+        ],
+      },
+      {
+        emphasis: true,
+        lines: ["To look beyond what is seen and tell the human story underneath."],
+      },
+      {
+        lines: [
+          "Thank you for reading.",
+          "Thank you for believing in stories.",
+          "And thank you for becoming part of ours.",
+        ],
+        signoff: "Everything about human interests us.",
+      },
+    ],
+  },
 
   /** Fixed category display order; only categories with articles render. */
   categories: [

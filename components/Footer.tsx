@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="font-logo font-black text-[clamp(22px,2.4vw,30px)] tracking-[.005em] text-ink">
             THE HUMAN THREAD
           </div>
-          <div className="font-ui text-[9px] font-black tracking-[.4em] text-muted mt-[6px]">MAGAZINE · AE</div>
+          <div className="font-ui text-[9px] font-black tracking-[.4em] text-muted mt-[6px]">JOURNAL · AE</div>
         </div>
         <div className="flex gap-6 items-center font-ui text-[10.5px] tracking-[.2em] uppercase text-muted">
           <Link href="/#top" className="navlink cursor-pointer">

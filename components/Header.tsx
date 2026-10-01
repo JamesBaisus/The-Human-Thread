@@ -34,7 +34,7 @@ export default function Header({
                 THE HUMAN THREAD
               </div>
               <div className="font-ui text-[8.5px] font-black tracking-[.44em] text-muted mt-1 pl-[2px]">
-                MAGAZINE · AE
+                JOURNAL · AE
               </div>
             </Link>
           </div>
@@ -68,7 +68,7 @@ export default function Header({
               <div className="leading-[.86]">
                 <div className="font-logo font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
                 <div className="font-ui text-[8px] font-black tracking-[.4em] text-muted-2 mt-1">
-                  MAGAZINE · AE
+                  JOURNAL · AE
                 </div>
               </div>
               <button

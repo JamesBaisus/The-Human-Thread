@@ -10,7 +10,7 @@ const sections = [
   {
     h: "Our Content",
     ps: [
-      "The Human Thread_AE is an editorial magazine sharing human stories, culture, fashion, art, and creative features.",
+      "The Human Thread_AE is an editorial journal sharing human stories, culture, fashion, art, and creative features.",
       "All articles, captions, layouts, graphics, logo, interviews, and written content belong to The Human Thread_AE unless stated otherwise. You may not copy, repost, sell, edit, or reuse our content without written permission.",
     ],
   },
@@ -18,7 +18,7 @@ const sections = [
     h: "Interviews & Submissions",
     ps: [
       "By submitting your story, images, brand details, interview answers, or press materials, you confirm that you have the right to share them with us.",
-      "You also give The Human Thread_AE permission to use the submitted material for our website, magazine, social media, and promotional editorial purposes.",
+      "You also give The Human Thread_AE permission to use the submitted material for our website, journal, social media, and promotional editorial purposes.",
       "Publication is not guaranteed. We may edit content for clarity, grammar, length, tone, or layout while keeping the original meaning.",
     ],
   },
@@ -32,7 +32,7 @@ const sections = [
   {
     h: "Publishing Rights",
     ps: [
-      "Only The Human Thread_AE and its approved administrators can publish, edit, approve, or remove content from our website, magazine, and social platforms.",
+      "Only The Human Thread_AE and its approved administrators can publish, edit, approve, or remove content from our website, journal, and social platforms.",
     ],
   },
   {
@@ -69,7 +69,7 @@ export default function TermsPage() {
       eyebrow="The fine print"
       title="Terms & Conditions"
       updated="8 July 2026"
-      intro="By using The Human Thread_AE website, magazine, social media pages, articles, interviews, or editorial content, you agree to these Terms & Conditions."
+      intro="By using The Human Thread_AE website, journal, social media pages, articles, interviews, or editorial content, you agree to these Terms & Conditions."
       sections={sections}
     />
   );

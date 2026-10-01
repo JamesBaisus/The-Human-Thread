@@ -1,7 +1,7 @@
 /**
  * Ampersands used to need special handling: Playfair's italic Et-ligature
  * swash read as decorative, so every "&" was forced upright and into the sans
- * face. The magazine is now set in one sans family whose "&" is plain in both
+ * face. The journal is now set in one sans family whose "&" is plain in both
  * styles, so the text passes through untouched — forcing it upright would only
  * break the ampersand out of an italic deck or pull quote.
  *

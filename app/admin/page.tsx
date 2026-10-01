@@ -17,7 +17,7 @@ export default function AdminPage() {
           Add an article
         </h1>
         <p className="font-display italic text-[clamp(16px,1.8vw,21px)] leading-[1.45] text-body-1 mt-4 max-w-[52ch]">
-          Fill in the story and publish — the magazine handles typesetting, image layouts, and ordering by itself.
+          Fill in the story and publish — the journal handles typesetting, image layouts, and ordering by itself.
         </p>
       </section>
       <section className="max-w-[760px] mx-auto pt-2 pb-[clamp(56px,8vw,100px)] px-[clamp(18px,4vw,40px)]">

@@ -10,7 +10,7 @@ import Effects from "@/components/Effects";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
 
-// One family across the whole magazine, in the two weights it is set in:
+// One family across the whole journal, in the two weights it is set in:
 // Regular for reading, Black for display and the uppercase labels. Real
 // italics are loaded so the decks and pull quotes are not faux-obliqued.
 // The wordmark keeps its original face. Black only — it is the one weight the
@@ -31,9 +31,9 @@ const sourceSans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  title: "The Human Thread Magazine · AE",
+  title: "The Human Thread Journal · AE",
   description:
-    "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
+    "The Human Thread_AE is an independent digital journal shaped by stories, culture, identity, and the quiet power of human experience.",
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -127,8 +127,8 @@ export const site = {
   ],
 
   aboutBody: [
-    "The Human Thread_AE is an independent digital magazine shaped by stories, culture, identity, and the quiet power of human experience.",
-    "Created in the UAE with a global editorial vision, the magazine explores the people, places, brands, artists, and ideas that carry meaning beyond the surface. Through thoughtful features and refined visual storytelling, we look at fashion, art, culture, and community as reflections of something deeper: who we are, what we value, and how we are remembered.",
+    "The Human Thread_AE is an independent digital journal shaped by stories, culture, identity, and the quiet power of human experience.",
+    "Created in the UAE with a global editorial vision, the journal explores the people, places, brands, artists, and ideas that carry meaning beyond the surface. Through thoughtful features and refined visual storytelling, we look at fashion, art, culture, and community as reflections of something deeper: who we are, what we value, and how we are remembered.",
     "At The Human Thread_AE, every story begins with a person. We are drawn to journeys of resilience, creativity, ambition, heritage, reinvention, and purpose: the moments that shape a life, a vision, or a legacy.",
     "Our editorial voice is intimate yet elevated, emotional yet timeless. We do not chase noise. We follow substance.",
     "From Dubai to the world, The Human Thread_AE exists to document the threads that connect us: the stories behind the faces, the meaning behind the work, and the humanity behind every expression.",

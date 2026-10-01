@@ -267,6 +267,77 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   pointer-events: none;
 }
 
+/* Landing masthead */
+.masthead-shell { container-type: inline-size; }
+.masthead {
+  /* One size drives the whole lockup; every part below is set in em. Sized
+     against the container rather than the viewport so the name stays edge to
+     edge at any width, instead of drifting in once the measure caps out. */
+  font-size: clamp(42px, 10.9vw, 158px);
+  font-size: 13.4cqw;
+  font-family: var(--font-logo);
+  color: var(--color-ink);
+  line-height: 1;
+}
+.masthead-line {
+  position: relative;
+  display: block;
+  font-size: 1em;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.012em;
+  line-height: 0.96;
+  white-space: nowrap;
+  padding-bottom: 0.08em;
+}
+.masthead-name { font: inherit; }
+/* tucked into the shoulder of the H, upright against the italic */
+.masthead-the {
+  position: absolute;
+  /* offsets in container units, not em: em here would resolve against this
+     span's own small size rather than the name it is tucked into */
+  left: 4.55cqw;
+  top: 1.45cqw;
+  font-size: 0.125em;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+/* sits low off the final d, the way a dateline does */
+.masthead-ae {
+  font-size: 0.17em;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: baseline;
+  margin-left: -0.08em;
+}
+.masthead-rule {
+  display: block;
+  height: 1px;
+  background: var(--color-ink);
+  opacity: 0.75;
+}
+.masthead-tax {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.2em 2.1em;
+  font-size: clamp(9px, 1.05vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  padding: 0.95em 0 0.9em;
+  text-indent: 0.34em;
+}
+@media (max-width: 560px) {
+  .masthead-tax { gap: 0.15em 1.1em; letter-spacing: 0.22em; text-indent: 0.22em; }
+}
+
 /* The letter, drifting sideways on its own */
 .lettermarquee {
   overflow: hidden;

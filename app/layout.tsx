@@ -17,7 +17,10 @@ import AnalyticsGate from "@/components/AnalyticsGate";
 // lockup is set in, so this costs a single font file.
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["900"],
+  // 900 upright for the wordmark, 900 italic for the landing masthead, and 400
+  // upright for the small caps that sit around it
+  weight: ["400", "900"],
+  style: ["normal", "italic"],
   variable: "--font-pf",
   display: "swap",
 });

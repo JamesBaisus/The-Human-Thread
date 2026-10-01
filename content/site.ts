@@ -18,6 +18,9 @@ export const site = {
   /** Exactly one article drives the hero. */
   featuredSlug: "alberto-gianfreda",
 
+  /** The line set between the rules under the landing masthead. */
+  mastheadWords: ["People", "Culture", "Art", "Fashion", "Community"],
+
   /** How many Edit pieces are dealt into the fanned deck; the rest wait in the
    *  THT Edit section, which always holds the full set. */
   editDeckSize: 5,

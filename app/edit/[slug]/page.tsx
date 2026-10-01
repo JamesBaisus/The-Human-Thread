@@ -19,8 +19,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function EditPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = await getEditItem(slug);
+  // `order` is a sort key — new pieces are given negative values so they land
+  // at the front — so the printed number is the position in the run, not it.
+  const all = await getEditItems();
+  const item = all.find((i) => i.slug === slug);
   if (!item) notFound();
+  const position = (s: string) => String(all.findIndex((i) => i.slug === s) + 1).padStart(2, "0");
   const others = await getOtherEditItems(item.slug);
 
   return (
@@ -45,7 +49,7 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
           className="flex items-center gap-3 font-ui text-[10px] font-black tracking-[.24em] uppercase mb-[14px]"
           style={{ color: item.accent }}
         >
-          <span>No. {String(item.order).padStart(2, "0")}</span>
+          <span>No. {position(item.slug)}</span>
           <span className="w-8 h-px" style={{ background: item.accent }} />
           <span className="text-muted-2">{item.readTime}</span>
         </div>
@@ -99,7 +103,7 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
                 className="rellink flex items-center gap-[clamp(14px,2.6vw,24px)] py-[clamp(16px,2.4vw,24px)] border-t border-hairline cursor-pointer"
               >
                 <div className="flex-none font-display font-black text-[clamp(18px,2vw,24px)] text-ink min-w-[2.2ch] leading-none tabular-nums">
-                  {String(o.order).padStart(2, "0")}
+                  {position(o.slug)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-ui text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">

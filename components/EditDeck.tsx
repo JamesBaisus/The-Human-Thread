@@ -71,7 +71,7 @@ export default function EditDeck({ items, total }: { items: EditItem[]; total: n
               className="font-ui text-[9.5px] font-black tracking-[.24em] uppercase mb-[7px]"
               style={{ color: current.accent }}
             >
-              {String(current.order).padStart(2, "0")} · {current.kicker}
+              {String(active + 1).padStart(2, "0")} · {current.kicker}
             </div>
             <div key={current.slug} className="editcover-readout">
               <div className="font-display font-black text-[clamp(21px,2.1vw,28px)] leading-[1.14] tracking-[-.01em] text-ink">
@@ -84,25 +84,43 @@ export default function EditDeck({ items, total }: { items: EditItem[]; total: n
           </div>
         </div>
 
-        {/* Desktop: the fan. */}
+        {/* Desktop: the fan.
+
+            The covers are visuals only. Overlapping rotated rectangles make
+            terrible targets — a middle card exposed barely a fifth of itself,
+            and nothing at all across its waist — so pointer handling lives in
+            an even row of invisible columns laid over the top instead. Each
+            card gets the same generous, stationary target, and the lift
+            animation can move the artwork freely without stealing the cursor
+            from under itself. */}
         <div
           data-reveal="scale"
           className="editfan relative h-[clamp(360px,34vw,470px)] max-[900px]:hidden"
           onMouseLeave={() => setActive(front)}
         >
           {items.map((item, i) => (
-            <Link
+            <span
               key={item.slug}
-              href={`/edit/${item.slug}`}
-              aria-label={`${item.title} — ${item.kicker}`}
-              className="editfan-slot"
+              className={`editfan-slot${active === i ? " is-up" : ""}`}
               style={{ ["--a" as string]: `${angleOf(i)}deg`, zIndex: active === i ? 40 : 10 + i }}
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
+              aria-hidden="true"
             >
               <Cover item={item} eager={i < 3} />
-            </Link>
+            </span>
           ))}
+
+          <div className="editfan-hits">
+            {items.map((item, i) => (
+              <Link
+                key={item.slug}
+                href={`/edit/${item.slug}`}
+                aria-label={`${item.title} — ${item.kicker}`}
+                className="editfan-hit"
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Narrow screens: the same covers, dealt into a row you can swipe. */}

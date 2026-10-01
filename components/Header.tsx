@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Wordmark from "@/components/Wordmark";
 
 export type DrawerLink = { label: string; href: string };
 export type DrawerGroup = { header: string | null; links: DrawerLink[] };
@@ -29,13 +30,8 @@ export default function Header({
               <span className="block h-[1.6px] w-6 bg-ink" />
               <span className="block h-[1.6px] w-6 bg-ink" />
             </button>
-            <Link href="/#top" className="block leading-[.86]">
-              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-ink">
-                THE HUMAN THREAD
-              </div>
-              <div className="font-ui text-[8.5px] font-black tracking-[.44em] text-muted mt-1 pl-[2px]">
-                JOURNAL · AE
-              </div>
+            <Link href="/#top" aria-label="The Human Thread_AE" className="block">
+              <Wordmark className="text-[clamp(23px,3.1vw,38px)]" />
             </Link>
           </div>
           <div className="flex items-center gap-[clamp(10px,1.6vw,20px)] flex-none">
@@ -65,11 +61,8 @@ export default function Header({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-[clamp(26px,3.4vw,40px)]">
-              <div className="leading-[.86]">
-                <div className="font-logo font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
-                <div className="font-ui text-[8px] font-black tracking-[.4em] text-muted-2 mt-1">
-                  JOURNAL · AE
-                </div>
+              <div>
+                <Wordmark className="text-[26px]" />
               </div>
               <button
                 onClick={() => setOpen(false)}

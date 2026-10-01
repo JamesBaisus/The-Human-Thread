@@ -18,8 +18,9 @@ export const site = {
   /** Exactly one article drives the hero. */
   featuredSlug: "alberto-gianfreda",
 
-  /** The line set between the rules under the landing masthead. */
-  mastheadWords: ["People", "Culture", "Art", "Fashion", "Community"],
+  /** What the journal covers. Set between the rules under the landing
+   *  masthead, and carried across the moving band further down. */
+  taxonomy: ["News", "People", "Culture", "Art", "Fashion", "Community"],
 
   /** How many Edit pieces are dealt into the fanned deck; the rest wait in the
    *  THT Edit section, which always holds the full set. */
@@ -117,17 +118,6 @@ export const site = {
     title: "Inside the Issue",
     sub: "Photo stories from the issue. Open one to turn through the full spread.",
   },
-
-  /** "Featured in this issue" marquee names. */
-  marqueeNames: [
-    "Nathalya Rai",
-    "Ruben",
-    "BTS",
-    "Vikki Feltham",
-    "Noj Barker",
-    "Hiba Osman",
-    "Caroline Labouchere",
-  ],
 
   aboutBody: [
     "The Human Thread_AE is an independent digital journal shaped by stories, culture, identity, and the quiet power of human experience.",

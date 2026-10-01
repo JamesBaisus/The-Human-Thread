@@ -2,7 +2,6 @@ import Link from "next/link";
 import { site } from "@/content/site";
 import { getCarouselFeatures, getCategorySections, getDeckEditItems, getEditItems, getFeatured, getLatest, getPosters } from "@/lib/content";
 import Hero from "@/components/Hero";
-import Masthead from "@/components/Masthead";
 import Carousel from "@/components/Carousel";
 import EditDeck from "@/components/EditDeck";
 import Marquee from "@/components/Marquee";
@@ -23,8 +22,6 @@ export default async function Home() {
 
   return (
     <div className="pg relative">
-      <Masthead />
-
       <Hero featured={featured} latest={latest} />
 
       <EditDeck items={deckItems} total={allEdits.length} />

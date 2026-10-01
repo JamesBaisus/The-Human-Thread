@@ -174,7 +174,16 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
-.marquee-track { display: inline-block; animation: marquee 42s linear infinite; will-change: transform; }
+.marquee-track {
+  display: inline-block;
+  /* one set travels per cycle, however many sets the track carries */
+  animation: marquee-run 42s linear infinite;
+  will-change: transform;
+}
+@keyframes marquee-run {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% / var(--copies, 2))); }
+}
 .marquee:hover .marquee-track { animation-play-state: paused; }
 .mq {
   display: inline-block;
@@ -269,15 +278,18 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 
 /* The mark. One font-size drives it; the parts scale from that. */
 .wordmark {
-  display: inline-flex;
-  align-items: flex-start;
+  display: inline-block;
   font-family: var(--font-logo);
+  color: var(--color-ink);
+  line-height: 0.95;
+  white-space: nowrap;
+}
+.wordmark-line {
+  display: flex;
+  align-items: flex-start;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.012em;
-  line-height: 0.95;
-  white-space: nowrap;
-  color: var(--color-ink);
 }
 .wordmark-name { font: inherit; }
 /* rides high beside the H, the way it sits over the counter on the printed
@@ -303,6 +315,36 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   align-self: flex-end;
   margin-bottom: 0.12em;
   margin-left: 0.06em;
+}
+.wordmark-rule {
+  display: block;
+  height: 1px;
+  background: var(--color-ink);
+  opacity: 0.7;
+  margin-top: 0.1em;
+}
+.wordmark-tax {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: 0.2em;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.75em 0 0.7em;
+  text-indent: 0.15em;
+}
+.wordmark-tax i {
+  font-style: normal;
+  opacity: 0.45;
+  margin: 0 0.72em;
+}
+/* a phone cannot carry six words across the width of the mark */
+@media (max-width: 900px) {
+  .wordmark-rule,
+  .wordmark-tax { display: none; }
 }
 
 /* The letter, drifting sideways on its own */

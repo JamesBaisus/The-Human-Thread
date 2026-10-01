@@ -14,6 +14,13 @@ function Track({ hidden = false }: { hidden?: boolean }) {
   );
 }
 
+/**
+ * Enough copies that the band still spans the widest screen after one set has
+ * scrolled past. Six short words make a set about 730px wide, so two copies
+ * left the track narrower than the viewport and the words bunched to one side.
+ */
+const COPIES = 8;
+
 export default function Marquee() {
   return (
     <>
@@ -23,9 +30,10 @@ export default function Marquee() {
         </div>
       </div>
       <div className="marquee pt-[clamp(6px,1vw,12px)] pb-[clamp(18px,2.4vw,28px)] border-b border-hairline">
-        <div className="marquee-track">
-          <Track />
-          <Track hidden />
+        <div className="marquee-track" style={{ ["--copies" as string]: COPIES }}>
+          {Array.from({ length: COPIES }, (_, i) => (
+            <Track key={i} hidden={i > 0} />
+          ))}
         </div>
       </div>
     </>

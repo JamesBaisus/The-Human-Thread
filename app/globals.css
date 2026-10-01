@@ -327,7 +327,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   display: flex;
   justify-content: center;
   align-items: baseline;
-  font-size: 0.2em;
+  font-size: max(0.2em, 7px);
   font-weight: 400;
   font-style: normal;
   letter-spacing: 0.15em;
@@ -341,8 +341,8 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   opacity: 0.45;
   margin: 0 0.72em;
 }
-/* a phone cannot carry six words across the width of the mark */
-@media (max-width: 900px) {
+/* only drop it where the header has no room left for the line at all */
+@media (max-width: 430px) {
   .wordmark-rule,
   .wordmark-tax { display: none; }
 }

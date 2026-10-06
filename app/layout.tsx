@@ -10,21 +10,18 @@ import Effects from "@/components/Effects";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
 
-// One family across the whole journal, in the two weights it is set in:
-// Regular for reading, Black for display and the uppercase labels. Real
-// italics are loaded so the decks and pull quotes are not faux-obliqued.
 // The wordmark keeps its original face. Black only — it is the one weight the
 // lockup is set in, so this costs a single font file.
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  // 900 upright for the wordmark, 900 italic for the landing masthead, and 400
-  // upright for the small caps that sit around it
-  weight: ["400", "900"],
-  style: ["normal", "italic"],
+  weight: ["900"],
   variable: "--font-pf",
   display: "swap",
 });
 
+// One family across the whole journal, in the two weights it is set in:
+// Regular for reading, Black for display and the uppercase labels. Real
+// italics are loaded so the decks and pull quotes are not faux-obliqued.
 const sourceSans = Source_Sans_3({
   subsets: ["latin"],
   style: ["normal", "italic"],

@@ -164,7 +164,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <section key={i} data-reveal="rise" className="py-[clamp(14px,2.4vw,26px)]">
                   {sec.heading && (
                     <h3
-                      className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-ink mb-4 pt-[clamp(14px,2vw,20px)] inline-block border-t-2"
+                      className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-headline mb-4 pt-[clamp(14px,2vw,20px)] inline-block border-t-2"
                       style={{ borderTopColor: article.accent }}
                     >
                       {sec.heading}
@@ -353,7 +353,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
                     {a.category}
                   </span>
-                  <h3 className="font-display font-black text-[19px] leading-[1.14] mt-2 mb-[3px] text-ink">
+                  <h3 className="font-display font-black text-[19px] leading-[1.14] mt-2 mb-[3px] text-headline">
                     <SimpleAmp text={a.title} />
                   </h3>
                   <p className="font-body text-[12.5px] leading-[1.4] text-muted">

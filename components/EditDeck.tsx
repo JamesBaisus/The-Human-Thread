@@ -49,7 +49,7 @@ export default function EditDeck({ items, total }: { items: EditItem[]; total: n
           <div className="font-ui text-[11px] font-black tracking-[.28em] uppercase text-muted mb-3">
             The Edit
           </div>
-          <h2 className="font-display font-black text-[clamp(32px,4.2vw,54px)] leading-[1.03] tracking-[-.02em] text-ink">
+          <h2 className="font-display font-black text-[clamp(32px,4.2vw,54px)] leading-[1.03] tracking-[-.02em] text-headline">
             THT Edit
           </h2>
           <p className="font-body text-[clamp(14.5px,1.2vw,16px)] leading-[1.6] text-body-1 mt-[14px] max-w-[46ch]">

@@ -37,7 +37,7 @@ export default function LegalDoc({
         <div className="border-t border-hairline">
           {sections.map((s, i) => (
             <section key={i} data-reveal="" className="py-[clamp(18px,2.6vw,30px)] border-b border-ph">
-              <h2 className="font-ui font-black text-[clamp(11px,1vw,12.5px)] tracking-[.18em] uppercase text-ink mb-[14px]">
+              <h2 className="font-ui font-black text-[clamp(11px,1vw,12.5px)] tracking-[.18em] uppercase text-headline mb-[14px]">
                 {String(i + 1).padStart(2, "0")} · {s.h}
               </h2>
               {s.ps.map((p, k) => (

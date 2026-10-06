@@ -31,7 +31,7 @@ export default function Header({
               <span className="block h-[1.6px] w-6 bg-ink" />
             </button>
             <Link href="/#top" className="block leading-[.86]">
-              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-accent">
+              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-headline">
                 THE HUMAN THREAD
               </div>
               <div className="masthead-line mt-[5px]">
@@ -72,7 +72,7 @@ export default function Header({
           >
             <div className="flex items-start justify-between mb-[clamp(26px,3.4vw,40px)]">
               <div className="leading-[.86]">
-                <div className="font-logo font-black text-[17px] tracking-[.005em] text-accent">THE HUMAN THREAD</div>
+                <div className="font-logo font-black text-[17px] tracking-[.005em] text-headline">THE HUMAN THREAD</div>
                 <div className="masthead-line masthead-line-sm mt-[5px]">
                   {site.taxonomy.map((w, i) => (
                     <span key={w}>

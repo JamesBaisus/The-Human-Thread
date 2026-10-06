@@ -30,7 +30,7 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
           </span>
           <h1
             data-reveal=""
-            className="font-display font-black text-[clamp(28px,3.1vw,42px)] leading-[1.06] tracking-[-.005em] mt-[14px] text-ink [text-wrap:balance] max-w-[14ch]"
+            className="font-display font-black text-[clamp(28px,3.1vw,42px)] leading-[1.06] tracking-[-.005em] mt-[14px] text-headline [text-wrap:balance] max-w-[14ch]"
           >
             <SimpleAmp text={featured.title} />
           </h1>
@@ -55,7 +55,7 @@ export default function Hero({ featured, latest }: { featured: Article; latest: 
                 <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
                   {a.category}
                 </span>
-                <h3 className="font-display font-black text-[20px] leading-[1.16] mt-[10px] text-ink">
+                <h3 className="font-display font-black text-[20px] leading-[1.16] mt-[10px] text-headline">
                   <SimpleAmp text={a.title} />
                 </h3>
               </div>

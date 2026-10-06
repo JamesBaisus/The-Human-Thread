@@ -22,6 +22,7 @@
   --color-hairline: #e7dcd1;
   --color-line-2: #d9cabc;
   --color-ondark: #faf6f0;
+  --color-headline: #49343e;
   --color-blush: #ebd2ce;
   --color-ivory: #faf6f0;
   --color-accent: var(--accent);
@@ -32,6 +33,14 @@
   /* the same burgundy, for shadows and washes that need it with alpha */
   --accent-rgb: 116, 28, 53;
   --ink-rgb: 36, 30, 32;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    color: var(--color-headline);
+  }
 }
 
 html {

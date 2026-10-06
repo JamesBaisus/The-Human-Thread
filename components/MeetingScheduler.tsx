@@ -128,7 +128,7 @@ export default function MeetingScheduler() {
           <div className="font-ui text-[10px] font-black tracking-[.28em] uppercase text-ink mb-[14px]">
             Editorial meetings
           </div>
-          <h2 className="font-display font-black text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-ink mb-5">
+          <h2 className="font-display font-black text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-headline mb-5">
             A conversation with the editors
           </h2>
           <ul className="flex flex-col gap-[10px] font-ui text-[11px] font-black tracking-[.16em] uppercase text-body-2">

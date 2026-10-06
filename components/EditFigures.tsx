@@ -133,7 +133,7 @@ export default function EditFigures({
           <section key={i} data-reveal="rise" className={i > 0 ? "pt-[clamp(10px,2vw,20px)]" : ""}>
             {sec.heading && (
               <h2
-                className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-ink mb-4 pt-[clamp(12px,2vw,20px)] inline-block border-t-2"
+                className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-headline mb-4 pt-[clamp(12px,2vw,20px)] inline-block border-t-2"
                 style={{ borderTopColor: accent }}
               >
                 {sec.heading}

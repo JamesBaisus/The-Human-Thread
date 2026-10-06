@@ -45,7 +45,7 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
       <h3
         className={`font-display font-black ${
           large ? "text-[clamp(23px,2.4vw,30px)] leading-[1.05]" : "text-[clamp(22px,2.3vw,28px)] leading-[1.06]"
-        } mb-2 text-ink`}
+        } mb-2 text-headline`}
       >
         <SimpleAmp text={card.title} />
       </h3>

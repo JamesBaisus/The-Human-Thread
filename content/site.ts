@@ -105,10 +105,10 @@ export const site = {
    * or to the filtered catalogue if it has no articles yet.
    */
   nav: [
-    { header: null, items: ["Home", "THT Edit"] },
-    { header: "Articles", items: ["Human Stories", "Fashion", "Art", "Lifestyle"] },
-    { header: "The Cover Gallery", items: ["Gallery"] },
-    { header: null, items: ["About"] },
+    // the order asked for; Gallery sits among the categories now, so the old
+    // "Articles" / "The Cover Gallery" group headers no longer describe it
+    { header: null, items: ["Human Stories", "Lifestyle", "Fashion", "Gallery", "Art", "THT Edit"] },
+    { header: null, items: ["Home", "About"] },
   ],
 
   /** Editorial band header. The editorials themselves live in

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { site } from "@/content/site";
 
 export type DrawerLink = { label: string; href: string };
 export type DrawerGroup = { header: string | null; links: DrawerLink[] };
@@ -30,11 +31,16 @@ export default function Header({
               <span className="block h-[1.6px] w-6 bg-ink" />
             </button>
             <Link href="/#top" className="block leading-[.86]">
-              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-ink">
+              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-accent">
                 THE HUMAN THREAD
               </div>
-              <div className="font-ui text-[8.5px] font-black tracking-[.44em] text-muted mt-1 pl-[2px]">
-                JOURNAL · AE
+              <div className="masthead-line mt-[5px]">
+                {site.taxonomy.map((w, i) => (
+                  <span key={w}>
+                    {i > 0 && <i>·</i>}
+                    {w}
+                  </span>
+                ))}
               </div>
             </Link>
           </div>
@@ -61,14 +67,19 @@ export default function Header({
           onClick={() => setOpen(false)}
         >
           <aside
-            className="navdrawer absolute left-0 top-0 h-full w-[min(330px,84vw)] bg-white shadow-[24px_0_60px_-30px_rgba(20,18,16,.5)] flex flex-col p-[clamp(24px,3vw,34px)]"
+            className="navdrawer absolute left-0 top-0 h-full w-[min(330px,84vw)] bg-ivory shadow-[24px_0_60px_-30px_rgba(20,18,16,.5)] flex flex-col p-[clamp(24px,3vw,34px)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-[clamp(26px,3.4vw,40px)]">
               <div className="leading-[.86]">
-                <div className="font-logo font-black text-[17px] tracking-[.005em] text-ink">THE HUMAN THREAD</div>
-                <div className="font-ui text-[8px] font-black tracking-[.4em] text-muted-2 mt-1">
-                  JOURNAL · AE
+                <div className="font-logo font-black text-[17px] tracking-[.005em] text-accent">THE HUMAN THREAD</div>
+                <div className="masthead-line masthead-line-sm mt-[5px]">
+                  {site.taxonomy.map((w, i) => (
+                    <span key={w}>
+                      {i > 0 && <i>·</i>}
+                      {w}
+                    </span>
+                  ))}
                 </div>
               </div>
               <button

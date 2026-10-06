@@ -68,7 +68,7 @@ export default function MeetingScheduler() {
         )}
         <Link
           href="/#top"
-          className="pillbtn inline-block cursor-pointer bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[14px] px-[30px] rounded-[2px] mt-3"
+          className="pillbtn inline-block cursor-pointer bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[14px] px-[30px] rounded-[2px] mt-3"
         >
           Back to the issue
         </Link>
@@ -208,7 +208,7 @@ export default function MeetingScheduler() {
                   onClick={() => pickDate(date)}
                   className={`aspect-square rounded-[2px] font-ui text-[13px] transition-colors cursor-pointer ${
                     selected
-                      ? "bg-ink text-ondark font-black"
+                      ? "bg-accent text-ondark font-black"
                       : disabled
                         ? "text-[#c9c5bd] cursor-default"
                         : "bg-soft text-ink font-black hover:bg-hairline"
@@ -241,7 +241,7 @@ export default function MeetingScheduler() {
                       busy
                         ? "bg-soft text-muted-2 line-through cursor-default"
                         : selTime === t
-                          ? "bg-ink text-ondark cursor-pointer"
+                          ? "bg-accent text-ondark cursor-pointer"
                           : "bg-soft text-ink hover:bg-hairline cursor-pointer"
                     }`}
                   >
@@ -307,7 +307,7 @@ export default function MeetingScheduler() {
             <button
               type="submit"
               disabled={submitting}
-              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              className="pillbtn cursor-pointer border-none bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
             >
               {submitting ? "Arranging…" : "Confirm meeting"}
             </button>

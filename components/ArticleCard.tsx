@@ -33,7 +33,7 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
       </div>
       <div className={`flex items-center gap-[10px] ${large ? "mt-4" : "mt-[15px]"} mb-[9px]`}>
         {card.latest && (
-          <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-ondark bg-ink rounded-[2px] py-1 px-2">
+          <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-accent bg-blush rounded-[2px] py-1 px-2">
             Latest
           </span>
         )}

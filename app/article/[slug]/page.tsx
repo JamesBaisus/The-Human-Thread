@@ -317,7 +317,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <aside className="sticky top-[132px] max-[780px]:static">
             <div className="mb-[30px]">
               <h4 className="font-display font-black text-[24px] mb-[14px] text-ink">Follow Us</h4>
-              <div className="bg-soft rounded-[2px] px-4 py-5 grid grid-cols-2 gap-x-4 gap-y-3">
+              <div className="bg-blush rounded-[2px] px-4 py-5 grid grid-cols-2 gap-x-4 gap-y-3">
                 {site.socials.map((s) => (
                   <a
                     key={s.label}

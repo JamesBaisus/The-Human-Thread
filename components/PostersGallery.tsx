@@ -130,7 +130,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
             </div>
             <div className="igpanel bg-[#141414] text-[#ededed] flex flex-col max-h-[90vh]">
               <div className="flex items-center gap-3 py-4 px-[18px] border-b border-[rgba(255,255,255,.1)]">
-                <div className="flex-none w-[38px] h-[38px] rounded-full bg-ink flex items-center justify-center font-display font-black text-[14px] text-white">
+                <div className="flex-none w-[38px] h-[38px] rounded-full bg-accent flex items-center justify-center font-display font-black text-[14px] text-white">
                   T
                 </div>
                 <div className="flex-1 min-w-0">

@@ -30,8 +30,8 @@ export default function CatalogueClient({
                 onClick={() => setFilter(c)}
                 className="chip cursor-pointer font-ui text-[10.5px] font-black tracking-[.16em] uppercase py-[9px] px-[15px] rounded-[2px] border"
                 style={{
-                  borderColor: active ? "#1c1a17" : "#e3e3e3",
-                  background: active ? "#1c1a17" : "transparent",
+                  borderColor: active ? "var(--accent)" : "var(--color-hairline)",
+                  background: active ? "var(--accent)" : "transparent",
                   color: active ? "#f5f5f5" : "#4a463f",
                 }}
               >

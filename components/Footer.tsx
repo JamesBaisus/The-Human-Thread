@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="border-t border-hairline py-[clamp(34px,4vw,54px)] px-[clamp(18px,4vw,54px)]">
       <div className="max-w-[1280px] mx-auto flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <div className="font-logo font-black text-[clamp(22px,2.4vw,30px)] tracking-[.005em] text-ink">
+          <div className="font-logo font-black text-[clamp(22px,2.4vw,30px)] tracking-[.005em] text-accent">
             THE HUMAN THREAD
           </div>
           <div className="font-ui text-[9px] font-black tracking-[.4em] text-muted mt-[6px]">JOURNAL · AE</div>

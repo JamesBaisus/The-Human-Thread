@@ -513,7 +513,7 @@ export default function AdminPanel() {
   const label = "block font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-body-2 mb-3";
   const tabBtn = (active: boolean) =>
     `cursor-pointer font-ui text-[10.5px] font-black tracking-[.16em] uppercase py-[9px] px-[15px] rounded-[2px] border transition-colors ${
-      active ? "bg-ink text-ondark border-ink" : "bg-transparent text-body-2 border-hairline hover:border-ink"
+      active ? "bg-accent text-ondark border-accent" : "bg-transparent text-body-2 border-hairline hover:border-accent"
     }`;
 
   if (state === "done" || state === "demo") {
@@ -537,7 +537,7 @@ export default function AdminPanel() {
         </p>
         <button
           onClick={() => { doneKind === "poster" ? resetPoster() : doneKind === "editorial" ? resetEditorial() : resetForm(); setState("idle"); }}
-          className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[13px] px-[26px] rounded-[2px]"
+          className="pillbtn cursor-pointer border-none bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[13px] px-[26px] rounded-[2px]"
         >
           Back to the editor
         </button>
@@ -603,7 +603,7 @@ export default function AdminPanel() {
                 <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{a.title}</div>
                 <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {a.name} · {a.category} · {a.date}
-                  {a.featured && <span className="ml-2 bg-ink text-ondark rounded-[2px] px-[6px] py-[2px]">Featured</span>}
+                  {a.featured && <span className="ml-2 bg-accent text-ondark rounded-[2px] px-[6px] py-[2px]">Featured</span>}
                   {a.hidden && <span className="ml-2 border border-hairline text-muted rounded-[2px] px-[6px] py-[2px]">Hidden</span>}
                 </div>
               </div>
@@ -843,7 +843,7 @@ export default function AdminPanel() {
           </div>
 
           <label className="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" checked={xInDeck} onChange={(e) => setXInDeck(e.target.checked)} className="w-4 h-4 accent-[#1c1a17]" />
+            <input type="checkbox" checked={xInDeck} onChange={(e) => setXInDeck(e.target.checked)} className="w-4 h-4 accent-[var(--accent)]" />
             <span className="font-ui text-[11px] tracking-[.14em] uppercase text-ink">Show in the deck</span>
             <span className="font-ui text-[10px] tracking-[.1em] uppercase text-muted-2">
               It joins the THT Edit section either way
@@ -863,7 +863,7 @@ export default function AdminPanel() {
               <button
                 type="submit"
                 disabled={state === "busy"}
-                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+                className="pillbtn cursor-pointer border-none bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
               >
                 {state === "busy" ? "Working" : editingEditSlug ? "Save changes" : "Add to THT Edit"}
               </button>
@@ -940,7 +940,7 @@ export default function AdminPanel() {
               <button
                 type="submit"
                 disabled={state === "busy"}
-                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+                className="pillbtn cursor-pointer border-none bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
               >
                 {state === "busy" ? "Working…" : editingPosterSlug ? "Save changes" : "Add poster"}
               </button>
@@ -991,7 +991,7 @@ export default function AdminPanel() {
               <button
                 type="submit"
                 disabled={state === "busy"}
-                className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+                className="pillbtn cursor-pointer border-none bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
               >
                 {state === "busy" ? "Working…" : editingEditorialSlug ? "Save changes" : "Add editorial"}
               </button>
@@ -1069,7 +1069,7 @@ export default function AdminPanel() {
           </div>
 
           <label className="flex items-center gap-3 cursor-pointer select-none">
-            <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="w-4 h-4 accent-[#1c1a17]" />
+            <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="w-4 h-4 accent-[var(--accent)]" />
             <span className="font-ui text-[10.5px] font-black tracking-[.2em] uppercase text-ink">
               Featured — this article takes over the homepage hero
             </span>
@@ -1082,7 +1082,7 @@ export default function AdminPanel() {
             <button
               type="submit"
               disabled={state === "busy"}
-              className="pillbtn cursor-pointer border-none bg-ink text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
+              className="pillbtn cursor-pointer border-none bg-accent text-ondark font-ui text-[11px] font-black tracking-[.2em] uppercase py-[15px] px-9 rounded-[2px] disabled:opacity-60 disabled:cursor-default"
             >
               {state === "busy" ? "Working…" : editingSlug ? "Save changes" : "Publish article"}
             </button>

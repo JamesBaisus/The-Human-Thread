@@ -8,41 +8,48 @@
   /* the masthead only — the rest of the journal is the sans above */
   --font-logo: var(--font-pf), "Playfair Display", Georgia, serif;
 
-  --color-ink: #1c1a17;
-  --color-ink-2: #231f1b;
-  --color-body-1: #3a352f;
-  --color-body-2: #4a463f;
-  --color-muted: #6d6a62;
-  --color-muted-2: #9a9a97;
-  --color-soft: #f4f4f3;
-  --color-fillc: #eeeeee;
-  --color-ph: #ececec;
-  --color-hairline: #e3e3e3;
-  --color-line-2: #d6d6d6;
-  --color-ondark: #f5f5f5;
+  /* Burgundy signs the journal, ivory carries it, charcoal reads, and blush
+     is kept back for the few places a feature needs lifting off the page. */
+  --color-ink: #241e20;
+  --color-ink-2: #2e2629;
+  --color-body-1: #453a3d;
+  --color-body-2: #564a4d;
+  --color-muted: #6e6163;
+  --color-muted-2: #7a6b6e;
+  --color-soft: #f3ece3;
+  --color-fillc: #efe5dc;
+  --color-ph: #ece2d8;
+  --color-hairline: #e7dcd1;
+  --color-line-2: #d9cabc;
+  --color-ondark: #faf6f0;
+  --color-blush: #ebd2ce;
+  --color-ivory: #faf6f0;
   --color-accent: var(--accent);
 }
 
 :root {
-  --accent: #9a6b3f;
+  --accent: #741c35;
+  /* the same burgundy, for shadows and washes that need it with alpha */
+  --accent-rgb: 116, 28, 53;
+  --ink-rgb: 36, 30, 32;
 }
 
 html {
-  background: #ffffff;
+  background: #faf6f0;
   scroll-behavior: smooth;
 }
 
 body {
-  background: #ffffff;
+  background: #faf6f0;
   min-height: 100vh;
-  color: #1c1a17;
+  color: #241e20;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: #e8e8e8;
-  color: #1c1a17;
+  background: var(--color-blush);
+  color: #241e20;
 }
 
 a {
@@ -57,7 +64,7 @@ img {
 
 input::placeholder,
 textarea::placeholder {
-  color: #9a9a97;
+  color: var(--color-muted-2);
 }
 
 @keyframes fadeUp {
@@ -93,7 +100,7 @@ textarea::placeholder {
 
 /* sticky header */
 header.site-header { transition: box-shadow 0.4s, background 0.4s; }
-header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5); }
+header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb), 0.42); }
 .scrollbar {
   position: fixed;
   top: 0;
@@ -141,29 +148,29 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 .card:hover .revealline { width: 44px; }
 .revealline { transition: width 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .latestrow { transition: background 0.35s, border-color 0.35s; }
-.latestrow:hover { background: #f1f1f1; border-color: #d6d6d6; }
+.latestrow:hover { background: var(--color-soft); border-color: var(--color-line-2); }
 .latestrow:hover .media { transform: scale(1.07); }
 .herofeat:hover .heroimg .media { transform: scale(1.035); }
 
 /* buttons */
 .pillbtn { transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s; }
-.pillbtn:hover { background: #1c1a17; color: #f5f5f5; border-color: #1c1a17; }
+.pillbtn:hover { background: var(--accent); color: var(--color-ondark); border-color: var(--accent); }
 .inqbtn { transition: opacity 0.3s; }
 .inqbtn:hover { opacity: 0.5; }
 .viewall .arr { display: inline-block; transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .viewall:hover .arr { transform: translateX(7px); }
 .chip { transition: all 0.3s; }
-.chip:hover { border-color: #1c1a17 !important; }
-.darkband:hover .bandbtn { background: #f5f5f5; color: #1c1a17; border-color: #f5f5f5; }
+.chip:hover { border-color: var(--accent) !important; }
+.darkband:hover .bandbtn { background: var(--color-ondark); color: var(--accent); border-color: var(--color-ondark); }
 .bandbtn { transition: background 0.35s, color 0.35s, border-color 0.35s; }
 .carbtn { transition: background 0.3s ease, color 0.3s ease; }
-.carbtn:hover { background: #1c1a17; color: #f5f5f5; }
+.carbtn:hover { background: var(--accent); color: var(--color-ondark); }
 .modclose { transition: transform 0.3s, color 0.3s; }
-.modclose:hover { transform: rotate(90deg); color: #1c1a17; }
+.modclose:hover { transform: rotate(90deg); color: var(--accent); }
 
 /* related rows in the reader */
 .rellink { transition: padding-left 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.4s; }
-.rellink:hover { padding-left: 15px; background: rgba(28, 26, 23, 0.03); }
+.rellink:hover { padding-left: 15px; background: rgba(var(--accent-rgb), 0.05); }
 .rellink .relarrow { transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s; opacity: 0.35; }
 .rellink:hover .relarrow { transform: translateX(9px); opacity: 1; }
 
@@ -190,7 +197,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(20px, 2.4vw, 30px);
-  color: #4a463f;
+  color: var(--color-body-2);
 }
 .mq-dot {
   display: inline-block;
@@ -227,7 +234,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 
 /* Editorial catalogue cards — gentle lift on hover before the pop-up coverflow. */
 .cgcard > div:first-child { transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.5s ease; }
-.cgcard:hover > div:first-child { transform: translateY(-4px); box-shadow: 0 30px 60px -30px rgba(28, 26, 23, 0.62); }
+.cgcard:hover > div:first-child { transform: translateY(-4px); box-shadow: 0 30px 60px -30px rgba(var(--ink-rgb), 0.55); }
 @media (prefers-reduced-motion: reduce) { .cgcard:hover > div:first-child { transform: none; } }
 .igarrow {
   position: absolute;
@@ -249,7 +256,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   transition: background 0.3s, transform 0.3s;
   padding: 0 0 3px;
 }
-.igarrow:hover { background: #fff; transform: translateY(-50%) scale(1.09); }
+.igarrow:hover { background: var(--color-ivory); transform: translateY(-50%) scale(1.09); }
 @media (max-width: 760px) {
   .igviewer { grid-template-columns: 1fr !important; max-height: 94vh !important; }
   .igpanel { max-height: 42vh !important; }
@@ -260,20 +267,44 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
    so the surface reads as lacquer rather than flat matte. Only for full-width
    panels — buttons and chips keep the plain `bg-ink`. */
 .glossblack {
-  background-color: #08080a;
+  background-color: #150d10;
   background-image:
-    radial-gradient(128% 78% at 16% -22%, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.022) 40%, rgba(255, 255, 255, 0) 68%),
-    radial-gradient(88% 62% at 88% 118%, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(163deg, #17171c 0%, #101014 34%, #0a0a0d 68%, #060608 100%);
+    radial-gradient(128% 78% at 16% -22%, rgba(255, 245, 248, 0.085) 0%, rgba(255, 245, 248, 0.02) 40%, rgba(255, 255, 255, 0) 68%),
+    radial-gradient(88% 62% at 88% 118%, rgba(var(--accent-rgb), 0.3) 0%, rgba(255, 255, 255, 0) 62%),
+    linear-gradient(163deg, #2a1a20 0%, #1d1217 34%, #150d10 68%, #0d070a 100%);
 }
-/* a hairline of light along the top edge, the way polished black catches a room */
 .glossblack::before {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16) 22%, rgba(255, 255, 255, 0.16) 74%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 240, 244, 0.2) 22%, rgba(255, 240, 244, 0.2) 74%, transparent);
   pointer-events: none;
+}
+
+/* the line under the wordmark */
+.masthead-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  font-family: var(--font-ui);
+  font-size: 7.6px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--accent);
+  text-indent: 0.2em;
+}
+.masthead-line i {
+  font-style: normal;
+  opacity: 0.45;
+  margin: 0 0.6em;
+}
+.masthead-line-sm { font-size: 7px; letter-spacing: 0.16em; }
+@media (max-width: 430px) {
+  .masthead-line { font-size: 6.6px; letter-spacing: 0.12em; }
+  .masthead-line i { margin: 0 0.4em; }
 }
 
 /* The letter, drifting sideways on its own */
@@ -321,8 +352,8 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   border-radius: 3px;
   background: var(--color-ph);
   box-shadow:
-    0 0 0 1px rgba(28, 26, 23, 0.09),
-    0 18px 34px -18px rgba(28, 26, 23, 0.5);
+    0 0 0 1px rgba(var(--ink-rgb), 0.1),
+    0 18px 34px -18px rgba(var(--ink-rgb), 0.46);
   transition: box-shadow 0.4s;
 }
 
@@ -368,8 +399,8 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 }
 .editfan-slot.is-up .editcover {
   box-shadow:
-    0 0 0 1px rgba(28, 26, 23, 0.12),
-    0 34px 54px -22px rgba(28, 26, 23, 0.58);
+    0 0 0 1px rgba(var(--ink-rgb), 0.12),
+    0 34px 54px -22px rgba(var(--ink-rgb), 0.52);
 }
 /* the hovered cover's title, swapped in on the left */
 .editcover-readout { animation: fadeUp 0.42s ease both; }
@@ -408,8 +439,8 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   display: grid;
   place-items: center;
   cursor: pointer;
-  color: #1c1a17;
-  background: rgba(255, 255, 255, 0.82);
+  color: var(--accent);
+  background: rgba(250, 246, 240, 0.86);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   opacity: 0;
@@ -419,7 +450,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 }
 .film:hover .filmbtn,
 .film:focus-within .filmbtn { opacity: 1; transform: none; }
-.filmbtn:hover { background: #fff; }
+.filmbtn:hover { background: var(--color-ivory); }
 .filmcue {
   border: none;
   background: transparent;
@@ -427,14 +458,14 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   transition: opacity 0.5s ease;
 }
 .filmcue-dot {
-  color: #1c1a17;
-  background: rgba(255, 255, 255, 0.8);
+  color: var(--accent);
+  background: rgba(250, 246, 240, 0.85);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   padding-left: 3px;
   transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.3s;
 }
-.filmcue:hover .filmcue-dot { transform: scale(1.08); background: #fff; }
+.filmcue:hover .filmcue-dot { transform: scale(1.08); background: var(--color-ivory); }
 /* Touch has no hover — keep the controls visible there. */
 @media (hover: none) {
   .filmbtn { opacity: 1; transform: none; }
@@ -444,7 +475,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
 .inqfield {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #d6d6d6;
+  border-bottom: 1px solid var(--color-line-2);
   padding: 11px 2px;
   font-family: var(--font-body);
   font-size: 16px;
@@ -453,10 +484,10 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(20, 16, 14, 0.5
   width: 100%;
   transition: border-color 0.3s;
 }
-.inqfield:focus { border-color: #1c1a17; }
-.inqfield::placeholder { color: #a3a3a0; }
+.inqfield:focus { border-color: var(--accent); }
+.inqfield::placeholder { color: var(--color-muted-2); }
 .drop { transition: border-color 0.3s, background 0.3s, color 0.3s; }
-.drop:hover { background: #f1f1f1; }
+.drop:hover { background: var(--color-soft); }
 
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {

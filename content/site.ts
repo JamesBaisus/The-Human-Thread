@@ -90,13 +90,21 @@ export const site = {
 
   /** Fixed category display order; only categories with articles render. */
   categories: [
-    "Fashion",
-    "Culture",
-    "Art",
     "Human Stories",
     "Lifestyle",
+    "Fashion",
+    "Art",
+    "Culture",
     "Features",
   ],
+
+  /**
+   * The run of sections down the landing page. Names a category to place its
+   * row, or "Gallery" to place the posters. A category carrying articles but
+   * missing from this list still renders, after everything named here, so a
+   * new one cannot vanish by being forgotten.
+   */
+  landingOrder: ["Human Stories", "Lifestyle", "Fashion", "Gallery", "Art"],
 
   /**
    * Nav drawer groups, in display order. A group may carry a small label

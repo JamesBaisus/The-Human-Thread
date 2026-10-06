@@ -8,6 +8,7 @@ import Marquee from "@/components/Marquee";
 import CoverLetter from "@/components/CoverLetter";
 import PostersGallery from "@/components/PostersGallery";
 import ArticleCard from "@/components/ArticleCard";
+import type { CategorySection } from "@/lib/content";
 
 export default async function Home() {
   const [featured, latest, sections, posters, features, deckItems, allEdits] = await Promise.all([
@@ -20,6 +21,15 @@ export default async function Home() {
     getEditItems(),
   ]);
 
+  // The landing run: the named order first, then any category with articles
+  // that is not named, so adding one cannot drop it off the page silently.
+  const byName = new Map(sections.map((s) => [s.name, s]));
+  const named = site.landingOrder.filter((n) => n === "Gallery" || byName.has(n));
+  const landing: (CategorySection | "Gallery")[] = [
+    ...named.map((n) => (n === "Gallery" ? ("Gallery" as const) : byName.get(n)!)),
+    ...sections.filter((s) => !(site.landingOrder as readonly string[]).includes(s.name)),
+  ];
+
   return (
     <div className="pg relative">
       <Hero featured={featured} latest={latest} />
@@ -30,30 +40,31 @@ export default async function Home() {
 
       <Marquee />
 
-      <PostersGallery posters={posters} />
-
-      {sections.map((s) => (
+      {landing.map((block) =>
+        block === "Gallery" ? (
+          <PostersGallery key="gallery" posters={posters} />
+        ) : (
         <section
-          key={s.name}
-          id={s.anchor}
+          key={block.name}
+          id={block.anchor}
           className="scroll-mt-20 max-w-[1280px] mx-auto py-[clamp(30px,4vw,52px)] px-[clamp(18px,4vw,54px)]"
         >
           <div className="flex items-end justify-between gap-5 mb-[clamp(20px,2.6vw,32px)] border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
             <div data-reveal="left" className="flex items-baseline gap-4">
-              <h2 className="font-display font-black text-[clamp(30px,4vw,54px)] leading-none">{s.name}</h2>
+              <h2 className="font-display font-black text-[clamp(30px,4vw,54px)] leading-none">{block.name}</h2>
               <span className="font-ui text-[11px] tracking-[.14em] text-muted-2">
-                {s.articles.length === 1 ? "1 story" : `${s.articles.length} stories`}
+                {block.articles.length === 1 ? "1 story" : `${block.articles.length} stories`}
               </span>
             </div>
             <Link
-              href={`/catalogue?filter=${encodeURIComponent(s.name)}`}
+              href={`/catalogue?filter=${encodeURIComponent(block.name)}`}
               className="viewall cursor-pointer inline-flex items-center gap-2 font-ui text-[10px] font-black tracking-[.2em] uppercase text-muted"
             >
               View all <span className="arr">→</span>
             </Link>
           </div>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(min(258px,100%),1fr))] gap-[clamp(20px,2.2vw,34px)]">
-            {s.articles.map((a, i) => (
+            {block.articles.map((a, i) => (
               <ArticleCard
                 key={a.slug}
                 card={{
@@ -71,7 +82,8 @@ export default async function Home() {
             ))}
           </div>
         </section>
-      ))}
+        )
+      )}
 
       {allEdits.length > 0 && (
         <section

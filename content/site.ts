@@ -119,12 +119,15 @@ export const site = {
     sub: "Photo stories from the issue. Open one to turn through the full spread.",
   },
 
+  /** The line above the About copy, and the copy itself. */
+  aboutHeadline: "A global perspective. A human connection.",
+
   aboutBody: [
-    "The Human Thread_AE is an independent digital journal shaped by stories, culture, identity, and the quiet power of human experience.",
-    "Created in the UAE with a global editorial vision, the journal explores the people, places, brands, artists, and ideas that carry meaning beyond the surface. Through thoughtful features and refined visual storytelling, we look at fashion, art, culture, and community as reflections of something deeper: who we are, what we value, and how we are remembered.",
-    "At The Human Thread_AE, every story begins with a person. We are drawn to journeys of resilience, creativity, ambition, heritage, reinvention, and purpose: the moments that shape a life, a vision, or a legacy.",
-    "Our editorial voice is intimate yet elevated, emotional yet timeless. We do not chase noise. We follow substance.",
-    "From Dubai to the world, The Human Thread_AE exists to document the threads that connect us: the stories behind the faces, the meaning behind the work, and the humanity behind every expression.",
+    "The Human Thread_AE is an independent digital journal based in the UAE, bringing a human perspective to culture, art, fashion, and contemporary life.",
+    "Through thoughtful interviews, editorial features, and compelling photography, we explore the people and ideas shaping our world. Our stories reveal the vision behind a brand, the experience behind an artist's work, and the personal journey behind a public achievement.",
+    "We bring emerging voices and established figures into the same conversation, guided by curiosity, care, and respect for the experiences they share. Across our coverage, we explore how creativity, heritage, and identity influence the way we live and connect.",
+    "Rooted in the UAE, with an international outlook, The Human Thread_AE invites readers to discover new perspectives and look more closely at familiar ones.",
+    "At the heart of every story is the thread that connects us: our humanity.",
   ],
 
   values: [

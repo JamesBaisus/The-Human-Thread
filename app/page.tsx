@@ -120,8 +120,7 @@ export default async function Home() {
           data-reveal-delay="80"
           className="font-display font-black text-[clamp(34px,5.2vw,70px)] leading-[1.12] tracking-[-.01em] [text-wrap:balance]"
         >
-          A journal for what is <em className="font-black">seen</em>, and what deserves to be{" "}
-          <em className="font-black">understood</em>.
+          {site.aboutHeadline}
         </h2>
       </section>
       <section className="max-w-[680px] mx-auto pt-[clamp(18px,3vw,38px)] pb-[clamp(40px,5vw,60px)] px-[clamp(18px,4vw,40px)]">

@@ -66,6 +66,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const article = await getArticle(slug);
   if (!article) notFound();
 
+  // The reference keeps its article pages strictly black on white, so the rules
+  // and figure marks take the site accent rather than the per-article one. The
+  // `accent` field stays in the MDX: set this back to `rule` to have
+  // each piece signed in its own colour again.
+  const rule = site.accent;
+
   const sidebar = (await getArticles()).filter((a) => a.slug !== article.slug).slice(0, 4);
   const related = await getRelated(article.slug);
 
@@ -165,7 +171,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   {sec.heading && (
                     <h3
                       className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-headline mb-4 pt-[clamp(14px,2vw,20px)] inline-block border-t-2"
-                      style={{ borderTopColor: article.accent }}
+                      style={{ borderTopColor: rule }}
                     >
                       {sec.heading}
                     </h3>
@@ -185,7 +191,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                       <Frame
                         media={sec.images[0]}
                         alt={article.name}
-                        accent={article.accent}
+                        accent={rule}
                         sizes="(max-width: 780px) 100vw, 980px"
                       />
                       <figcaption className="flex items-center gap-4 mt-[14px]">
@@ -211,7 +217,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                           <Frame
                             media={im}
                             alt={article.name}
-                            accent={article.accent}
+                            accent={rule}
                             sizes="(max-width: 620px) 100vw, 340px"
                           />
                           <figcaption className="mt-3">
@@ -247,7 +253,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                           <Frame
                             media={im}
                             alt={article.name}
-                            accent={article.accent}
+                            accent={rule}
                             sizes="(max-width: 620px) 100vw, (max-width: 780px) 58vw, 500px"
                           />
                           <figcaption className="mt-3">
@@ -269,7 +275,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   {sec.pullQuote && (
                     <blockquote
                       className="mt-[clamp(20px,3vw,34px)] mb-[6px] pl-[26px] border-l-2"
-                      style={{ borderLeftColor: article.accent }}
+                      style={{ borderLeftColor: rule }}
                     >
                       <span className="font-display italic text-[clamp(24px,3vw,38px)] leading-[1.16] text-ink">
                         <SimpleAmp text={sec.pullQuote} />

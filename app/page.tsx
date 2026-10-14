@@ -1,25 +1,63 @@
-import Link from "next/link";
 import { site } from "@/content/site";
-import { getCarouselFeatures, getCategorySections, getDeckEditItems, getEditItems, getFeatured, getLatest, getPosters } from "@/lib/content";
-import Hero from "@/components/Hero";
+import {
+  getCarouselFeatures,
+  getCategorySections,
+  getDeckEditItems,
+  getEditItems,
+  getFeatured,
+  getLatest,
+  getPosters,
+} from "@/lib/content";
+import type { Article, CategorySection, EditItem } from "@/lib/content";
+import type { ArticleCardData } from "@/components/ArticleCard";
+import StoryBand from "@/components/StoryBand";
 import Carousel from "@/components/Carousel";
 import EditDeck from "@/components/EditDeck";
 import Marquee from "@/components/Marquee";
 import CoverLetter from "@/components/CoverLetter";
 import PostersGallery from "@/components/PostersGallery";
-import ArticleCard from "@/components/ArticleCard";
-import type { CategorySection } from "@/lib/content";
+
+const fromArticle = (a: Article): ArticleCardData => ({
+  slug: a.slug,
+  category: a.category,
+  name: a.name,
+  role: a.role,
+  title: a.title,
+  deck: a.deck,
+  cover: a.cover,
+  coverBlur: a.coverBlur,
+  latest: false,
+  date: a.date,
+});
+
+const fromEdit = (e: EditItem): ArticleCardData => ({
+  slug: e.slug,
+  href: `/edit/${e.slug}`,
+  category: e.kicker,
+  name: "",
+  role: "",
+  title: e.title,
+  deck: e.deck,
+  cover: e.cover,
+  coverBlur: e.coverBlur,
+  latest: false,
+  date: e.date,
+});
 
 export default async function Home() {
   const [featured, latest, sections, posters, features, deckItems, allEdits] = await Promise.all([
     getFeatured(),
-    getLatest(5),
+    getLatest(10),
     getCategorySections(),
     getPosters(),
     getCarouselFeatures(),
     getDeckEditItems(),
     getEditItems(),
   ]);
+
+  // Top Stories leads on the featured piece, then the rest of the issue by
+  // date. The featured one is dropped from the run so it cannot appear twice.
+  const top = [featured, ...latest.filter((a) => a.slug !== featured.slug)].slice(0, 7).map(fromArticle);
 
   // The landing run: the named order first, then any category with articles
   // that is not named, so adding one cannot drop it off the page silently.
@@ -30,130 +68,69 @@ export default async function Home() {
     ...sections.filter((s) => !(site.landingOrder as readonly string[]).includes(s.name)),
   ];
 
+  // The reference alternates: a collage band, then a plain grid, and back.
+  // Counting only the category bands keeps that rhythm even when the gallery
+  // sits between two of them.
+  let bandIndex = 0;
+
   return (
     <div className="pg relative">
-      <Hero featured={featured} latest={latest} />
+      <StoryBand title="Top Stories" id="top" cards={top} collage priority />
+
+      {landing.map((block) => {
+        if (block === "Gallery") return <PostersGallery key="gallery" posters={posters} />;
+        const collage = bandIndex++ % 2 === 1;
+        return (
+          <StoryBand
+            key={block.name}
+            id={block.anchor}
+            title={block.name}
+            href={`/catalogue?filter=${encodeURIComponent(block.name)}`}
+            cards={block.articles.map(fromArticle)}
+            collage={collage}
+          />
+        );
+      })}
 
       <EditDeck items={deckItems} total={allEdits.length} />
+
+      {allEdits.length > 0 && (
+        <StoryBand id="cat-tht-edit" title="THT Edit" cards={allEdits.map(fromEdit)} />
+      )}
 
       <Carousel features={features} />
 
       <Marquee />
 
-      {landing.map((block) =>
-        block === "Gallery" ? (
-          <PostersGallery key="gallery" posters={posters} />
-        ) : (
-        <section
-          key={block.name}
-          id={block.anchor}
-          className="scroll-mt-20 max-w-[1280px] mx-auto py-[clamp(30px,4vw,52px)] px-[clamp(18px,4vw,54px)]"
-        >
-          <div className="flex items-end justify-between gap-5 mb-[clamp(20px,2.6vw,32px)] border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
-            <div data-reveal="left" className="flex items-baseline gap-4">
-              <h2 className="font-display font-black text-[clamp(28px,3.4vw,46px)] leading-none">{block.name}</h2>
-              <span className="font-ui text-[11px] tracking-[.14em] text-muted-2">
-                {block.articles.length === 1 ? "1 story" : `${block.articles.length} stories`}
-              </span>
-            </div>
-            <Link
-              href={`/catalogue?filter=${encodeURIComponent(block.name)}`}
-              className="viewall cursor-pointer inline-flex items-center gap-2 font-ui text-[10px] font-black tracking-[.2em] uppercase text-muted"
-            >
-              View all <span className="arr">→</span>
-            </Link>
-          </div>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(258px,100%),1fr))] gap-[clamp(20px,2.2vw,34px)]">
-            {block.articles.map((a, i) => (
-              <ArticleCard
-                key={a.slug}
-                card={{
-                  slug: a.slug,
-                  category: a.category,
-                  name: a.name,
-                  role: a.role,
-                  title: a.title,
-                  deck: a.deck,
-                  cover: a.cover,
-                  coverBlur: a.coverBlur,
-                  latest: i === 0,
-                  date: a.date,
-                }}
-              />
-            ))}
-          </div>
-        </section>
-        )
-      )}
-
-      {allEdits.length > 0 && (
-        <section
-          id="cat-tht-edit"
-          className="scroll-mt-20 max-w-[1280px] mx-auto py-[clamp(30px,4vw,52px)] px-[clamp(18px,4vw,54px)]"
-        >
-          <div className="flex items-end justify-between gap-5 mb-[clamp(20px,2.6vw,32px)] border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
-            <div data-reveal="left" className="flex items-baseline gap-4">
-              <h2 className="font-display font-black text-[clamp(30px,4vw,54px)] leading-none">THT Edit</h2>
-              <span className="font-ui text-[11px] tracking-[.14em] text-muted-2">
-                {allEdits.length === 1 ? "1 piece" : `${allEdits.length} pieces`}
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(258px,100%),1fr))] gap-[clamp(20px,2.2vw,34px)]">
-            {allEdits.map((e) => (
-              <ArticleCard
-                key={e.slug}
-                card={{
-                  slug: e.slug,
-                  href: `/edit/${e.slug}`,
-                  category: e.kicker,
-                  name: "",
-                  role: "",
-                  title: e.title,
-                  deck: e.deck,
-                  cover: e.cover,
-                  coverBlur: e.coverBlur,
-                  latest: false,
-                  date: e.date,
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-
       <section
         id="about"
-        className="scroll-mt-20 max-w-[1000px] mx-auto pt-[clamp(48px,8vw,110px)] pb-[clamp(20px,3vw,34px)] px-[clamp(18px,4vw,40px)] text-center"
+        className="scroll-mt-[120px] max-w-[1000px] mx-auto pt-[clamp(40px,6vw,86px)] pb-[clamp(18px,2.6vw,30px)] px-[clamp(18px,4vw,40px)] text-center"
       >
-        <div data-reveal="" className="font-ui text-[11px] font-black tracking-[.32em] uppercase text-muted mb-[26px]">
+        <div className="font-ui text-[11px] font-black tracking-[.32em] uppercase text-muted mb-[24px]">
           About the publication
         </div>
-        <h2
-          data-reveal=""
-          data-reveal-delay="80"
-          className="font-display font-black text-[clamp(34px,5.2vw,70px)] leading-[1.12] tracking-[-.01em] [text-wrap:balance]"
-        >
+        <h2 className="font-display font-black text-[clamp(30px,4.6vw,62px)] leading-[1.12] tracking-[-.01em] [text-wrap:balance]">
           {site.aboutHeadline}
         </h2>
       </section>
-      <section className="max-w-[680px] mx-auto pt-[clamp(18px,3vw,38px)] pb-[clamp(40px,5vw,60px)] px-[clamp(18px,4vw,40px)]">
+      <section className="max-w-[680px] mx-auto pt-[clamp(16px,2.4vw,32px)] pb-[clamp(36px,4.4vw,56px)] px-[clamp(18px,4vw,40px)]">
         {site.aboutBody.map((p, i) => (
-          <p key={i} data-reveal="" className="text-[clamp(17px,1.5vw,20px)] leading-[1.72] text-ink-2 mb-[26px]">
+          <p key={i} className="text-[clamp(17px,1.5vw,20px)] leading-[1.72] text-ink-2 mb-[26px]">
             {p}
           </p>
         ))}
       </section>
-      <section className="glossblack relative text-ondark py-[clamp(46px,6vw,84px)] px-[clamp(18px,4vw,54px)]">
+
+      <section className="glossblack relative text-ondark py-[clamp(42px,5.4vw,78px)] px-[clamp(18px,4vw,54px)]">
         <div className="max-w-[1280px] mx-auto">
           <div className="font-ui text-[11px] font-black tracking-[.28em] uppercase text-ondark mb-8">
             What we stand for
           </div>
           <div className="grid grid-cols-4 max-[820px]:grid-cols-2 max-[480px]:grid-cols-1 gap-[clamp(20px,2.4vw,40px)]">
             {site.values.map((v) => (
-              <div key={v.title} data-reveal="" className="border-t border-[rgba(245,245,245,.28)] pt-5">
+              <div key={v.title} className="border-t border-[rgba(255,255,255,.3)] pt-5">
                 <div className="font-display font-black text-[24px] mb-[10px]">{v.title}</div>
-                <p className="text-[15px] leading-[1.6] text-[rgba(245,245,245,.72)]">{v.text}</p>
+                <p className="text-[15px] leading-[1.6] text-[rgba(255,255,255,.74)]">{v.text}</p>
               </div>
             ))}
           </div>

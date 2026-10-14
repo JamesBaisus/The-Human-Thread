@@ -3,7 +3,7 @@
 
 export const site = {
   /** Default themeable accent. Options: #9a6b3f (bronze), #8f4b58 (plum), #5c6b57 (olive), #1c1a17 (near-black). */
-  accent: "#9a6b3f",
+  accent: "#000000",
 
   instagram: "https://www.instagram.com/thehumanthread_ae",
 

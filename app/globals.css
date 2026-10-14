@@ -8,31 +8,30 @@
   --font-ui: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
   --font-logo: var(--font-pf), "Playfair Display", Georgia, serif;
 
-  /* Burgundy signs the journal, ivory carries it, charcoal reads, and blush
-     is kept back for the few places a feature needs lifting off the page. */
-  --color-ink: #241e20;
-  --color-ink-2: #2e2629;
-  --color-body-1: #453a3d;
-  --color-body-2: #564a4d;
-  --color-muted: #6e6163;
-  --color-muted-2: #7a6b6e;
-  --color-soft: #f3ece3;
-  --color-fillc: #efe5dc;
-  --color-ph: #ece2d8;
-  --color-hairline: #e7dcd1;
-  --color-line-2: #d9cabc;
-  --color-ondark: #faf6f0;
-  --color-headline: #49343e;
-  --color-blush: #ebd2ce;
-  --color-ivory: #faf6f0;
+  /* The reference sets everything on white and lets the pictures carry the
+     colour: black text, grey furniture, hairlines just dark enough to find. */
+  --color-ink: #000000;
+  --color-ink-2: #121212;
+  --color-body-1: #222222;
+  --color-body-2: #333333;
+  --color-muted: #6b6b6b;
+  --color-muted-2: #767676;
+  --color-soft: #f6f6f6;
+  --color-fillc: #f2f2f2;
+  --color-ph: #ededed;
+  --color-hairline: #dcdcdc;
+  --color-line-2: #c9c9c9;
+  --color-ondark: #ffffff;
+  --color-headline: #000000;
+  --color-blush: #ededed;
+  --color-ivory: #ffffff;
   --color-accent: var(--accent);
 }
 
 :root {
-  --accent: #741c35;
-  /* the same burgundy, for shadows and washes that need it with alpha */
-  --accent-rgb: 116, 28, 53;
-  --ink-rgb: 36, 30, 32;
+  --accent: #000000;
+  --accent-rgb: 0, 0, 0;
+  --ink-rgb: 0, 0, 0;
 }
 
 @layer base {
@@ -44,21 +43,21 @@
 }
 
 html {
-  background: #faf6f0;
+  background: #ffffff;
   scroll-behavior: smooth;
 }
 
 body {
-  background: #faf6f0;
+  background: #ffffff;
   min-height: 100vh;
-  color: #241e20;
+  color: #000000;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-blush);
-  color: #241e20;
+  background: #000000;
+  color: #ffffff;
 }
 
 a {
@@ -268,42 +267,46 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
    so the surface reads as lacquer rather than flat matte. Only for full-width
    panels — buttons and chips keep the plain `bg-ink`. */
 .glossblack {
-  background-color: #150d10;
+  background-color: #000000;
   background-image:
-    radial-gradient(128% 78% at 16% -22%, rgba(255, 245, 248, 0.085) 0%, rgba(255, 245, 248, 0.02) 40%, rgba(255, 255, 255, 0) 68%),
-    radial-gradient(88% 62% at 88% 118%, rgba(var(--accent-rgb), 0.3) 0%, rgba(255, 255, 255, 0) 62%),
-    linear-gradient(163deg, #2a1a20 0%, #1d1217 34%, #150d10 68%, #0d070a 100%);
+    radial-gradient(128% 78% at 16% -22%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.015) 42%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(163deg, #1a1a1a 0%, #101010 36%, #070707 70%, #000000 100%);
 }
 .glossblack::before {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 240, 244, 0.2) 22%, rgba(255, 240, 244, 0.2) 74%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2) 22%, rgba(255, 255, 255, 0.2) 74%, transparent);
   pointer-events: none;
 }
 
-/* the front-page lead: headline set over the picture */
-.herolead {
-  aspect-ratio: 3 / 4;
-  max-height: 78vh;
-}
-.herolead .media { transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1); }
-.herolead:hover .media { transform: scale(1.03); }
-.herolead-wash {
+/* the lead of a collage band: headline set over the picture */
+.ovstory .media { transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.ovstory:hover .media { transform: scale(1.03); }
+.ovstory-wash {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(21, 13, 16, 0) 38%,
-    rgba(21, 13, 16, 0.42) 66%,
-    rgba(21, 13, 16, 0.82) 100%
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0.42) 56%,
+    rgba(0, 0, 0, 0.72) 76%,
+    rgba(0, 0, 0, 0.88) 100%
   );
 }
 @media (max-width: 900px) {
-  .herolead { aspect-ratio: 4 / 3; max-height: none; }
+  .ovstory { aspect-ratio: 4 / 3; min-height: 0; height: auto; }
 }
+
+/* the band heading, set over its rule */
+.bandhed { letter-spacing: -0.012em; }
+
+/* the asides listed beside a collage lead */
+.fifty .media { transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.fifty:hover .media { transform: scale(1.04); }
+.fifty:hover h3 { color: var(--accent); }
 
 /* the section bar under the masthead */
 .sectionbar { scrollbar-width: none; }

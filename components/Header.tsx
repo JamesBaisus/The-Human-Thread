@@ -56,7 +56,7 @@ export default function Header({
 
   return (
     <>
-      <header className="site-header sticky top-0 z-[60] bg-[rgba(250,246,240,.94)] backdrop-blur-[14px] border-b border-hairline">
+      <header className="site-header sticky top-0 z-[60] bg-[rgba(255,255,255,.95)] backdrop-blur-[14px] border-b border-hairline">
         <div className="max-w-[1280px] mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-[clamp(14px,4vw,54px)] pt-[clamp(10px,1.6vw,18px)] pb-[clamp(8px,1.2vw,14px)]">
           <button
             onClick={() => setOpen(true)}

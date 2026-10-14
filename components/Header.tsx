@@ -143,7 +143,7 @@ export default function Header({
             <button
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="modclose shrink-0 cursor-pointer bg-transparent border-none text-[24px] leading-none text-headline p-1"
+              className="modclose shrink-0 cursor-pointer bg-transparent border-none text-[24px] leading-none text-muted p-1"
             >
               ×
             </button>
@@ -158,7 +158,7 @@ export default function Header({
                   key={l.label}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="menulink block font-ui text-[12.5px] font-semibold tracking-[.16em] uppercase text-headline py-[clamp(11px,1.5vw,15px)]"
+                  className="menulink block font-ui text-[13px] font-normal tracking-[.18em] uppercase text-headline py-[clamp(12px,1.7vw,16px)]"
                 >
                   {l.label}
                 </Link>
@@ -172,7 +172,7 @@ export default function Header({
                 setOpen(false);
                 router.push(q ? `/catalogue?q=${encodeURIComponent(q)}` : "/catalogue");
               }}
-              className="mt-[clamp(16px,2.4vw,24px)] pt-[clamp(18px,2.4vw,26px)] border-t border-hairline"
+              className="mt-[clamp(14px,2vw,20px)] pt-[clamp(18px,2.4vw,26px)] border-t border-ink"
             >
               <label htmlFor="menu-search" className="block font-ui text-[12px] tracking-[.04em] text-muted mb-[10px]">
                 Search
@@ -194,7 +194,7 @@ export default function Header({
               </div>
             </form>
 
-            <div className="mt-[clamp(22px,3vw,32px)] pt-[clamp(18px,2.4vw,26px)] border-t border-hairline flex items-center justify-center gap-[clamp(18px,4vw,30px)]">
+            <div className="mt-[clamp(26px,3.4vw,38px)] flex items-center justify-center gap-[clamp(20px,5vw,34px)]">
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -210,7 +210,7 @@ export default function Header({
               ))}
             </div>
 
-            <div className="mt-[clamp(20px,2.6vw,28px)] pt-[clamp(14px,2vw,20px)] border-t border-hairline flex items-center justify-center gap-[clamp(14px,3vw,24px)]">
+            <div className="mt-[clamp(22px,3vw,30px)] flex items-center justify-center gap-[clamp(14px,3vw,24px)]">
               <Link
                 href="/terms"
                 onClick={() => setOpen(false)}

@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  /* One family, three roles: display, running text, and interface labels. */
-  --font-display: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
-  --font-body: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
+  /* Three roles, three faces: the Didone of the masthead for display, a
+     reading serif for body copy, and a sans for the interface furniture. */
+  --font-display: var(--font-pf), "Playfair Display", Georgia, serif;
+  --font-body: var(--font-sr), "Source Serif 4", Georgia, serif;
   --font-ui: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
-  /* the masthead only — the rest of the journal is the sans above */
   --font-logo: var(--font-pf), "Playfair Display", Georgia, serif;
 
   /* Burgundy signs the journal, ivory carries it, charcoal reads, and blush
@@ -88,10 +88,6 @@ textarea::placeholder {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes drawerin {
-  from { transform: translateX(-100%); }
-  to { transform: none; }
-}
 @keyframes modup {
   from { opacity: 0; transform: translateY(26px) scale(0.985); }
   to { opacity: 1; transform: none; }
@@ -103,9 +99,6 @@ textarea::placeholder {
 /* overlays / drawer / lightbox */
 .ov { animation: ovfade 0.3s ease both; }
 .modcard { animation: modup 0.5s cubic-bezier(0.16, 0.8, 0.3, 1) both; }
-.navdrawer { animation: drawerin 0.38s cubic-bezier(0.2, 0.75, 0.25, 1) both; }
-.drawerlink { transition: color 0.25s, padding-left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
-.drawerlink:hover { color: var(--accent); padding-left: 9px; }
 
 /* sticky header */
 header.site-header { transition: box-shadow 0.4s, background 0.4s; }
@@ -150,7 +143,7 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
 .navlink:hover::after { width: 100%; }
 
 /* cards & rows */
-.card .media, .thumb .media, .heroimg .media { transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.card .media, .thumb .media { transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .card:hover .media { transform: scale(1.05); }
 .card h3 { transition: color 0.3s; }
 .card:hover h3 { color: #000; }
@@ -159,7 +152,6 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
 .latestrow { transition: background 0.35s, border-color 0.35s; }
 .latestrow:hover { background: var(--color-soft); border-color: var(--color-line-2); }
 .latestrow:hover .media { transform: scale(1.07); }
-.herofeat:hover .heroimg .media { transform: scale(1.035); }
 
 /* buttons */
 .pillbtn { transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s; }
@@ -291,30 +283,63 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
   pointer-events: none;
 }
 
-/* the line under the wordmark */
-.masthead-line {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+/* the front-page lead: headline set over the picture */
+.herolead {
+  aspect-ratio: 3 / 4;
+  max-height: 78vh;
+}
+.herolead .media { transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.herolead:hover .media { transform: scale(1.03); }
+.herolead-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(21, 13, 16, 0) 38%,
+    rgba(21, 13, 16, 0.42) 66%,
+    rgba(21, 13, 16, 0.82) 100%
+  );
+}
+@media (max-width: 900px) {
+  .herolead { aspect-ratio: 4 / 3; max-height: none; }
+}
+
+/* the section bar under the masthead */
+.sectionbar { scrollbar-width: none; }
+.sectionbar::-webkit-scrollbar { display: none; }
+.sectionlink {
+  position: relative;
+  flex: 0 0 auto;
   font-family: var(--font-ui);
-  font-size: 7.6px;
-  font-weight: 900;
-  letter-spacing: 0.2em;
+  font-size: clamp(9.5px, 0.85vw, 11px);
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  line-height: 1;
-  color: var(--accent);
-  text-indent: 0.2em;
+  color: var(--color-headline);
+  white-space: nowrap;
+  padding-bottom: 2px;
+  transition: color 0.25s;
 }
-.masthead-line i {
-  font-style: normal;
-  opacity: 0.45;
-  margin: 0 0.6em;
+.sectionlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.masthead-line-sm { font-size: 7px; letter-spacing: 0.16em; }
-@media (max-width: 430px) {
-  .masthead-line { font-size: 6.6px; letter-spacing: 0.12em; }
-  .masthead-line i { margin: 0 0.4em; }
+.sectionlink:hover { color: var(--accent); }
+.sectionlink:hover::after { width: 100%; }
+
+/* the full-page menu */
+.menulink {
+  transition: color 0.3s, padding-left 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  border-bottom: 1px solid var(--color-hairline);
 }
+.menulink:hover { color: var(--accent); padding-left: 10px; }
 
 /* The letter, drifting sideways on its own */
 .lettermarquee {
@@ -502,5 +527,5 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; }
-  .marquee-track, .pg, .navdrawer, .ov, .modcard { animation: none !important; }
+  .marquee-track, .pg, .ov, .modcard { animation: none !important; }
 }

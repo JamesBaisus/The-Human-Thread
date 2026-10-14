@@ -350,13 +350,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   />
                 </div>
                 <div className="min-w-0">
-                  <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
+                  <span className="block font-ui text-[8.5px] font-black tracking-[.2em] uppercase text-accent mb-[6px]">
                     {a.category}
                   </span>
-                  <h3 className="font-display font-black text-[19px] leading-[1.14] mt-2 mb-[3px] text-headline">
+                  <h3 className="font-display font-black text-[18px] leading-[1.16] mb-[5px] text-headline">
                     <SimpleAmp text={a.title} />
                   </h3>
-                  <p className="font-body text-[12.5px] leading-[1.4] text-muted">
+                  <p className="font-ui text-[9.5px] tracking-[.12em] uppercase text-muted-2">
                     <SimpleAmp text={a.role} />
                   </p>
                 </div>

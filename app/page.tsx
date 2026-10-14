@@ -51,7 +51,7 @@ export default async function Home() {
         >
           <div className="flex items-end justify-between gap-5 mb-[clamp(20px,2.6vw,32px)] border-b border-hairline pb-[clamp(14px,1.8vw,20px)]">
             <div data-reveal="left" className="flex items-baseline gap-4">
-              <h2 className="font-display font-black text-[clamp(30px,4vw,54px)] leading-none">{block.name}</h2>
+              <h2 className="font-display font-black text-[clamp(28px,3.4vw,46px)] leading-none">{block.name}</h2>
               <span className="font-ui text-[11px] tracking-[.14em] text-muted-2">
                 {block.articles.length === 1 ? "1 story" : `${block.articles.length} stories`}
               </span>
@@ -77,6 +77,7 @@ export default async function Home() {
                   cover: a.cover,
                   coverBlur: a.coverBlur,
                   latest: i === 0,
+                  date: a.date,
                 }}
               />
             ))}
@@ -113,6 +114,7 @@ export default async function Home() {
                   cover: e.cover,
                   coverBlur: e.coverBlur,
                   latest: false,
+                  date: e.date,
                 }}
               />
             ))}

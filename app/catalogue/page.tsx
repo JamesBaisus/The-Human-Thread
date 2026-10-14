@@ -22,6 +22,7 @@ export default async function CataloguePage() {
       cover: a.cover,
       coverBlur: a.coverBlur,
       latest: await isLatestInCategory(a),
+      date: a.date,
     }))
   );
 

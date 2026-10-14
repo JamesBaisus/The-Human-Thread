@@ -15,12 +15,27 @@ export type ArticleCardData = {
   cover: string;
   coverBlur: string;
   latest: boolean;
+  /** ISO date, printed under the headline. */
+  date?: string;
 };
 
+const longDate = (iso: string) =>
+  new Date(iso + "T00:00:00Z").toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+
+/**
+ * A card as a magazine sets one: the section in small caps, the headline in
+ * the display serif, and the attribution quiet underneath. No chips — the
+ * label does that work without boxing it.
+ */
 export default function ArticleCard({ card, large = false }: { card: ArticleCardData; large?: boolean }) {
   return (
     <Link href={card.href ?? `/article/${card.slug}`} data-reveal="scale" className="card cursor-pointer block">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-ph">
+      <div className="relative aspect-[4/5] overflow-hidden bg-ph">
         <Image
           src={card.cover}
           alt={card.name || card.title}
@@ -31,30 +46,35 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
           className="media object-cover object-top"
         />
       </div>
-      <div className={`flex items-center gap-[10px] ${large ? "mt-4" : "mt-[15px]"} mb-[9px]`}>
-        {card.latest && (
-          <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-accent bg-blush rounded-[2px] py-1 px-2">
-            Latest
-          </span>
-        )}
-        <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-body-2 bg-fillc rounded-[2px] py-1 px-2">
+
+      <div className="flex items-center gap-[9px] mt-[14px] mb-[8px]">
+        <span className="font-ui text-[9px] font-black tracking-[.2em] uppercase text-accent">
           {card.category}
         </span>
-        <span className="revealline w-[22px] h-px bg-accent" />
+        {card.latest && (
+          <>
+            <span className="w-[3px] h-[3px] rounded-full bg-muted-2" />
+            <span className="font-ui text-[9px] font-black tracking-[.2em] uppercase text-muted">Latest</span>
+          </>
+        )}
       </div>
+
       <h3
         className={`font-display font-black ${
-          large ? "text-[clamp(23px,2.4vw,30px)] leading-[1.05]" : "text-[clamp(22px,2.3vw,28px)] leading-[1.06]"
-        } mb-2 text-headline`}
+          large ? "text-[clamp(23px,2.4vw,30px)] leading-[1.1]" : "text-[clamp(19px,1.9vw,24px)] leading-[1.14]"
+        } mb-[9px] text-headline`}
       >
         <SimpleAmp text={card.title} />
       </h3>
+
       {card.name && (
-        <p className="font-display italic text-[14px] text-ink mb-2">
-          {card.name}, <SimpleAmp text={card.role} />
+        <p className="font-ui text-[10px] font-semibold tracking-[.14em] uppercase text-muted mb-[6px]">
+          {card.name}
         </p>
       )}
-      <p className="text-[14px] leading-[1.55] text-muted [text-wrap:pretty]">{card.deck}</p>
+      {card.date && (
+        <p className="font-ui text-[10px] tracking-[.12em] uppercase text-muted-2">{longDate(card.date)}</p>
+      )}
     </Link>
   );
 }

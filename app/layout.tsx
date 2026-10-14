@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Source_Sans_3 } from "next/font/google";
+import { Playfair_Display, Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
 import { getCategorySections, catAnchor } from "@/lib/content";
@@ -10,22 +10,29 @@ import Effects from "@/components/Effects";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
 
-// The wordmark keeps its original face. Black only — it is the one weight the
-// lockup is set in, so this costs a single font file.
+// Display: the Didone the masthead is drawn in, for every headline.
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["900"],
+  style: ["normal", "italic"],
+  weight: ["400", "700", "900"],
   variable: "--font-pf",
   display: "swap",
 });
 
-// One family across the whole journal, in the two weights it is set in:
-// Regular for reading, Black for display and the uppercase labels. Real
-// italics are loaded so the decks and pull quotes are not faux-obliqued.
-const sourceSans = Source_Sans_3({
+// Reading: a serif for body copy, the way a magazine sets its pages.
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  weight: ["400", "900"],
+  weight: ["400", "600"],
+  variable: "--font-sr",
+  display: "swap",
+});
+
+// Interface: the sans that carries the nav, the category labels and the
+// small tracked furniture around the editorial.
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  weight: ["400", "600", "900"],
   variable: "--font-ss",
   display: "swap",
 });
@@ -51,7 +58,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   }));
 
   return (
-    <html lang="en" className={`${sourceSans.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${sourceSans.variable} ${playfair.variable} ${sourceSerif.variable}`}>
       <body style={{ "--accent": site.accent } as React.CSSProperties}>
         <div className="min-h-0 flex flex-col relative overflow-x-clip">
           <Effects />

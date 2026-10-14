@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { site } from "@/content/site";
+import Image from "next/image";
 
 export type DrawerLink = { label: string; href: string };
 export type DrawerGroup = { header: string | null; links: DrawerLink[] };
 
+/**
+ * Masthead in the middle, menu on the left, search on the right, and the
+ * sections running across a rule beneath it — the arrangement a magazine
+ * front page has used in print and now uses on the web.
+ *
+ * The menu opens as a full page rather than a side drawer, so the sections
+ * are set large enough to read as a contents page.
+ */
 export default function Header({
   drawerGroups,
   socials,
@@ -16,134 +24,139 @@ export default function Header({
 }) {
   const [open, setOpen] = useState(false);
 
+  // the section bar and the menu are the same links, flattened
+  const links = drawerGroups.flatMap((g) => g.links);
+  const sections = links.filter((l) => l.label !== "Home" && l.label !== "About");
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // The header carries the mark alone: at masthead size the strapline under
+  // the full lockup collapses into a smudge. The menu shows the lockup whole.
+  const Masthead = ({ width, full = false }: { width: number; full?: boolean }) => (
+    <Image
+      src={full ? "/brand/tht-editorial.png" : "/brand/tht-mark.png"}
+      alt="THT Editorial"
+      width={full ? 942 : 916}
+      height={full ? 634 : 536}
+      priority
+      sizes={`${width}px`}
+      style={{ width, height: "auto" }}
+      className="block"
+    />
+  );
+
   return (
     <>
-      <header className="site-header sticky top-0 z-[60] bg-[rgba(255,255,255,.92)] backdrop-blur-[14px] border-b border-hairline">
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-6 py-4 px-[clamp(18px,4vw,54px)]">
-          <div className="flex items-center gap-[clamp(12px,1.6vw,18px)] flex-none">
-            <button
-              onClick={() => setOpen(true)}
-              aria-label="Open menu"
-              className="cursor-pointer bg-transparent border-none py-[6px] px-1 flex flex-col gap-[5px]"
-            >
-              <span className="block h-[1.6px] w-6 bg-ink" />
-              <span className="block h-[1.6px] w-6 bg-ink" />
-              <span className="block h-[1.6px] w-6 bg-ink" />
-            </button>
-            <Link href="/#top" className="block leading-[.86]">
-              <div className="font-logo font-black text-[clamp(19px,2vw,26px)] tracking-[.005em] text-headline">
-                THE HUMAN THREAD
-              </div>
-              <div className="masthead-line mt-[5px]">
-                {site.taxonomy.map((w, i) => (
-                  <span key={w}>
-                    {i > 0 && <i>·</i>}
-                    {w}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          </div>
-          <div className="flex items-center gap-[clamp(10px,1.6vw,20px)] flex-none">
-            <Link href="/catalogue" aria-label="Search" className="cursor-pointer p-[6px] text-ink flex">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <circle cx="11" cy="11" r="7" />
-                <line x1="16.5" y1="16.5" x2="21" y2="21" />
-              </svg>
-            </Link>
-            <Link
-              href="/inquire"
-              className="inqbtn cursor-pointer text-ink font-ui text-[10.5px] font-black tracking-[.16em] uppercase py-2 px-1"
-            >
-              Inquire
-            </Link>
-          </div>
+      <header className="site-header sticky top-0 z-[60] bg-[rgba(250,246,240,.94)] backdrop-blur-[14px] border-b border-hairline">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-[clamp(14px,4vw,54px)] pt-[clamp(10px,1.6vw,18px)] pb-[clamp(8px,1.2vw,14px)]">
+          <button
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
+            className="justify-self-start cursor-pointer bg-transparent border-none py-[6px] px-1 flex flex-col gap-[5px]"
+          >
+            <span className="block h-[1.5px] w-[22px] bg-headline" />
+            <span className="block h-[1.5px] w-[22px] bg-headline" />
+            <span className="block h-[1.5px] w-[22px] bg-headline" />
+          </button>
+
+          <Link href="/#top" aria-label="The Human Thread" className="justify-self-center block">
+            <span className="block max-[560px]:hidden">
+              <Masthead width={168} />
+            </span>
+            <span className="hidden max-[560px]:block">
+              <Masthead width={116} />
+            </span>
+          </Link>
+
+          <Link
+            href="/catalogue"
+            aria-label="Search"
+            className="justify-self-end cursor-pointer p-[6px] text-headline flex"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="16.5" y1="16.5" x2="21" y2="21" />
+            </svg>
+          </Link>
         </div>
+
+        <nav className="border-t border-hairline" aria-label="Sections">
+          <div className="max-w-[1280px] mx-auto flex items-center justify-center gap-[clamp(14px,2.4vw,34px)] px-[clamp(14px,4vw,54px)] py-[10px] overflow-x-auto sectionbar">
+            {sections.map((l) => (
+              <Link key={l.label} href={l.href} className="sectionlink">
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
       </header>
 
       {open && (
-        <div
-          className="ov fixed inset-0 z-[150] bg-[rgba(20,18,16,.42)] backdrop-blur-[2px]"
-          onClick={() => setOpen(false)}
-        >
-          <aside
-            className="navdrawer absolute left-0 top-0 h-full w-[min(330px,84vw)] bg-ivory shadow-[24px_0_60px_-30px_rgba(20,18,16,.5)] flex flex-col p-[clamp(24px,3vw,34px)]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between mb-[clamp(26px,3.4vw,40px)]">
-              <div className="leading-[.86]">
-                <div className="font-logo font-black text-[17px] tracking-[.005em] text-headline">THE HUMAN THREAD</div>
-                <div className="masthead-line masthead-line-sm mt-[5px]">
-                  {site.taxonomy.map((w, i) => (
-                    <span key={w}>
-                      {i > 0 && <i>·</i>}
-                      {w}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Close menu"
-                className="cursor-pointer text-ink text-[26px] leading-none px-[2px] -mt-[2px]"
-              >
-                ×
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto min-h-0">
-              {drawerGroups.map((g, gi) => (
-                <div key={gi}>
-                  {g.header && (
-                    <div className="font-ui text-[9px] font-black tracking-[.3em] uppercase text-muted-2 pt-[clamp(20px,2.6vw,30px)] pb-[6px]">
-                      {g.header}
-                    </div>
-                  )}
-                  {g.links.map((d) => (
-                    <Link
-                      key={d.label}
-                      href={d.href}
-                      onClick={() => setOpen(false)}
-                      className="drawerlink cursor-pointer block font-display font-black text-[24px] leading-none text-ink py-[clamp(10px,1.3vw,14px)] border-b border-ph"
-                    >
-                      {d.label}
-                    </Link>
-                  ))}
-                </div>
-              ))}
-            </div>
+        <div className="ov fixed inset-0 z-[100] bg-ivory overflow-y-auto">
+          <div className="max-w-[1280px] mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-[clamp(14px,4vw,54px)] pt-[clamp(10px,1.6vw,18px)] pb-[clamp(8px,1.2vw,14px)] border-b border-hairline">
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="modclose justify-self-start cursor-pointer bg-transparent border-none text-[26px] leading-none text-headline p-1"
+            >
+              ×
+            </button>
+            <span className="justify-self-center">
+              <Masthead width={168} full />
+            </span>
+            <span />
+          </div>
 
-            <div className="pt-5 mt-5 border-t border-hairline">
-              <div className="flex gap-x-5 gap-y-2 flex-wrap mb-4">
-                <Link
-                  href="/terms"
-                  onClick={() => setOpen(false)}
-                  className="font-ui text-[9.5px] font-black tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
+          <div className="max-w-[1280px] mx-auto px-[clamp(18px,4vw,54px)] py-[clamp(26px,4vw,54px)]">
+            {links.map((l) => (
+              <Link
+                key={l.label}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="menulink block font-display font-black text-[clamp(26px,4.4vw,52px)] leading-[1.18] text-headline py-[clamp(6px,1vw,10px)]"
+              >
+                {l.label}
+              </Link>
+            ))}
+
+            <div className="mt-[clamp(28px,4vw,46px)] pt-[clamp(18px,2.4vw,26px)] border-t border-hairline flex items-center gap-[clamp(16px,3vw,30px)] flex-wrap">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inqbtn cursor-pointer font-ui text-[10.5px] font-black tracking-[.22em] uppercase text-accent"
                 >
-                  Terms & Conditions
-                </Link>
-                <Link
-                  href="/privacy"
-                  onClick={() => setOpen(false)}
-                  className="font-ui text-[9.5px] font-black tracking-[.16em] uppercase text-muted transition-colors hover:text-ink"
-                >
-                  Privacy Policy
-                </Link>
-              </div>
-              <div className="flex gap-x-5 gap-y-2 flex-wrap">
-                {socials.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-ui text-[10px] font-black tracking-[.18em] uppercase text-body-2 transition-colors hover:text-accent"
-                  >
-                    {s.label}
-                  </a>
-                ))}
-              </div>
+                  {s.label}
+                </a>
+              ))}
+              <span className="flex-1" />
+              <Link
+                href="/terms"
+                onClick={() => setOpen(false)}
+                className="navlink font-ui text-[10px] tracking-[.18em] uppercase text-muted"
+              >
+                Terms
+              </Link>
+              <Link
+                href="/privacy"
+                onClick={() => setOpen(false)}
+                className="navlink font-ui text-[10px] tracking-[.18em] uppercase text-muted"
+              >
+                Privacy
+              </Link>
             </div>
-          </aside>
+          </div>
         </div>
       )}
     </>

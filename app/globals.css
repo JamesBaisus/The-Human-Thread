@@ -339,10 +339,13 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
 
 /* the full-page menu */
 .menulink {
-  transition: color 0.3s, padding-left 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
-  border-bottom: 1px solid var(--color-hairline);
+  transition: opacity 0.25s;
 }
-.menulink:hover { color: var(--accent); padding-left: 10px; }
+.menulink:hover { opacity: 0.55; }
+
+/* the marks that sign off the menu */
+.social { transition: opacity 0.25s; }
+.social:hover { opacity: 0.55; }
 
 /* The letter, drifting sideways on its own */
 .lettermarquee {

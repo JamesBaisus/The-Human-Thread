@@ -151,7 +151,7 @@ export default function Header({
           </div>
 
           <div className="max-w-[1280px] mx-auto px-[clamp(14px,4vw,54px)] py-[clamp(20px,3vw,34px)]">
-            <div className="max-w-[560px]">
+            <div className="max-w-[560px] min-[900px]:max-w-none">
             <nav aria-label="Sections">
               {links.map((l) => (
                 <Link
@@ -194,7 +194,7 @@ export default function Header({
               </div>
             </form>
 
-            <div className="mt-[clamp(26px,3.4vw,38px)] flex items-center justify-center gap-[clamp(20px,5vw,34px)]">
+            <div className="mt-[clamp(26px,3.4vw,38px)] flex items-center justify-center min-[900px]:justify-start gap-[clamp(20px,5vw,34px)]">
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -210,7 +210,7 @@ export default function Header({
               ))}
             </div>
 
-            <div className="mt-[clamp(22px,3vw,30px)] flex items-center justify-center gap-[clamp(14px,3vw,24px)]">
+            <div className="mt-[clamp(22px,3vw,30px)] flex items-center justify-center min-[900px]:justify-start gap-[clamp(14px,3vw,24px)]">
               <Link
                 href="/terms"
                 onClick={() => setOpen(false)}

@@ -19,7 +19,7 @@ export default function Footer() {
               width={942}
               height={634}
               sizes="150px"
-              style={{ width: 150, height: "auto" }}
+              style={{ width: "clamp(116px, 7vw + 56px, 150px)", height: "auto" }}
               className="block"
             />
           </Link>

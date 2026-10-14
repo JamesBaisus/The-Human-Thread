@@ -78,14 +78,19 @@ export default function Header({
 
   // The header carries the mark alone: at masthead size the strapline under
   // the full lockup collapses into a smudge. The menu shows the lockup whole.
-  const Masthead = ({ width, full = false }: { width: number; full?: boolean }) => (
+  //
+  // `width` is a CSS length, so the caller can hand it a clamp() and the mark
+  // scales with the viewport at every size rather than stepping at a
+  // breakpoint. `sizes` quotes the largest it is ever drawn, so the browser
+  // still picks a source sharp enough for a retina screen.
+  const Masthead = ({ width, full = false, max }: { width: string; full?: boolean; max: number }) => (
     <Image
       src={full ? "/brand/tht-editorial.png" : "/brand/tht-mark.png"}
       alt="THT Editorial"
       width={full ? 942 : 916}
       height={full ? 634 : 536}
       priority
-      sizes={`${width}px`}
+      sizes={`${max}px`}
       style={{ width, height: "auto" }}
       className="block"
     />
@@ -106,12 +111,7 @@ export default function Header({
           </button>
 
           <Link href="/#top" aria-label="The Human Thread" className="justify-self-center block">
-            <span className="block max-[560px]:hidden">
-              <Masthead width={168} />
-            </span>
-            <span className="hidden max-[560px]:block">
-              <Masthead width={116} />
-            </span>
+            <Masthead width="clamp(98px, 7vw + 60px, 150px)" max={150} />
           </Link>
 
           <Link
@@ -147,7 +147,7 @@ export default function Header({
             >
               ×
             </button>
-            <Masthead width={116} full />
+            <Masthead width="clamp(96px, 5vw + 76px, 128px)" full max={128} />
           </div>
 
           <div className="max-w-[1280px] mx-auto px-[clamp(14px,4vw,54px)] py-[clamp(20px,3vw,34px)]">

@@ -309,7 +309,15 @@ header.site-header.scrolled { box-shadow: 0 12px 34px -26px rgba(var(--ink-rgb),
 .fifty:hover h3 { color: var(--accent); }
 
 /* the section bar under the masthead */
-.sectionbar { scrollbar-width: none; }
+.sectionbar {
+  scrollbar-width: none;
+  /* Centred while the sections fit, start-aligned once they overflow. Plain
+     `center` makes the run's first item unreachable on a narrow screen: it
+     overflows off both edges and no amount of scrolling brings it back. A
+     browser without `safe` drops this and falls back to start alignment,
+     which is the behaviour we want anyway. */
+  justify-content: safe center;
+}
 .sectionbar::-webkit-scrollbar { display: none; }
 .sectionlink {
   position: relative;

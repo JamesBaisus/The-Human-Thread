@@ -116,7 +116,7 @@ export const site = {
     // the order asked for; Gallery sits among the categories now, so the old
     // "Articles" / "The Cover Gallery" group headers no longer describe it
     { header: null, items: ["Human Stories", "Lifestyle", "Fashion", "Gallery", "Art", "THT Edit"] },
-    { header: null, items: ["Home", "About"] },
+    { header: null, items: ["Home", "About", "Inquire"] },
   ],
 
   /** Editorial band header. The editorials themselves live in

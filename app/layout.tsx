@@ -50,6 +50,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     if (label === "THT Edit") return "/#tht-edit";
     if (label === "Gallery") return "/#posters";
     if (label === "About") return "/#about";
+    if (label === "Inquire") return "/inquire";
     return withArticles.has(label) ? `/#${catAnchor(label)}` : `/catalogue?filter=${encodeURIComponent(label)}`;
   };
   const drawerGroups = site.nav.map((g) => ({

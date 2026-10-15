@@ -170,8 +170,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <section key={i} data-reveal="rise" className="py-[clamp(14px,2.4vw,26px)]">
                   {sec.heading && (
                     <h3
-                      className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-headline mb-4 pt-[clamp(14px,2vw,20px)] inline-block border-t-2"
-                      style={{ borderTopColor: rule }}
+                      className="font-ui font-black text-[clamp(11px,1vw,13px)] tracking-[.18em] uppercase text-headline mb-4 pt-[clamp(20px,3vw,30px)] block"
                     >
                       {sec.heading}
                     </h3>

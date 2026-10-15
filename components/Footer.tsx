@@ -55,7 +55,7 @@ export default function Footer() {
             All Stories
           </Link>
           <Link href="/inquire" className="navlink font-ui text-[10px] tracking-[.18em] uppercase text-muted">
-            Contact the Editors
+            Inquire
           </Link>
           <Link href="/privacy" className="navlink font-ui text-[10px] tracking-[.18em] uppercase text-muted">
             Privacy Policy

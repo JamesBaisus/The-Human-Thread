@@ -63,7 +63,13 @@ export default function Header({
 
   // the section bar and the menu are the same links, flattened
   const links = drawerGroups.flatMap((g) => g.links);
-  const sections = links.filter((l) => l.label !== "Home" && l.label !== "About");
+  const sections = links.filter(
+    (l) => l.label !== "Home" && l.label !== "About" && l.label !== "Inquire",
+  );
+  // Pinned beside the categories rather than inside them: on a phone the run
+  // of sections scrolls, and anything at its end sits off the right edge
+  // unseen — which is how the inquiry page got lost in the first place.
+  const inquire = links.find((l) => l.label === "Inquire");
 
   useEffect(() => {
     if (!open) return;
@@ -127,12 +133,22 @@ export default function Header({
         </div>
 
         <nav className="border-t border-hairline" aria-label="Sections">
-          <div className="max-w-[1280px] mx-auto flex items-center justify-center gap-[clamp(14px,2.4vw,34px)] px-[clamp(14px,4vw,54px)] py-[10px] overflow-x-auto sectionbar">
-            {sections.map((l) => (
-              <Link key={l.label} href={l.href} className="sectionlink">
-                {l.label}
+          <div className="max-w-[1280px] mx-auto flex items-center px-[clamp(14px,4vw,54px)]">
+            <div className="flex-1 min-w-0 flex items-center gap-[clamp(14px,2.4vw,34px)] py-[10px] overflow-x-auto sectionbar">
+              {sections.map((l) => (
+                <Link key={l.label} href={l.href} className="sectionlink">
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+            {inquire && (
+              <Link
+                href={inquire.href}
+                className="sectionlink shrink-0 ml-[clamp(10px,2vw,26px)] pl-[clamp(10px,2vw,26px)] border-l border-hairline"
+              >
+                {inquire.label}
               </Link>
-            ))}
+            )}
           </div>
         </nav>
       </header>

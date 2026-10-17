@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { yamlStr } from "@/lib/yaml";
 import { site } from "@/content/site";
 import { commitFiles, getFileText, isGithubConfigured, listArticleFiles, type CommitFile } from "@/lib/github";
 
@@ -78,12 +79,12 @@ export async function POST(request: Request) {
 
   const mdx = `---
 slug: ${slug}
-name: ${name}
-role: ${role}
-category: ${category}
-title: ${title}
-deck: "${deck.replace(/"/g, "'")}"
-readTime: ${readTime}
+name: ${yamlStr(name)}
+role: ${yamlStr(role)}
+category: ${yamlStr(category)}
+title: ${yamlStr(title)}
+deck: ${yamlStr(deck)}
+readTime: ${yamlStr(readTime)}
 accent: "${accent}"
 cover: /articles/${slug}/cover.jpg
 ${featured ? "featured: true\n" : ""}date: ${date}

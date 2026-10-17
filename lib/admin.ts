@@ -1,5 +1,6 @@
 // Shared helpers for the admin API routes.
 import fs from "fs";
+import { yamlStr } from "@/lib/yaml";
 import path from "path";
 import { getFileText, isGithubConfigured, listArticleFiles } from "@/lib/github";
 
@@ -72,12 +73,12 @@ export function buildMdx(f: {
 }): string {
   return `---
 slug: ${f.slug}
-name: ${f.name}
-role: ${f.role}
-category: ${f.category}
-title: ${f.title}
-deck: "${f.deck.replace(/"/g, "'")}"
-readTime: ${f.readTime}
+name: ${yamlStr(f.name)}
+role: ${yamlStr(f.role)}
+category: ${yamlStr(f.category)}
+title: ${yamlStr(f.title)}
+deck: ${yamlStr(f.deck)}
+readTime: ${yamlStr(f.readTime)}
 accent: "${f.accent}"
 cover: /articles/${f.slug}/cover.jpg
 ${f.featured ? "featured: true\n" : ""}${f.hidden ? "hidden: true\n" : ""}date: ${f.date}

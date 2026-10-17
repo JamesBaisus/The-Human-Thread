@@ -262,6 +262,7 @@ async function loadArticles(): Promise<Article[]> {
   const files = fs.readdirSync(ARTICLES_DIR).filter((f) => /\.mdx?$/.test(f));
   const articles = await Promise.all(
     files.map(async (file) => {
+      try {
       const raw = fs.readFileSync(path.join(ARTICLES_DIR, file), "utf8");
       const { data, content } = matter(raw);
       const slug = data.slug ?? file.replace(/\.mdx?$/, "");
@@ -290,11 +291,22 @@ async function loadArticles(): Promise<Article[]> {
         date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
         sections: await enrichSections(parseSections(content)),
       } satisfies Article;
+      } catch (err) {
+        // One malformed file used to abort the production build, which meant a
+        // single bad publish from the admin panel froze the entire site — no
+        // deploys at all until someone found it. Skipping it keeps everything
+        // else shipping; the warning names the file in the build log, and the
+        // piece is plainly missing to whoever just published it.
+        console.warn(
+          `[content] skipping content/articles/${file}: ${err instanceof Error ? err.message : String(err)}`,
+        );
+        return null;
+      }
     })
   );
   // Articles marked `hidden: true` in frontmatter (admin panel hide toggle)
   // vanish from the whole public site: listings, ordering, and their URL.
-  const visible = articles.filter((a) => !a.hidden);
+  const visible = articles.filter((a): a is Article => a !== null && !a.hidden);
   visible.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug)));
   return visible;
 }
@@ -356,6 +368,7 @@ async function loadEditItems(): Promise<EditItem[]> {
   const files = fs.readdirSync(EDIT_DIR).filter((f) => /\.mdx?$/.test(f));
   const items = await Promise.all(
     files.map(async (file) => {
+      try {
       const raw = fs.readFileSync(path.join(EDIT_DIR, file), "utf8");
       const { data, content } = matter(raw);
       for (const field of ["order", "kicker", "title", "deck", "readTime", "accent", "cover", "date"]) {
@@ -380,9 +393,17 @@ async function loadEditItems(): Promise<EditItem[]> {
         date: String(data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date),
         sections: await enrichSections(parseSections(content)),
       } satisfies EditItem;
+      } catch (err) {
+        // Same containment as the articles loader: a bad Edit piece is skipped
+        // and named in the build log rather than stopping every deploy.
+        console.warn(
+          `[content] skipping content/edit/${file}: ${err instanceof Error ? err.message : String(err)}`,
+        );
+        return null;
+      }
     })
   );
-  const visible = items.filter((i) => !i.hidden);
+  const visible = items.filter((i): i is EditItem => i !== null && !i.hidden);
   visible.sort((a, b) => a.order - b.order);
   return visible;
 }

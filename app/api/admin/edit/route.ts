@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { yamlStr } from "@/lib/yaml";
 import { site } from "@/content/site";
 import { commitFiles, getFileText, isGithubConfigured, listDir, type CommitFile } from "@/lib/github";
 import { isAuthorized } from "@/lib/admin";
@@ -84,16 +85,14 @@ function buildMdx(f: {
   date: string;
   body: string;
 }) {
-  // titles routinely contain a colon, which bare YAML reads as a mapping
-  const q = (v: string) => `"${v.replace(/"/g, "'")}"`;
   return `---
 slug: ${f.slug}
 order: ${f.order}
 inDeck: ${f.inDeck}
-kicker: ${f.kicker}
-title: ${q(f.title)}
-deck: ${q(f.deck)}
-readTime: ${f.readTime}
+kicker: ${yamlStr(f.kicker)}
+title: ${yamlStr(f.title)}
+deck: ${yamlStr(f.deck)}
+readTime: ${yamlStr(f.readTime)}
 accent: "${f.accent}"
 cover: /edit/${f.slug}/cover.jpg
 date: ${f.date}

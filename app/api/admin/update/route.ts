@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { buildArticleBody } from "@/lib/article-format";
 import { site } from "@/content/site";
 import { commitFiles, isGithubConfigured, listDir, type CommitFile } from "@/lib/github";
 import { buildMdx, dethroneOthers, isAuthorized, parseArticleFile, readArticleList, readArticleText } from "@/lib/admin";
@@ -43,8 +44,9 @@ export async function POST(request: Request) {
     }
     const existing = parseArticleFile(file, await readArticleText(file));
 
-    // New photos get numbered after whatever already exists and are appended to the body.
-    let body = content;
+    // New photos are numbered after whatever already exists and spaced through
+    // the body. They used to be appended, which put every picture added by a
+    // later edit at the foot of the article.
     let nextPhoto = 1;
     if (photos.length > 0 && isGithubConfigured()) {
       const dir = await listDir(`public/articles/${slug}`);
@@ -52,11 +54,13 @@ export async function POST(request: Request) {
       nextPhoto = Math.max(0, ...nums) + 1;
     }
     const photoFiles: CommitFile[] = [];
+    const photoSrcs: string[] = [];
     photos.slice(0, 6).forEach((p, i) => {
       const n = String(nextPhoto + i).padStart(2, "0");
-      body += `\n\n![](/articles/${slug}/${n}.jpg)`;
+      photoSrcs.push(`/articles/${slug}/${n}.jpg`);
       photoFiles.push({ path: `public/articles/${slug}/${n}.jpg`, content: Buffer.from("") });
     });
+    const body = buildArticleBody(content, photoSrcs);
     // fill photo contents (async)
     for (let i = 0; i < photoFiles.length; i++) {
       photoFiles[i].content = Buffer.from(await photos[i].arrayBuffer());

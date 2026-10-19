@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { buildArticleBody } from "@/lib/article-format";
 import { yamlStr } from "@/lib/yaml";
 import { site } from "@/content/site";
 import { commitFiles, getFileText, isGithubConfigured, listArticleFiles, type CommitFile } from "@/lib/github";
@@ -17,23 +18,6 @@ const slugify = (s: string) =>
 /** Body text arrives as plain text with the MDX conventions:
  *  blank-line paragraphs, optional `## Heading` and `> pull quote` lines.
  *  Article pictures are distributed evenly between top-level blocks. */
-function buildBody(content: string, slug: string, photoCount: number): string {
-  const blocks = content
-    .replace(/\r\n/g, "\n")
-    .split(/\n{2,}/)
-    .map((b) => b.trim())
-    .filter(Boolean);
-  if (photoCount > 0 && blocks.length > 0) {
-    const insertions: { at: number; line: string }[] = [];
-    for (let i = 0; i < photoCount; i++) {
-      const at = Math.min(blocks.length, Math.ceil(((i + 1) * blocks.length) / (photoCount + 1)));
-      insertions.push({ at, line: `![](/articles/${slug}/${String(i + 1).padStart(2, "0")}.jpg)` });
-    }
-    // insert from the back so earlier indexes stay valid
-    for (const ins of insertions.reverse()) blocks.splice(ins.at, 0, ins.line);
-  }
-  return blocks.join("\n\n");
-}
 
 export async function POST(request: Request) {
   const password = request.headers.get("x-admin-password") ?? "";
@@ -90,7 +74,7 @@ cover: /articles/${slug}/cover.jpg
 ${featured ? "featured: true\n" : ""}date: ${date}
 ---
 
-${buildBody(content, slug, photos.length)}
+${buildArticleBody(content, photos.map((_, i) => `/articles/${slug}/${String(i + 1).padStart(2, "0")}.jpg`))}
 `;
 
   // Not connected to GitHub yet → return a preview so the flow can be tested.

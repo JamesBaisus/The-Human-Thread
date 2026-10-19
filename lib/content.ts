@@ -179,8 +179,17 @@ function parseSections(body: string): RawSection[] {
       current = { heading: "", paragraphs: [], images: [] };
       sections.push(current);
     }
+    // A section carries one pull quote, printed after its paragraphs, so
+    // anything written after a quote belongs to the next one. Opening a fresh
+    // section here keeps several quotes in a piece standing separately and in
+    // the order they were written, instead of running together into one.
+    if (current.pullQuote && !line.startsWith(">")) {
+      current = { heading: "", paragraphs: [], images: [] };
+      sections.push(current);
+    }
     if (line.startsWith(">")) {
       const quote = line.replace(/^>\s?/, "");
+      // consecutive `>` lines are one quote across several lines
       current.pullQuote = current.pullQuote ? current.pullQuote + " " + quote : quote;
       continue;
     }

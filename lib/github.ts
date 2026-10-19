@@ -39,9 +39,19 @@ export async function listArticleFiles(): Promise<string[]> {
 
 /** Lists filenames in an arbitrary repo directory; [] if the directory doesn't exist. */
 export async function listDir(path: string): Promise<string[]> {
+  return (await listDirEntries(path)).map((i) => i.name);
+}
+
+/**
+ * A directory listing that keeps each file's blob sha. GitHub hands this back
+ * with the listing anyway, and it is the git hash of the contents, so an
+ * upload can be recognised as a copy of a file already there without reading
+ * any of them back.
+ */
+export async function listDirEntries(path: string): Promise<{ name: string; sha: string }[]> {
   try {
     const items = await gh(`/repos/${repo()}/contents/${encodeURI(path)}?ref=${branch()}`);
-    return (items as { name: string }[]).map((i) => i.name);
+    return (items as { name: string; sha: string }[]).map((i) => ({ name: i.name, sha: i.sha }));
   } catch {
     return [];
   }

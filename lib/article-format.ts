@@ -106,6 +106,14 @@ export function formatBody(content: string): string {
  * section so the picture stays where it was put instead of sliding to the end.
  */
 export function placePhotos(mdx: string, sources: string[]): string {
+  // A picture is placed once. The same file can arrive twice — re-picked while
+  // editing, so it resolves to the path already written into the body, or
+  // chosen twice in one upload — and printing it again is never what was
+  // meant.
+  const alreadyInBody = new Set(
+    [...mdx.matchAll(/^!\[[^\]]*\]\(([^)\s]+)\)$/gm)].map((m) => m[1]),
+  );
+  sources = [...new Set(sources)].filter((src) => !alreadyInBody.has(src));
   if (sources.length === 0) return mdx;
 
   const lines = mdx.split("\n");

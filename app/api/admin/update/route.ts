@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
+import { resolvePhotos } from "@/lib/photos";
 import { buildArticleBody } from "@/lib/article-format";
 import { site } from "@/content/site";
-import { commitFiles, isGithubConfigured, listDir, type CommitFile } from "@/lib/github";
+import { commitFiles, isGithubConfigured, type CommitFile } from "@/lib/github";
 import { buildMdx, dethroneOthers, isAuthorized, parseArticleFile, readArticleList, readArticleText } from "@/lib/admin";
 
 export const maxDuration = 60;
@@ -44,27 +45,19 @@ export async function POST(request: Request) {
     }
     const existing = parseArticleFile(file, await readArticleText(file));
 
-    // New photos are numbered after whatever already exists and spaced through
-    // the body. They used to be appended, which put every picture added by a
+    // A picture already in the folder is reused rather than written again as
+    // a fresh numbered copy, so re-picking the same photo while editing does
+    // not make the article print it twice. Pictures are then spaced through
+    // the body; they used to be appended, which put every one added by a
     // later edit at the foot of the article.
-    let nextPhoto = 1;
-    if (photos.length > 0 && isGithubConfigured()) {
-      const dir = await listDir(`public/articles/${slug}`);
-      const nums = dir.map((n) => parseInt(n.match(/^(\d+)\.jpg$/)?.[1] ?? "0", 10));
-      nextPhoto = Math.max(0, ...nums) + 1;
-    }
-    const photoFiles: CommitFile[] = [];
-    const photoSrcs: string[] = [];
-    photos.slice(0, 6).forEach((p, i) => {
-      const n = String(nextPhoto + i).padStart(2, "0");
-      photoSrcs.push(`/articles/${slug}/${n}.jpg`);
-      photoFiles.push({ path: `public/articles/${slug}/${n}.jpg`, content: Buffer.from("") });
-    });
-    const body = buildArticleBody(content, photoSrcs);
-    // fill photo contents (async)
-    for (let i = 0; i < photoFiles.length; i++) {
-      photoFiles[i].content = Buffer.from(await photos[i].arrayBuffer());
-    }
+    const buffers = await Promise.all(
+      photos.slice(0, 6).map(async (p) => Buffer.from(await p.arrayBuffer())),
+    );
+    const resolved = await resolvePhotos(slug, `public/articles/${slug}`, buffers);
+    const photoFiles: CommitFile[] = resolved
+      .filter((r) => r.upload)
+      .map((r) => r.upload as CommitFile);
+    const body = buildArticleBody(content, resolved.map((r) => r.src));
 
     const words = content.split(/\s+/).length;
     const mdx = buildMdx({

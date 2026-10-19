@@ -6,7 +6,7 @@
   --font-display: var(--font-pf), "Playfair Display", Georgia, serif;
   --font-body: var(--font-sr), "Source Serif 4", Georgia, serif;
   --font-ui: var(--font-ss), "Source Sans 3", system-ui, sans-serif;
-  --font-logo: var(--font-pf), "Playfair Display", Georgia, serif;
+  --font-logo: var(--font-lb), "Libre Baskerville", Georgia, serif;
 
   /* The reference sets everything on white and lets the pictures carry the
      colour: black text, grey furniture, hairlines just dark enough to find. */

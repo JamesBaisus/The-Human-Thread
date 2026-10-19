@@ -41,7 +41,7 @@ export default function CoverLetter() {
 
       {"signoff" in panel && panel.signoff && (
         <div className="mt-auto pt-[clamp(24px,3vw,38px)]">
-          <div className="font-logo font-black text-[26px] leading-none text-ondark">THT</div>
+          <div className="font-logo font-bold text-[22px] tracking-[.06em] leading-none text-ondark">THT</div>
           <div className="font-ui text-[8.5px] font-black tracking-[.4em] uppercase text-[rgba(245,245,245,.52)] mt-[7px]">
             The Human Thread_AE
           </div>

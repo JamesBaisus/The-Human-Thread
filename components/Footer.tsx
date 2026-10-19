@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Wordmark from "@/components/Wordmark";
 import { site } from "@/content/site";
 
 /**
@@ -13,15 +13,7 @@ export default function Footer() {
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col items-center text-center gap-[clamp(16px,2vw,24px)]">
           <Link href="/#top" aria-label="THT Editorial" className="block">
-            <Image
-              src="/brand/tht-editorial.png"
-              alt="THT Editorial"
-              width={942}
-              height={634}
-              sizes="150px"
-              style={{ width: "clamp(116px, 7vw + 56px, 150px)", height: "auto" }}
-              className="block"
-            />
+            <Wordmark scale="clamp(13px, 1.3vw + 8px, 21px)" />
           </Link>
 
           <div className="flex items-center justify-center gap-[clamp(14px,2.4vw,28px)] flex-wrap">

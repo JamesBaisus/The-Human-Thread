@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Source_Sans_3, Source_Serif_4 } from "next/font/google";
+import { Libre_Baskerville, Playfair_Display, Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
 import { getCategorySections, catAnchor } from "@/lib/content";
@@ -39,6 +39,16 @@ const sourceSans = Source_Sans_3({
   display: "swap",
 });
 
+// The wordmark: set in Libre Baskerville, which is the face the masthead is
+// specified in. Kept apart from the display serif so changing one cannot
+// quietly restyle the other.
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-lb",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "The Human Thread Journal · AE",
   description:
@@ -61,7 +71,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   }));
 
   return (
-    <html lang="en" className={`${sourceSans.variable} ${playfair.variable} ${sourceSerif.variable}`}>
+    <html lang="en" className={`${sourceSans.variable} ${playfair.variable} ${sourceSerif.variable} ${libreBaskerville.variable}`}>
       <body style={{ "--accent": site.accent } as React.CSSProperties}>
         <div className="min-h-0 flex flex-col relative overflow-x-clip">
           <Effects />

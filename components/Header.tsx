@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import Wordmark from "@/components/Wordmark";
 
 export type DrawerLink = { label: string; href: string };
 export type DrawerGroup = { header: string | null; links: DrawerLink[] };
@@ -82,25 +82,6 @@ export default function Header({
     };
   }, [open]);
 
-  // The header carries the mark alone: at masthead size the strapline under
-  // the full lockup collapses into a smudge. The menu shows the lockup whole.
-  //
-  // `width` is a CSS length, so the caller can hand it a clamp() and the mark
-  // scales with the viewport at every size rather than stepping at a
-  // breakpoint. `sizes` quotes the largest it is ever drawn, so the browser
-  // still picks a source sharp enough for a retina screen.
-  const Masthead = ({ width, full = false, max }: { width: string; full?: boolean; max: number }) => (
-    <Image
-      src={full ? "/brand/tht-editorial.png" : "/brand/tht-mark.png"}
-      alt="THT Editorial"
-      width={full ? 942 : 916}
-      height={full ? 634 : 536}
-      priority
-      sizes={`${max}px`}
-      style={{ width, height: "auto" }}
-      className="block"
-    />
-  );
 
   return (
     <>
@@ -117,7 +98,7 @@ export default function Header({
           </button>
 
           <Link href="/#top" aria-label="The Human Thread" className="justify-self-center block">
-            <Masthead width="clamp(98px, 7vw + 60px, 150px)" max={150} />
+            <Wordmark scale="clamp(10.5px, 1.1vw + 7px, 18px)" />
           </Link>
 
           <Link
@@ -163,7 +144,7 @@ export default function Header({
             >
               ×
             </button>
-            <Masthead width="clamp(96px, 5vw + 76px, 128px)" full max={128} />
+            <Wordmark scale="clamp(10px, 1vw + 6.5px, 16px)" />
           </div>
 
           <div className="max-w-[1280px] mx-auto px-[clamp(14px,4vw,54px)] py-[clamp(20px,3vw,34px)]">

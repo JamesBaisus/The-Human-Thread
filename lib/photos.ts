@@ -33,8 +33,10 @@ export type ResolvedPhoto = {
  * single upload collapse the same way.
  */
 export async function resolvePhotos(
-  slug: string,
+  /** Repo folder the files live in, e.g. `public/articles/sid`. */
   dir: string,
+  /** What the body links to, e.g. `/articles/sid` or `/edit/celine-dion`. */
+  urlPrefix: string,
   buffers: Buffer[],
 ): Promise<ResolvedPhoto[]> {
   const existing = await listDirEntries(dir);
@@ -53,13 +55,13 @@ export async function resolvePhotos(
   return buffers.map((bytes) => {
     const sha = gitBlobSha(bytes);
     const already = bySha.get(sha);
-    if (already) return { src: `/articles/${slug}/${already}` };
+    if (already) return { src: `${urlPrefix}/${already}` };
 
     const name = `${String(next++).padStart(2, "0")}.jpg`;
     // remember it, so the same picture twice in one upload lands once
     bySha.set(sha, name);
     return {
-      src: `/articles/${slug}/${name}`,
+      src: `${urlPrefix}/${name}`,
       upload: { path: `${dir}/${name}`, content: bytes },
     };
   });

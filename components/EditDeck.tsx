@@ -49,7 +49,7 @@ export default function EditDeck({ items, total }: { items: EditItem[]; total: n
           <div className="font-ui text-[11px] font-black tracking-[.28em] uppercase text-muted mb-3">
             The Edit
           </div>
-          <h2 className="font-display font-black text-[clamp(32px,4.2vw,54px)] leading-[1.03] tracking-[-.02em] text-headline">
+          <h2 className="font-display font-medium text-[clamp(32px,4.2vw,54px)] leading-[1.03] tracking-[-.02em] text-headline">
             THT Edit
           </h2>
           <p className="font-body text-[clamp(14.5px,1.2vw,16px)] leading-[1.6] text-body-1 mt-[14px] max-w-[46ch]">
@@ -74,7 +74,7 @@ export default function EditDeck({ items, total }: { items: EditItem[]; total: n
               {String(active + 1).padStart(2, "0")} · {current.kicker}
             </div>
             <div key={current.slug} className="editcover-readout">
-              <div className="font-display font-black text-[clamp(21px,2.1vw,28px)] leading-[1.14] tracking-[-.01em] text-ink">
+              <div className="font-display font-semibold text-[clamp(21px,2.1vw,28px)] leading-[1.14] tracking-[-.01em] text-ink">
                 <SimpleAmp text={current.title} />
               </div>
               <div className="font-ui text-[10.5px] tracking-[.2em] uppercase text-muted-2 mt-[9px]">
@@ -135,7 +135,7 @@ export default function EditDeck({ items, total }: { items: EditItem[]; total: n
                 >
                   {item.kicker}
                 </span>
-                <span className="block font-display font-black text-[17px] leading-[1.16] tracking-[-.01em] text-ink">
+                <span className="block font-display font-semibold text-[17px] leading-[1.16] tracking-[-.01em] text-ink">
                   <SimpleAmp text={item.title} />
                 </span>
               </span>

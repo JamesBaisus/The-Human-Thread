@@ -600,7 +600,7 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className={`flex-1 min-w-0 ${a.hidden ? "opacity-45" : ""}`}>
-                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{a.title}</div>
+                <div className="font-display font-semibold text-[17px] text-ink leading-[1.2]">{a.title}</div>
                 <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {a.name} · {a.category} · {a.date}
                   {a.featured && <span className="ml-2 bg-accent text-ondark rounded-[2px] px-[6px] py-[2px]">Featured</span>}
@@ -655,7 +655,7 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{p.title}</div>
+                <div className="font-display font-semibold text-[17px] text-ink leading-[1.2]">{p.title}</div>
                 <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {p.category} · {p.date} · {p.count === 1 ? "1 image" : `${p.count} images`}
                 </div>
@@ -701,7 +701,7 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">{ed.title}</div>
+                <div className="font-display font-semibold text-[17px] text-ink leading-[1.2]">{ed.title}</div>
                 <div className="font-ui text-[9.5px] tracking-[.14em] uppercase text-muted mt-1">
                   {ed.eyebrow ? `${ed.eyebrow} · ` : ""}{ed.date} · {ed.count === 1 ? "1 page" : `${ed.count} pages`}
                 </div>
@@ -752,7 +752,7 @@ export default function AdminPanel() {
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <div className="font-display font-black text-[17px] text-ink leading-[1.2]">
+                <div className="font-display font-semibold text-[17px] text-ink leading-[1.2]">
                   {x.title}
                   {!x.inDeck && (
                     <span className="ml-2 font-ui text-[9px] tracking-[.14em] uppercase border border-hairline text-muted rounded-[2px] px-[6px] py-[2px]">

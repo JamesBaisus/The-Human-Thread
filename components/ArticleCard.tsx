@@ -45,7 +45,7 @@ export default function ArticleCard({ card, large = false }: { card: ArticleCard
       </span>
 
       <h3
-        className={`font-display font-black ${
+        className={`font-display font-semibold ${
           large ? "text-[clamp(21px,2.2vw,28px)] leading-[1.1]" : "text-[clamp(17px,1.7vw,22px)] leading-[1.15]"
         } text-headline`}
       >

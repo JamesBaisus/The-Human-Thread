@@ -20,7 +20,7 @@ export default function CoverLetter() {
       </div>
 
       {"emphasis" in panel && panel.emphasis ? (
-        <p className="font-display font-black text-ondark text-[clamp(24px,3.2vw,44px)] leading-[1.14] tracking-[-.015em] max-w-[20ch]">
+        <p className="font-display font-medium text-ondark text-[clamp(24px,3.2vw,44px)] leading-[1.14] tracking-[-.015em] max-w-[20ch]">
           {panel.lines[0]}
         </p>
       ) : (
@@ -60,7 +60,7 @@ export default function CoverLetter() {
           <div className="font-ui text-[10px] font-black tracking-[.32em] uppercase text-[rgba(245,245,245,.62)] mb-[14px]">
             {eyebrow}
           </div>
-          <h2 className="font-display font-black text-ondark text-[clamp(34px,5.6vw,78px)] leading-[.94] tracking-[-.02em] uppercase">
+          <h2 className="font-display font-medium text-ondark text-[clamp(34px,5.6vw,78px)] leading-[.94] tracking-[-.02em] uppercase">
             {title}
           </h2>
         </div>

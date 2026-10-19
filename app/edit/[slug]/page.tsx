@@ -56,7 +56,7 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
 
         <h1
           data-reveal=""
-          className="font-display font-black text-[clamp(32px,4.2vw,52px)] leading-[1.04] tracking-[-.01em] mb-[clamp(18px,2.6vw,28px)] [text-wrap:balance]"
+          className="font-display font-medium text-[clamp(32px,4.2vw,52px)] leading-[1.04] tracking-[-.01em] mb-[clamp(18px,2.6vw,28px)] [text-wrap:balance]"
         >
           <SimpleAmp text={item.title} />
         </h1>
@@ -102,14 +102,14 @@ export default async function EditPage({ params }: { params: Promise<{ slug: str
                 href={`/edit/${o.slug}`}
                 className="rellink flex items-center gap-[clamp(14px,2.6vw,24px)] py-[clamp(16px,2.4vw,24px)] border-t border-hairline cursor-pointer"
               >
-                <div className="flex-none font-display font-black text-[clamp(18px,2vw,24px)] text-ink min-w-[2.2ch] leading-none tabular-nums">
+                <div className="flex-none font-display font-semibold text-[clamp(18px,2vw,24px)] text-ink min-w-[2.2ch] leading-none tabular-nums">
                   {position(o.slug)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-ui text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">
                     {o.kicker}
                   </div>
-                  <div className="font-display font-black text-[clamp(18px,2.2vw,26px)] leading-[1.12] text-ink">
+                  <div className="font-display font-semibold text-[clamp(18px,2.2vw,26px)] leading-[1.12] text-ink">
                     <SimpleAmp text={o.title} />
                   </div>
                 </div>

@@ -34,7 +34,7 @@ export default async function CataloguePage() {
             <div className="font-ui text-[11px] font-black tracking-[.3em] uppercase text-muted mb-4">
               The catalogue
             </div>
-            <h1 className="font-display font-black text-[clamp(48px,9vw,120px)] leading-[.9] tracking-[-.015em]">
+            <h1 className="font-display font-medium text-[clamp(48px,9vw,120px)] leading-[.9] tracking-[-.015em]">
               Articles
             </h1>
           </div>

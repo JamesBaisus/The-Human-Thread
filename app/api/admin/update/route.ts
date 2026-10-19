@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     const buffers = await Promise.all(
       photos.slice(0, 6).map(async (p) => Buffer.from(await p.arrayBuffer())),
     );
-    const resolved = await resolvePhotos(slug, `public/articles/${slug}`, buffers);
+    const resolved = await resolvePhotos(`public/articles/${slug}`, `/articles/${slug}`, buffers);
     const photoFiles: CommitFile[] = resolved
       .filter((r) => r.upload)
       .map((r) => r.upload as CommitFile);

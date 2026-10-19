@@ -59,7 +59,7 @@ export default function Carousel({ features }: { features: CarouselFeature[] }) 
             <div className="font-ui text-[10px] font-black tracking-[.32em] uppercase text-ink mb-[14px]">
               {site.carousel.eyebrow}
             </div>
-            <h2 className="font-display font-black text-[clamp(32px,4.6vw,60px)] leading-[.98] tracking-[-.01em] text-headline">
+            <h2 className="font-display font-medium text-[clamp(32px,4.6vw,60px)] leading-[.98] tracking-[-.01em] text-headline">
               {site.carousel.title}
             </h2>
             <p className="font-display italic text-[clamp(16px,1.7vw,21px)] leading-[1.4] text-muted mt-3">
@@ -112,7 +112,7 @@ export default function Carousel({ features }: { features: CarouselFeature[] }) 
                   </div>
                 </div>
               </div>
-              <div className="font-display font-black text-[clamp(17px,1.7vw,20px)] leading-[1.16] text-ink mt-[13px] group-hover:text-[color:var(--accent)] transition-colors">
+              <div className="font-display font-semibold text-[clamp(17px,1.7vw,20px)] leading-[1.16] text-ink mt-[13px] group-hover:text-[color:var(--accent)] transition-colors">
                 <SimpleAmp text={f.title} />
               </div>
               {f.eyebrow && (

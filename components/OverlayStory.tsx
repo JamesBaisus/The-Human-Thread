@@ -30,7 +30,7 @@ export default function OverlayStory({ card, priority = false }: { card: Article
         <span className="block font-ui text-[10px] font-black tracking-[.22em] uppercase text-ondark mb-[10px]">
           {card.category}
         </span>
-        <span className="block font-display font-black text-ondark text-[clamp(24px,3vw,42px)] leading-[1.08] [text-wrap:balance] max-w-[20ch]">
+        <span className="block font-display font-medium text-ondark text-[clamp(24px,3vw,42px)] leading-[1.08] [text-wrap:balance] max-w-[20ch]">
           <SimpleAmp text={card.title} />
         </span>
         <span className="block font-ui text-[10.5px] tracking-[.12em] uppercase text-[rgba(255,255,255,.8)] mt-[13px]">

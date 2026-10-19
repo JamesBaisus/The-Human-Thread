@@ -52,7 +52,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
             <div className="font-ui text-[11px] font-black tracking-[.3em] uppercase text-muted mb-4">
               The cover gallery
             </div>
-            <h2 className="font-display font-black text-[clamp(40px,7vw,92px)] leading-[.9] tracking-[-.015em]">
+            <h2 className="font-display font-medium text-[clamp(40px,7vw,92px)] leading-[.9] tracking-[-.015em]">
               Posters
             </h2>
           </div>
@@ -81,7 +81,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                   <span className="inline-block font-ui text-[8.5px] font-black tracking-[.16em] uppercase text-ink bg-[rgba(255,255,255,.9)] rounded-[2px] py-1 px-2">
                     {p.category}
                   </span>
-                  <div className="font-display font-black text-[21px] leading-[1.08] text-white mt-[10px]">
+                  <div className="font-display font-semibold text-[21px] leading-[1.08] text-white mt-[10px]">
                     <SimpleAmp text={p.title} />
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
             </div>
             <div className="igpanel bg-[#141414] text-[#ededed] flex flex-col max-h-[90vh]">
               <div className="flex items-center gap-3 py-4 px-[18px] border-b border-[rgba(255,255,255,.1)]">
-                <div className="flex-none w-[38px] h-[38px] rounded-full bg-accent flex items-center justify-center font-display font-black text-[14px] text-white">
+                <div className="flex-none w-[38px] h-[38px] rounded-full bg-accent flex items-center justify-center font-display font-semibold text-[14px] text-white">
                   T
                 </div>
                 <div className="flex-1 min-w-0">
@@ -152,7 +152,7 @@ export default function PostersGallery({ posters }: { posters: Poster[] }) {
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto py-5 px-[18px]">
-                <div className="font-display font-black text-[24px] leading-[1.08] text-white mb-4">
+                <div className="font-display font-semibold text-[24px] leading-[1.08] text-white mb-4">
                   <SimpleAmp text={cur.title} />
                 </div>
                 {cur.captions.map((cp, k) => (

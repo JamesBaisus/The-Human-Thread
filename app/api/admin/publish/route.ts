@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { resolvePhotos } from "@/lib/photos";
 import { buildArticleBody } from "@/lib/article-format";
 import { yamlStr } from "@/lib/yaml";
 import { site } from "@/content/site";
@@ -61,6 +62,14 @@ export async function POST(request: Request) {
   const date = new Date().toISOString().slice(0, 10);
   const deck = deckIn || content.replace(/^[#>!].*$/gm, "").trim().split(/(?<=[.!?])\s/)[0]?.slice(0, 200) || title;
 
+  // The same picture chosen twice collapses to one file, so a new article
+  // cannot print it twice either. A fresh folder is empty, so numbering still
+  // starts at 01.
+  const buffers = await Promise.all(
+    photos.map(async (p) => Buffer.from(await p.arrayBuffer())),
+  );
+  const resolved = await resolvePhotos(`public/articles/${slug}`, `/articles/${slug}`, buffers);
+
   const mdx = `---
 slug: ${slug}
 name: ${yamlStr(name)}
@@ -74,7 +83,7 @@ cover: /articles/${slug}/cover.jpg
 ${featured ? "featured: true\n" : ""}date: ${date}
 ---
 
-${buildArticleBody(content, photos.map((_, i) => `/articles/${slug}/${String(i + 1).padStart(2, "0")}.jpg`))}
+${buildArticleBody(content, resolved.map((r) => r.src))}
 `;
 
   // Not connected to GitHub yet → return a preview so the flow can be tested.
@@ -91,12 +100,7 @@ ${buildArticleBody(content, photos.map((_, i) => `/articles/${slug}/${String(i +
     const files: CommitFile[] = [
       { path: `content/articles/${slug}.mdx`, content: mdx },
       { path: `public/articles/${slug}/cover.jpg`, content: Buffer.from(await cover.arrayBuffer()) },
-      ...(await Promise.all(
-        photos.map(async (p, i) => ({
-          path: `public/articles/${slug}/${String(i + 1).padStart(2, "0")}.jpg`,
-          content: Buffer.from(await p.arrayBuffer()),
-        }))
-      )),
+      ...resolved.filter((r) => r.upload).map((r) => r.upload as CommitFile),
     ];
 
     // A featured article dethrones the current one in the same commit.

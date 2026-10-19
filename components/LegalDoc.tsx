@@ -25,7 +25,7 @@ export default function LegalDoc({
         <div className="font-ui text-[11px] font-black tracking-[.3em] uppercase text-ink mt-[clamp(26px,3.4vw,40px)] mb-4">
           {eyebrow}
         </div>
-        <h1 className="font-display font-black text-[clamp(38px,6vw,72px)] leading-[.95] tracking-[-.015em]">
+        <h1 className="font-display font-medium text-[clamp(38px,6vw,72px)] leading-[.95] tracking-[-.015em]">
           <SimpleAmp text={title} />
         </h1>
         <p className="font-ui text-[10px] tracking-[.2em] uppercase text-muted-2 mt-5">Last updated · {updated}</p>

@@ -10,11 +10,13 @@ import Effects from "@/components/Effects";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
 
-// Display: the Didone the masthead is drawn in, for every headline.
+// Display: the Didone the masthead is drawn in, for every headline. Set
+// medium to semibold, never black — a Didone's thick strokes turn to slab at
+// heavy weights, which is not how a magazine sets a headline.
 const playfair = Playfair_Display({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  weight: ["400", "700", "900"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-pf",
   display: "swap",
 });

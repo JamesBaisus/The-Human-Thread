@@ -17,7 +17,7 @@ export default function InquirePage() {
         <div className="font-ui text-[11px] font-black tracking-[.3em] uppercase text-ink mt-[clamp(26px,3.4vw,40px)] mb-4">
           Arrange an online meeting
         </div>
-        <h1 className="font-display font-black text-[clamp(48px,8vw,104px)] leading-[.9] tracking-[-.015em]">
+        <h1 className="font-display font-medium text-[clamp(48px,8vw,104px)] leading-[.9] tracking-[-.015em]">
           Inquire
         </h1>
         <p className="font-display italic text-[clamp(19px,2.2vw,27px)] leading-[1.4] text-body-1 mt-[22px] max-w-[46ch]">

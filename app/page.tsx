@@ -109,7 +109,7 @@ export default async function Home() {
         <div className="font-ui text-[11px] font-black tracking-[.32em] uppercase text-muted mb-[24px]">
           About the publication
         </div>
-        <h2 className="font-display font-black text-[clamp(30px,4.6vw,62px)] leading-[1.12] tracking-[-.01em] [text-wrap:balance]">
+        <h2 className="font-display font-medium text-[clamp(30px,4.6vw,62px)] leading-[1.12] tracking-[-.01em] [text-wrap:balance]">
           {site.aboutHeadline}
         </h2>
       </section>
@@ -129,7 +129,7 @@ export default async function Home() {
           <div className="grid grid-cols-4 max-[820px]:grid-cols-2 max-[480px]:grid-cols-1 gap-[clamp(20px,2.4vw,40px)]">
             {site.values.map((v) => (
               <div key={v.title} className="border-t border-[rgba(255,255,255,.3)] pt-5">
-                <div className="font-display font-black text-[24px] mb-[10px]">{v.title}</div>
+                <div className="font-display font-semibold text-[24px] mb-[10px]">{v.title}</div>
                 <p className="text-[15px] leading-[1.6] text-[rgba(255,255,255,.74)]">{v.text}</p>
               </div>
             ))}

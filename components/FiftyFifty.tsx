@@ -31,7 +31,7 @@ export default function FiftyFifty({ card }: { card: ArticleCardData }) {
         <span className="block font-ui text-[9px] font-black tracking-[.2em] uppercase text-accent mb-[7px]">
           {card.category}
         </span>
-        <h3 className="font-display font-black text-[clamp(15px,1.4vw,19px)] leading-[1.18] text-headline">
+        <h3 className="font-display font-semibold text-[clamp(15px,1.4vw,19px)] leading-[1.18] text-headline">
           <SimpleAmp text={card.title} />
         </h3>
         <span className="block font-ui text-[9.5px] tracking-[.12em] uppercase text-muted-2 mt-[9px]">

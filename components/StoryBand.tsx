@@ -38,7 +38,7 @@ export default function StoryBand({
   return (
     <section id={id} className="band scroll-mt-[120px] max-w-[1280px] mx-auto px-[clamp(18px,4vw,54px)] py-[clamp(26px,3.4vw,46px)]">
       <div className="flex items-end justify-between gap-5 border-b-2 border-ink pb-[clamp(10px,1.2vw,14px)] mb-[clamp(18px,2.2vw,30px)]">
-        <h2 className="bandhed font-display font-black text-[clamp(22px,2.6vw,34px)] leading-none tracking-[-.01em]">
+        <h2 className="bandhed font-display font-medium text-[clamp(22px,2.6vw,34px)] leading-none tracking-[-.01em]">
           {title}
         </h2>
         {href && (

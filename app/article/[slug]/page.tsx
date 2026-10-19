@@ -141,7 +141,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <article>
             <h1
               data-reveal=""
-              className="font-display font-black text-[clamp(34px,4.4vw,58px)] leading-[1.02] tracking-[-.01em] mb-[clamp(22px,3vw,34px)] [text-wrap:balance]"
+              className="font-display font-medium text-[clamp(34px,4.4vw,58px)] leading-[1.02] tracking-[-.01em] mb-[clamp(22px,3vw,34px)] [text-wrap:balance]"
             >
               <SimpleAmp text={article.title} />
             </h1>
@@ -309,7 +309,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     <div className="font-ui text-[9px] tracking-[.22em] uppercase text-muted-2 mb-[5px]">
                       {r.article.category}
                     </div>
-                    <div className="font-display font-black text-[clamp(20px,2.4vw,29px)] leading-[1.1] text-ink">
+                    <div className="font-display font-semibold text-[clamp(20px,2.4vw,29px)] leading-[1.1] text-ink">
                       <SimpleAmp text={r.article.title} />
                     </div>
                   </div>
@@ -321,7 +321,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
           <aside className="sticky top-[132px] max-[780px]:static">
             <div className="mb-[30px]">
-              <h4 className="font-display font-black text-[24px] mb-[14px] text-ink">Follow Us</h4>
+              <h4 className="font-display font-semibold text-[24px] mb-[14px] text-ink">Follow Us</h4>
               <div className="bg-blush rounded-[2px] px-4 py-5 grid grid-cols-2 gap-x-4 gap-y-3">
                 {site.socials.map((s) => (
                   <a
@@ -336,7 +336,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 ))}
               </div>
             </div>
-            <h4 className="font-display font-black text-[24px] mb-4 text-ink">The Latest</h4>
+            <h4 className="font-display font-semibold text-[24px] mb-4 text-ink">The Latest</h4>
             {sidebar.map((a) => (
               <Link
                 key={a.slug}
@@ -358,7 +358,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   <span className="block font-ui text-[8.5px] font-black tracking-[.2em] uppercase text-accent mb-[6px]">
                     {a.category}
                   </span>
-                  <h3 className="font-display font-black text-[18px] leading-[1.16] mb-[5px] text-headline">
+                  <h3 className="font-display font-semibold text-[18px] leading-[1.16] mb-[5px] text-headline">
                     <SimpleAmp text={a.title} />
                   </h3>
                   <p className="font-ui text-[9.5px] tracking-[.12em] uppercase text-muted-2">

@@ -65,7 +65,7 @@ export default function ContinueReading() {
           <span className="flex-none font-ui text-[8.5px] font-black tracking-[.18em] uppercase text-muted-2 max-[560px]:hidden">
             {last.category} · {Math.round(last.pct * 100)}%
           </span>
-          <span className="flex-1 min-w-0 font-display font-black text-[clamp(14px,1.6vw,17px)] leading-tight text-ink truncate">
+          <span className="flex-1 min-w-0 font-display font-semibold text-[clamp(14px,1.6vw,17px)] leading-tight text-ink truncate">
             <SimpleAmp text={last.title} />
           </span>
           <span className="relarrow flex-none font-ui text-[14px] text-ink">→</span>

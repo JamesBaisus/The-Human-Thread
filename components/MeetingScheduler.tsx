@@ -128,7 +128,7 @@ export default function MeetingScheduler() {
           <div className="font-ui text-[10px] font-black tracking-[.28em] uppercase text-ink mb-[14px]">
             Editorial meetings
           </div>
-          <h2 className="font-display font-black text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-headline mb-5">
+          <h2 className="font-display font-semibold text-[clamp(22px,2.4vw,30px)] leading-[1.1] text-headline mb-5">
             A conversation with the editors
           </h2>
           <ul className="flex flex-col gap-[10px] font-ui text-[11px] font-black tracking-[.16em] uppercase text-body-2">
@@ -150,7 +150,7 @@ export default function MeetingScheduler() {
               <div className="font-ui text-[9px] font-black tracking-[.22em] uppercase text-muted-2 mb-2">
                 Selected
               </div>
-              <div className="font-display font-black text-[18px] leading-[1.3] text-ink">
+              <div className="font-display font-semibold text-[18px] leading-[1.3] text-ink">
                 {dayLabel(selDate)}
                 {selTime && <span> · {timeLabel(selTime)}</span>}
               </div>
@@ -161,7 +161,7 @@ export default function MeetingScheduler() {
         {/* calendar */}
         <div data-reveal="" data-reveal-delay="70">
           <div className="flex items-center justify-between mb-5">
-            <div className="font-display font-black text-[20px] text-ink">{monthLabel}</div>
+            <div className="font-display font-semibold text-[20px] text-ink">{monthLabel}</div>
             <div className="flex gap-2">
               <button
                 type="button"
